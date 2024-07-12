@@ -1,15 +1,25 @@
 package com.example.jangkau
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.jangkau.databinding.ActivitySplashBinding
+import com.example.jangkau.feature.auth.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
 
+    private val binding: ActivitySplashBinding by lazy {
+        ActivitySplashBinding.inflate(
+            layoutInflater
+        )
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {    
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+
+        binding.btnLogin.setOnClickListener { openLoginActivity() }
+    }
+
+    private fun openLoginActivity() {
+        LoginActivity.startActivity(this)
     }
 }

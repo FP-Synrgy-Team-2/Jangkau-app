@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="blue_primary">#0066AE</color>
+    <color name="red_custom">#E34747</color>
 
 
 </resources>
