@@ -13,3 +13,5 @@ fun View.visible() {
 fun View.invisible() {
     visibility = View.INVISIBLE
 }
+
+fun String.shorten() = substring(0, lastIndex)
