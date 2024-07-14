@@ -5,6 +5,151 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".feature.transfer.TransferInputActivity">
+
+    <include
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        layout="@layout/navbar" />
+
+    <include
+        android:id="@+id/cardRekeningTujuan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/navbar"
+        layout="@layout/rekening_tujuan" />
+
+    <TextView
+        android:id="@+id/tvRekeningSumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="16dp"
+        android:text="@string/rekening_sumber"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardRekeningTujuan"/>
+
+    <include
+        android:id="@+id/cardRekeningSumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRekeningSumber"
+        layout="@layout/rekening_sumber" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="25dp"
+        android:text="@string/tv_nomor_rekening_tujuan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardRekeningSumber" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutRekeningTujuan"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginVertical="12dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtRekeningTujuan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/tvNominal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="25dp"
+        android:text="@string/tv_nominal_transfer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutRekeningTujuan" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutNominal"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginVertical="12dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvNominal"
+        app:layout_constraintTop_toBottomOf="@+id/tvNominal">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtNominal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvCatatan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="25dp"
+        android:text="@string/tv_catatan_opsional"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutNominal" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutCatatan"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginVertical="12dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvCatatan"
+        app:layout_constraintTop_toBottomOf="@+id/tvCatatan">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtCatatan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/cbSimpanRekening"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="@string/simpan_rekening"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutCatatan"/>
+
+    <Button
+        android:id="@+id/btnInputBaru"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:textSize="14sp"
+        android:layout_height="55dp"
+        app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+        android:text="Lanjutkan"
+        android:layout_marginVertical="13dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
