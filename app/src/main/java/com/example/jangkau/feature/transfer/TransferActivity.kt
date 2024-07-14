@@ -1,13 +1,11 @@
 package com.example.jangkau.feature.transfer
 
 import android.os.Bundle
-import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-
+import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityTransferBinding
+import com.example.jangkau.gone
 
-class TransferActivity : AppCompatActivity() {
+class TransferActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTransferBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +14,7 @@ class TransferActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.navbar.imgCancel.visibility = View.GONE
+        binding.navbar.imgCancel.gone()
 
 
 

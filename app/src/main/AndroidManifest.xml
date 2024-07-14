@@ -13,13 +13,7 @@
         android:theme="@style/Theme.Jangkau"
         tools:targetApi="31">
         <activity
-            android:name=".feature.transfer.TransferReceiptActivity"
-            android:exported="false" />
-        <activity
-            android:name=".feature.transfer.TransferInputActivity"
-            android:exported="false" />
-        <activity
-            android:name=".feature.transfer.TransferActivity"
+            android:name=".feature.PinInputActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,6 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".feature.transfer.TransferReceiptActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.transfer.TransferInputActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.transfer.TransferActivity"
+            android:exported="false"/>
         <activity
             android:name=".feature.home.HomeActivity"
             android:exported="false" />
@@ -38,7 +41,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="false">
+            android:exported="true">
 
         </activity>
         <activity
