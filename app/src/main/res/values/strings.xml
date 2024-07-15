@@ -5,4 +5,13 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="tombol_hapus">Tombol Hapus</string>
+    <string name="rekening_sumber">Rekening Sumber</string>
+    <string name="bca_tabunganku">BCA Tabunganku</string>
+    <string name="nomor_rek">8923445590</string>
+    <string name="hint_x">xxxxx</string>
+    <string name="tv_nomor_rekening_tujuan">Nomor Rekening Tujuan</string>
+    <string name="tv_nominal_transfer">Nominal Transfer</string>
+    <string name="simpan_rekening">Simpan Rekening</string>
+    <string name="tv_catatan_opsional">Catatan (Opsional)</string>
+    <string name="tv_rekening_tujuan">Rekening Tujuan</string>
 </resources>

@@ -6,16 +6,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.jangkau.R
+import com.example.jangkau.databinding.ActivityTransferInputBinding
+import com.example.jangkau.gone
 
 class TransferInputActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityTransferInputBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_transfer_input)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityTransferInputBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        binding.navbar.imgCancel.gone()
+
     }
 }

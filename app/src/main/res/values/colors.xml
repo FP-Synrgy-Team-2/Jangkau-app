@@ -4,6 +4,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="blue_primary">#0066AE</color>
+    <color name="light_blue_primary">#E4EDFF</color>
+    <color name="dark_blue_primary">#0A3967</color>
     <color name="red_custom">#E34747</color>
 
 
