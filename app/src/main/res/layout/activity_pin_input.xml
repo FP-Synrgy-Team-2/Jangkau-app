@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".feature.PinInputActivity">
+
+    <include
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        layout="@layout/navbar" />
+
+    <TextView
+        android:id="@+id/tvMasukkanPin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Masukkan Pin"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navbar" />
+
+    <com.chaos.view.PinView
+        android:id="@+id/firstPinView"
+        style="@style/PinWidget.PinView"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="60dp"
+        android:cursorVisible="true"
+        android:inputType="number"
+        android:itemBackground="@drawable/baseline_circle_gray_24"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/blue_primary"
+        app:cursorWidth="2dp"
+        app:hideLineWhenFilled="true"
+        app:itemCount="6"
+        app:itemHeight="20dp"
+        app:itemRadius="4dp"
+        app:itemSpacing="20dp"
+        app:itemWidth="20dp"
+        app:lineWidth="2dp"
+        app:viewType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvMasukkanPin"/>
+
+    <com.ygoular.numpadview.NumPadView
+        android:id="@+id/num_pad_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/firstPinView"
+        app:text_color="@color/black"
+        app:right_icon="@drawable/backspace_pin"
+        app:text_size="14sp"
+        app:text_style="bold" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

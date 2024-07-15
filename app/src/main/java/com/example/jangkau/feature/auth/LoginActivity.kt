@@ -4,9 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityLoginBinding
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
     companion object {
         fun startActivity(context: Context) {
             context.startActivity(Intent(context, LoginActivity::class.java))

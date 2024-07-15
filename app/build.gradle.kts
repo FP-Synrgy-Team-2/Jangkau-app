@@ -38,7 +38,12 @@ android {
     }
 }
 
+
+
 dependencies {
+
+    implementation(project(":common"))
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -55,5 +60,12 @@ dependencies {
 
     // material 3
     implementation("com.google.android.material:material:1.11.0")
+
+    // numpad keyboard
+    implementation ("com.github.yoanngoular:numpadview:1.0.0")
+
+    // pinview
+    implementation ("io.github.chaosleung:pinview:1.4.4")
+
 
 }
