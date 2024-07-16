@@ -9,5 +9,10 @@
 
     </style>
 
+    <style name="AppTheme.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
     <style name="Theme.Jangkau" parent="Base.Theme.Jangkau" />
 </resources>
