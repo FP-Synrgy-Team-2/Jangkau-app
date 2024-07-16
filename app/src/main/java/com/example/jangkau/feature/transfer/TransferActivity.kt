@@ -16,6 +16,10 @@ class TransferActivity : BaseActivity() {
 
         binding.navbar.imgCancel.gone()
 
+        binding.btnInputBaru.setOnClickListener {
+            openTransferInputActivity()
+        }
+
 
 
     }

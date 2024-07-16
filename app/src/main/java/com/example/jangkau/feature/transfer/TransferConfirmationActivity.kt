@@ -6,16 +6,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.jangkau.R
+import com.example.jangkau.base.BaseActivity
+import com.example.jangkau.databinding.ActivityTransferConfirmationBinding
+import com.example.jangkau.gone
 
-class TransferConfirmationActivity : AppCompatActivity() {
+class TransferConfirmationActivity : BaseActivity() {
+    private lateinit var binding: ActivityTransferConfirmationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_transfer_confirmation)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityTransferConfirmationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.btnNext.setOnClickListener {
+            openPinInputActivity()
         }
+
+        binding.navbar.imgBackArrow.gone()
+        binding.navbar.imgCancel.setOnClickListener {
+            finish()
+        }
+
     }
 }

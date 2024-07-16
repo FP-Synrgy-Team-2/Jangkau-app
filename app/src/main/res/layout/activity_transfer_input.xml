@@ -138,7 +138,7 @@
         app:layout_constraintTop_toBottomOf="@id/textInputLayoutCatatan"/>
 
     <Button
-        android:id="@+id/btnInputBaru"
+        android:id="@+id/btnNext"
         style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:textSize="14sp"

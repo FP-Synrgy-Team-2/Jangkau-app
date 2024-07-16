@@ -6,10 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.jangkau.R
+import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityTransferInputBinding
 import com.example.jangkau.gone
 
-class TransferInputActivity : AppCompatActivity() {
+class TransferInputActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTransferInputBinding
 
@@ -20,6 +21,10 @@ class TransferInputActivity : AppCompatActivity() {
 
 
         binding.navbar.imgCancel.gone()
+
+        binding.btnNext.setOnClickListener {
+            openTransferConfirmationActivity()
+        }
 
     }
 }

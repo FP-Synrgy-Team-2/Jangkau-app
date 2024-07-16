@@ -36,6 +36,7 @@ class PinInputActivity : BaseActivity() {
                 binding.firstPinView.setText(newValue)
                 if (newValue.length == 6) {
                     showToast(newValue)
+                    openTranferReceiptActivity()
                 }
             },
             onRightIconClick = {

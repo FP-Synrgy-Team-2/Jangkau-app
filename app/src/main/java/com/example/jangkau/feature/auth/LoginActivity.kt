@@ -8,11 +8,6 @@ import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityLoginBinding
 
 class LoginActivity : BaseActivity() {
-    companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, LoginActivity::class.java))
-        }
-    }
 
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(
@@ -24,5 +19,9 @@ class LoginActivity : BaseActivity() {
         setContentView(binding.root)
 
         binding.btnCancel.setOnClickListener { finish() }
+
+        binding.btnLogin.setOnClickListener {
+            openHomeActivity()
+        }
     }
 }
