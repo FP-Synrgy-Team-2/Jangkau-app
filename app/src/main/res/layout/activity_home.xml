@@ -5,16 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:padding="16dp"
     tools:context=".feature.home.HomeActivity">
-
-    <include
-        android:id="@+id/navbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        layout="@layout/navbar" />
 
     <TextView
         android:id="@+id/tv1"
@@ -25,7 +17,7 @@
         android:textSize="14sp"
         android:text="Selamat Datang,"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv2"
@@ -51,6 +43,7 @@
             android:id="@+id/tvSaldoLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="Sisa Saldo"
             app:layout_constraintStart_toStartOf="@id/tvBackground"
             app:layout_constraintTop_toTopOf="@id/tvBackground"/>
@@ -62,25 +55,29 @@
             android:layout_marginTop="14dp"
             android:text="Rp 532.199,00"
             android:textStyle="bold"
+            android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@id/tvBackground"
             app:layout_constraintTop_toBottomOf="@id/tvSaldoLabel"
             />
 
-        <Button
-            android:id="@+id/btnInvisible"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
+        <CheckBox
+            android:id="@+id/icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:button="@drawable/eye_white_16"
             android:layout_marginStart="10dp"
-            android:background="@drawable/rounded_edittext"
+            app:buttonTint="@android:color/white"
             app:layout_constraintStart_toEndOf="@id/tvSaldo"
             app:layout_constraintBottom_toBottomOf="@id/tvSaldo"
-            app:layout_constraintTop_toTopOf="@id/tvSaldo"/>
+            app:layout_constraintTop_toTopOf="@id/tvSaldo" />
+
 
         <TextView
             android:id="@+id/tvInfoBank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="BCA TabunganKu"
             android:textSize="14sp"
             android:textStyle="italic"
@@ -92,6 +89,7 @@
             android:id="@+id/tvRekening"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:text="8923445590"
             android:textStyle="bold"
@@ -100,11 +98,11 @@
             app:layout_constraintEnd_toStartOf="@+id/btnCopy"
             app:layout_constraintTop_toTopOf="@id/tvSaldo"/>
 
-        <Button
+        <ImageView
             android:id="@+id/btnCopy"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:background="@drawable/rounded_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/copy_white_28"
             app:layout_constraintEnd_toEndOf="@+id/tvBackground"
             app:layout_constraintBottom_toBottomOf="@id/tvRekening"
             app:layout_constraintTop_toTopOf="@id/tvRekening"/>
@@ -124,12 +122,15 @@
 
     <Button
         android:id="@+id/btnTransfer"
-        app:icon="@drawable/logo"
+        app:icon="@drawable/transfer_blue_34"
         style="@style/Widget.Material3.Button.Icon"
         android:layout_width="match_parent"
-        android:textSize="14sp"
-        android:layout_height="55dp"
+        android:textSize="18sp"
+        android:layout_height="65dp"
         app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+        app:iconPadding="10dp"
+        app:iconSize="18dp"
+        app:iconTint="@color/white"
         android:text="Transfer Antar BCA"
         android:gravity="start|center"
         android:layout_marginVertical="10dp"
@@ -137,12 +138,15 @@
 
     <Button
         android:id="@+id/btnMutasi"
-        app:icon="@drawable/logo"
+        app:icon="@drawable/history_blue_34"
         style="@style/Widget.Material3.Button.Icon"
         android:layout_width="match_parent"
-        android:textSize="14sp"
-        android:layout_height="55dp"
+        android:textSize="18sp"
+        android:layout_height="65dp"
         app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+        app:iconPadding="10dp"
+        app:iconSize="18dp"
+        app:iconTint="@color/white"
         android:text="Cek Mutasi Rekening"
         android:gravity="start|center"
         android:layout_marginVertical="10dp"

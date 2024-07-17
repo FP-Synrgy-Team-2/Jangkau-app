@@ -4,7 +4,14 @@
         <!-- Customize your light theme here. -->
          <item name="colorPrimary">@color/blue_primary</item>
         <item name="android:colorBackground">@color/white</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/semi_transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+    </style>
+
+    <style name="AppTheme.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="Theme.Jangkau" parent="Base.Theme.Jangkau" />

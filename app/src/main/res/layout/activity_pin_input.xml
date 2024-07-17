@@ -58,6 +58,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="60dp"
+        app:text_ripple_effect="false"
+        app:right_icon_ripple_effect="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/firstPinView"
         app:text_color="@color/black"

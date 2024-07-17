@@ -18,6 +18,7 @@
         <activity
             android:name=".feature.transfer.TransferReceiptActivity"
             android:exported="false" />
+
         <activity
             android:name=".feature.transfer.TransferInputActivity"
             android:exported="false" />
