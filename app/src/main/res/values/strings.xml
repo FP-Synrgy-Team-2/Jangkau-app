@@ -14,4 +14,11 @@
     <string name="simpan_rekening">Simpan Rekening</string>
     <string name="tv_catatan_opsional">Catatan (Opsional)</string>
     <string name="tv_rekening_tujuan">Rekening Tujuan</string>
+    <string name="social_media">Social Media</string>
+    <string name="bagikan">Bagikan</string>
+    <string name="tombol_tutup_halaman">Tombol tutup Halaman</string>
+    <string name="tombol_telegram">tombol telegram</string>
+    <string name="tombol_whatsapp">tombol whatsapp</string>
+    <string name="tombol_instagram">tombol instagram</string>
+    <string name="tombol_google_mail">tombol google mail</string>
 </resources>
