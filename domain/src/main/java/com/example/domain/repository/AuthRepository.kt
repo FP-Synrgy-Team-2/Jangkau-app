@@ -4,6 +4,6 @@ import com.example.domain.model.Auth
 import com.example.domain.model.User
 
 interface AuthRepository {
-    suspend fun login(auth : Auth) : User
+    suspend fun login(auth : Auth) : User?
 
 }

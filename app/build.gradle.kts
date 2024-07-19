@@ -42,7 +42,22 @@ android {
 
 dependencies {
 
+    val koin_version = "3.5.6"
+
     implementation(project(":common"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
+
+    implementation(platform("io.insert-koin:koin-bom:$koin_version"))
+
+    // Declare the koin dependencies that you need
+    implementation("io.insert-koin:koin-android")
+    implementation("io.insert-koin:koin-core-coroutines")
+    implementation("io.insert-koin:koin-androidx-workmanager")
+
+    implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
 
 
     implementation(libs.androidx.core.ktx)
