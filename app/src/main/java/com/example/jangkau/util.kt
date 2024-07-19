@@ -3,15 +3,15 @@ package com.example.jangkau
 import android.view.View
 
 fun View.gone() {
-    visibility = View.GONE
+    this.visibility = View.GONE
 }
 
 fun View.visible() {
-    visibility = View.VISIBLE
+    this.visibility = View.VISIBLE
 }
 
 fun View.invisible() {
-    visibility = View.INVISIBLE
+    this.visibility = View.INVISIBLE
 }
 
 fun String.shorten() = substring(0, lastIndex)

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.domain.model.SavedAccount
 import com.example.jangkau.feature.PinInputActivity
 import com.example.jangkau.feature.auth.LoginActivity
 import com.example.jangkau.feature.home.HomeActivity
@@ -42,8 +43,10 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun openTransferInputActivity() {
-        val intent = Intent(this, TransferInputActivity::class.java)
+    fun openTransferInputActivity(savedAccount: SavedAccount? = null) {
+        val intent = Intent(this, TransferInputActivity::class.java).apply {
+            putExtra("EXTRA_SAVED_ACCOUNT", savedAccount)
+        }
         startActivity(intent)
     }
 
