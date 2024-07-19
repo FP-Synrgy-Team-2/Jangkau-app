@@ -14,4 +14,6 @@
     <string name="simpan_rekening">Simpan Rekening</string>
     <string name="tv_catatan_opsional">Catatan (Opsional)</string>
     <string name="tv_rekening_tujuan">Rekening Tujuan</string>
+    <string name="empty_username">Username belum diisi</string>
+    <string name="empty_password">Password belum diisi</string>
 </resources>
