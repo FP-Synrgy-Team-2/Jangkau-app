@@ -48,7 +48,7 @@ class PinInputActivity : BaseActivity() {
 
     // NEED TO BE CLEANED
     private fun handleNewValue(value: String): String {
-        currentValue = "${if (currentValue != "0") currentValue else ""}$value"
+        currentValue += value
         return currentValue
     }
 

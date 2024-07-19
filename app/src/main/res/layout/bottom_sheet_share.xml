@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include
+        android:layout_marginTop="20dp"
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        layout="@layout/navbar" />
+    
+    <TextView
+        android:id="@+id/tvSocialMedia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/social_media"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navbar"/>
+
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:id="@+id/btnTelegram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/light_blue_primary"
+        app:iconTint="@color/black"
+        app:iconSize="34dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/tombol_telegram"
+        app:layout_constraintTop_toBottomOf="@id/tvSocialMedia"
+        app:layout_constraintStart_toStartOf="parent"
+        app:icon="@drawable/ic_telegram" />
+
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:id="@+id/btnWhatsapp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/light_blue_primary"
+        app:iconTint="@color/black"
+        app:iconSize="34dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/tombol_whatsapp"
+        app:layout_constraintTop_toBottomOf="@id/tvSocialMedia"
+        app:layout_constraintStart_toEndOf="@id/btnTelegram"
+        app:icon="@drawable/ic_whatsapp" />
+
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:id="@+id/btnInstagram"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/light_blue_primary"
+        app:iconTint="@color/black"
+        app:iconSize="34dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/tombol_instagram"
+        app:layout_constraintTop_toBottomOf="@id/tvSocialMedia"
+        app:layout_constraintStart_toEndOf="@id/btnWhatsapp"
+        app:icon="@drawable/ic_instagram" />
+
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:id="@+id/btnGmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/light_blue_primary"
+        app:iconTint="@color/black"
+        app:iconSize="34dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/tombol_google_mail"
+        app:layout_constraintTop_toBottomOf="@id/tvSocialMedia"
+        app:layout_constraintStart_toEndOf="@id/btnInstagram"
+        app:icon="@drawable/ic_gmail" />
+
+    
+
+</androidx.constraintlayout.widget.ConstraintLayout>
