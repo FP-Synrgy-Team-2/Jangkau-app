@@ -42,4 +42,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Retrofit
+    //noinspection UseTomlInstead
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    //noinspection UseTomlInstead
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    //noinspection UseTomlInstead
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    implementation(libs.androidx.datastore.preferences)
+
 }

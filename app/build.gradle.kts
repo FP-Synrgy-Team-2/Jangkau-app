@@ -82,5 +82,17 @@ dependencies {
     // pinview
     implementation ("io.github.chaosleung:pinview:1.4.4")
 
+    implementation(libs.androidx.datastore.preferences)
+
+
+
+    // Retrofit
+    //noinspection UseTomlInstead
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    //noinspection UseTomlInstead
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    //noinspection UseTomlInstead
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
 
 }

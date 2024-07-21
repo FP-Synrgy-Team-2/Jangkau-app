@@ -6,10 +6,10 @@ import com.example.domain.repository.BankAccountRepository
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.Flow
 class ShowDataBankAccUseCase(private val bankAccountRepository : BankAccountRepository) {
-    operator fun invoke(accountNumber : String) : Flow<Resource<BankAccount>> = flow {
+    operator fun invoke(userId : String) : Flow<Resource<BankAccount>> = flow {
         emit(Resource.Loading())
         try {
-            val response = bankAccountRepository.getBankAccountByAccountNumber(accountNumber)
+            val response = bankAccountRepository.getBankAccountById(userId)
         } catch (e:Exception){
             emit(Resource.Error("Error Occurred"))
         }

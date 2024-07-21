@@ -5,6 +5,7 @@ import com.example.jangkau.di.AppModule.appModule
 import com.example.jangkau.di.AppModule.repositoryModule
 import com.example.jangkau.di.AppModule.useCaseModule
 import com.example.jangkau.di.AppModule.viewModelModule
+import com.example.jangkau.di.NetworkModule.networkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +18,7 @@ class MainApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
-            modules( appModule, repositoryModule, viewModelModule, useCaseModule)
+            modules( networkModule, appModule, repositoryModule, viewModelModule, useCaseModule)
         }
 
     }

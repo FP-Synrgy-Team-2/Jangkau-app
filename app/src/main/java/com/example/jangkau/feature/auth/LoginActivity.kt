@@ -16,6 +16,7 @@ import org.koin.android.ext.android.inject
 class LoginActivity : BaseActivity() {
 
     private val viewModel: AuthViewModel by inject()
+    private val userViewModel : UserViewModel by inject()
 
 
 
@@ -27,6 +28,24 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        viewModel.state.observe(this) { state ->
+            when (state) {
+                is State.Error -> {
+                    showToast(state.error)
+                }
+
+                State.Loading -> {
+                    Log.d("LoginActivity", "Loading state")  // Debug log
+
+                }
+
+                is State.Success -> {
+                    openHomeActivity()
+                    Log.d("LoginActivity", "User: ${state.data}")
+                }
+            }
+        }
 
         binding.btnCancel.setOnClickListener { finish() }
 
@@ -51,10 +70,7 @@ class LoginActivity : BaseActivity() {
             }
 
             if (!hasError) {
-                showToast("Login Success, welcome back $username")
-                openHomeActivity()
-
-//                viewModel.loginUser(username, password)
+                viewModel.loginUser(username, password)
 //                viewModel.state.observe(this) { state ->
 //                    when (state) {
 //                        is State.Error -> {
@@ -64,12 +80,29 @@ class LoginActivity : BaseActivity() {
 //
 //                        }
 //                        is State.Success -> {
-//                            showToast("Login Success, welcome back ${state.data.fullname}")
-//                        }
-//                    }
+//                            openHomeActivity()
+//                            Log.d("TAG", "User: ${state.data}")
+//                            userViewModel.getUser(state.data.userId)
+//                            userViewModel.state.observe(this) { state ->
+//                                when (state) {
+//                                    is State.Error -> {
+//                                        showToast(state.error)
+//                                    }
+//                                    State.Loading -> {
+//
+//                                    }
+//                                    is State.Success -> {
+//                                        showToast("Login Success, welcome back $username")
+//                                        openHomeActivity()
+//                                        Log.d("TAG", "User: ${state.data}")
+//                                    }
+//                                }
+//                            }
+                        }
+                    }
 //                }
-            }
-        }
+//            }
+//        }
 
 
 
