@@ -16,7 +16,6 @@ import org.koin.android.ext.android.inject
 class LoginActivity : BaseActivity() {
 
     private val viewModel: AuthViewModel by inject()
-    private val userViewModel : UserViewModel by inject()
 
 
 

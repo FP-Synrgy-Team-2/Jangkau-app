@@ -1,13 +1,16 @@
 package com.example.jangkau.feature.auth
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.common.Resource
 import com.example.domain.model.Login
 import com.example.domain.model.User
 import com.example.domain.usecase.user.GetUserUseCase
 import com.example.jangkau.State
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class UserViewModel (
@@ -15,10 +18,10 @@ class UserViewModel (
 ) : ViewModel(){
 
     private val _state = MutableLiveData<State<User>>()
-    val state : MutableLiveData<State<User>> = _state
+    val state : LiveData<State<User>> = _state
 
-    fun getUser(userId : String){
-        getUserUseCase.invoke(userId).onEach { result ->
+    fun getUser(){
+        getUserUseCase.invoke().onEach { result ->
             when(result){
                 is Resource.Error -> {
                     Log.e("GetUser", "Error: ${result.message}")
@@ -31,8 +34,7 @@ class UserViewModel (
                     _state.value = result.data?.let { State.Success(it) }
                 }
             }
-
-        }
+        }.launchIn(viewModelScope)
     }
 
 

@@ -4,6 +4,6 @@ import com.example.domain.model.User
 
 interface UserRepository {
 
-    suspend fun getUserById(userId : String) : User
+    suspend fun getUserById() : User
 
 }

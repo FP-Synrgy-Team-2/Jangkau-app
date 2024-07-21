@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.flow
 
 class GetUserUseCase (private val userRepository: UserRepository) {
 
-    operator fun invoke (userId : String) : Flow<Resource<User>> = flow{
+    operator fun invoke () : Flow<Resource<User>> = flow{
         emit(Resource.Loading())
         try {
-            val response = userRepository.getUserById(userId)
+            val response = userRepository.getUserById()
             emit(Resource.Success(response))
         } catch (e : Exception) {
             emit(Resource.Error(e.message.toString()))

@@ -7,11 +7,11 @@ import com.google.gson.annotations.SerializedName
 data class UserResponse(
     @SerializedName("email_address")
     val emailAddress: String,
-    @SerializedName("fullname")
+    @SerializedName("full_name")
     val fullname: String,
     @SerializedName("phone_number")
     val phoneNumber: String,
-    @SerializedName("user_id")
+    @SerializedName("id")
     val userId: String,
     @SerializedName("username")
     val username: String
@@ -21,6 +21,7 @@ data class UserResponse(
             email = emailAddress,
             fullname = fullname,
             phoneNumber = phoneNumber,
+            userId = userId
         )
     }
 }

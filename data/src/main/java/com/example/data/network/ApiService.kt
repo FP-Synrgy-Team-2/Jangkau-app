@@ -1,5 +1,6 @@
 package com.example.data.network
 
+import com.example.data.network.model.auth.ApiResponse
 import com.example.data.network.model.auth.AuthRequest
 import com.example.data.network.model.auth.LoginResponse
 import com.example.data.network.model.auth.UserResponse
@@ -12,12 +13,12 @@ import retrofit2.http.Path
 
 interface ApiService {
     @POST("api/auth/login")
-    suspend fun loginAuth(@Body authRequest: AuthRequest) : Response<LoginResponse>
+    suspend fun loginAuth(@Body authRequest: AuthRequest) : Response<ApiResponse<LoginResponse>>
 
     @GET("api/users/{id}")
     suspend fun getUser(
         @Path("id") userId: String,
         @Header("Authorization") token: String
-    ): Response<UserResponse>
+    ): Response<ApiResponse<UserResponse>>
 
 }

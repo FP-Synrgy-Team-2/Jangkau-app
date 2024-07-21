@@ -13,27 +13,21 @@ class AuthRepositoryImpl(
     private val dataStorePref: DataStorePref
 ) : AuthRepository, SafeApiRequest() {
     override suspend fun login(auth: Auth): Login {
-        val authRequest = AuthRequest(auth.username, auth.password)
         val response = safeApiRequest {
-            apiService.loginAuth(authRequest)
+            apiService.loginAuth(
+                authRequest = AuthRequest(auth.username, auth.password)
+            )
         }
 
-        // Check for success status
-        if (response.status) {
-            val loginData = response.data ?: throw Exception("Login data is null")
-            dataStorePref.storeLoginData(
-                loginData.accessToken,
-                loginData.tokenType,
-                loginData.userId
-            )
-            return Login(
-                userId = loginData.userId,
-                accessToken = loginData.accessToken,
-                tokenType = loginData.tokenType,
-            )
-        } else {
-            throw Exception(response.message)
-        }
+        val loginResponse = response.data ?: throw Exception(response.message)
+
+        dataStorePref.storeLoginData(
+            accessToken = loginResponse.accessToken,
+            userId = loginResponse.userId,
+            tokenType = loginResponse.tokenType
+        )
+
+        return loginResponse.toDomain()
     }
 
 }
