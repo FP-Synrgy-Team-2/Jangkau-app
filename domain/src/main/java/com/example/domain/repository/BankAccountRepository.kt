@@ -5,12 +5,12 @@ import com.example.domain.model.PinValidation
 
 interface BankAccountRepository {
 
-    suspend fun getBankAccountById(userId :String) : BankAccount
+    suspend fun getBankAccountById() : BankAccount
 
-    suspend fun getBankAccountByAccountNumber(accountNumber : String) : BankAccount
-
-    suspend fun getAllBankAccount() : BankAccount
-
-    suspend fun getPinValidation(pinValidation: PinValidation) : BankAccount
+//    suspend fun getBankAccountByAccountNumber(accountNumber : String) : BankAccount
+//
+//    suspend fun getAllBankAccount() : BankAccount
+//
+//    suspend fun getPinValidation(pinValidation: PinValidation) : BankAccount
 
 }

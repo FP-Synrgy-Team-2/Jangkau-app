@@ -1,10 +1,7 @@
 package com.example.data.network.utils
 
-import android.util.Log
-import com.example.data.network.model.auth.ApiResponse
-import org.json.JSONException
+import com.example.data.network.model.ApiResponse
 import retrofit2.Response
-import java.io.IOException
 
 abstract class SafeApiRequest {
 

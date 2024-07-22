@@ -1,8 +1,8 @@
 package com.example.domain.model
 
 data class BankAccount(
+    val userId : String,
     val ownerName : String,
     val accountNumber : String,
-    val type : String,
-    val balance : Int
+    val balance : Double
 )

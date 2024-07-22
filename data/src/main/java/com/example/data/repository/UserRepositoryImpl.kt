@@ -16,12 +16,6 @@ class UserRepositoryImpl(
         val token = dataStorePref.accessToken.firstOrNull()
         val userId = dataStorePref.userId.firstOrNull()
 
-        if (token == null) {
-            throw Exception("Token not found")
-        } else {
-            Log.d("UserRepositoryImpl", "Token found: $token")
-        }
-
         if (userId == null) {
             throw Exception("User ID not found")
         } else {
