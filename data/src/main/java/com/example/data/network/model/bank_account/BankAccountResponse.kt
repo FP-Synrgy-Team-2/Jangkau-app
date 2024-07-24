@@ -11,5 +11,7 @@ data class BankAccountResponse(
     @SerializedName("balance")
     val balance: Double,
     @SerializedName("owner_name")
-    val ownerName: String
+    val ownerName: String,
+    @SerializedName("user_id")
+    val userId: String,
 )

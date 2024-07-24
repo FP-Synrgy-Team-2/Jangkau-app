@@ -17,7 +17,9 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private val bankViewModel : BankAccountViewModel by inject()
-    private var isBalanceHidden: Boolean = true // Default to hidden
+    private val userViewModel : UserViewModel by inject()
+
+    private var isBalanceHidden: Boolean = false // Default to hidden
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)

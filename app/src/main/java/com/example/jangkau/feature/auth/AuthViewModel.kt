@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.Resource
 import com.example.domain.model.Auth
 import com.example.domain.model.Login
-import com.example.domain.model.User
 import com.example.domain.usecase.auth.LoginUseCase
-import com.example.domain.usecase.user.GetUserUseCase
 import com.example.jangkau.State
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

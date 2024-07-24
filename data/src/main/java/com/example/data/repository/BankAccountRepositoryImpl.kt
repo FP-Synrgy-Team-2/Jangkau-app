@@ -10,19 +10,28 @@ import com.example.domain.repository.BankAccountRepository
 import kotlinx.coroutines.flow.firstOrNull
 
 class BankAccountRepositoryImpl(
-    private val apiService : ApiService,
+    private val apiService: ApiService,
     private val dataStorePref: DataStorePref
 ) : BankAccountRepository, SafeApiRequest() {
 
+    companion object {
+        private const val TAG = "BankAccountRepoImpl"
+    }
 
     override suspend fun getBankAccountById(): BankAccount {
         val userId = dataStorePref.userId.firstOrNull()
         val token = dataStorePref.accessToken.firstOrNull()
 
         if (userId == null) {
-            throw Exception("User ID not found")
+            Log.e(TAG, "User ID not found")
+            throw Exception("User ID not found in Impl")
         } else {
-            Log.d("UserRepositoryImpl", "User ID found: $userId")
+            Log.d(TAG, "User ID found: $userId")
+        }
+
+        if (token == null) {
+            Log.e(TAG, "Access token not found")
+            throw Exception("Access token not found")
         }
 
         val response = safeApiRequest {
@@ -32,7 +41,8 @@ class BankAccountRepositoryImpl(
         val bankAccountResponse = response.data ?: throw Exception("Bank account not found")
         return BankAccount(
             accountNumber = bankAccountResponse.accountNumber,
-            userId = bankAccountResponse.accountId,
+            accountId = bankAccountResponse.accountId,
+            userId = userId,
             balance = bankAccountResponse.balance,
             ownerName = bankAccountResponse.ownerName
         )

@@ -30,7 +30,7 @@ object AppModule {
     val viewModelModule = module {
         viewModel { AuthViewModel(get()) }
         viewModel { UserViewModel(get()) }
-        viewModel {BankAccountViewModel(get())}
+        viewModel { BankAccountViewModel(get()) }
     }
 
     val useCaseModule = module {

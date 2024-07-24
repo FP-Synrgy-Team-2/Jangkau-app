@@ -10,8 +10,9 @@ class ShowDataBankAccUseCase(private val bankAccountRepository : BankAccountRepo
         emit(Resource.Loading())
         try {
             val response = bankAccountRepository.getBankAccountById()
+            emit(Resource.Success(response))
         } catch (e:Exception){
-            emit(Resource.Error("Error Occurred"))
+            emit(Resource.Error(e.message.toString()))
         }
     }
 
