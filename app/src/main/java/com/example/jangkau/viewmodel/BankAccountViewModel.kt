@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.Resource
 import com.example.domain.model.BankAccount
+import com.example.domain.usecase.bank_account.SearchDataBankByAccNumberUseCase
 import com.example.domain.usecase.bank_account.ShowDataBankAccUseCase
 import com.example.domain.usecase.bank_account.ShowSavedBankAccUseCase
 import com.example.jangkau.ListState
@@ -20,7 +21,8 @@ import kotlinx.coroutines.launch
 
 class BankAccountViewModel (
     private val showDataBankAccUseCase: ShowDataBankAccUseCase,
-    private val showSavedBankAccUseCase: ShowSavedBankAccUseCase
+    private val showSavedBankAccUseCase: ShowSavedBankAccUseCase,
+    private val searchDataBankByAccNumberUseCase: SearchDataBankByAccNumberUseCase
 ) : ViewModel(){
 
     private val _state = MutableLiveData<State<BankAccount>>()
@@ -41,6 +43,26 @@ class BankAccountViewModel (
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun searchDataBankByAccNumber(accNumber: String){
+        viewModelScope.launch {
+            searchDataBankByAccNumberUseCase.invoke(accNumber).onEach {result->
+                when(result){
+                    is Resource.Error -> {
+                        Log.e("GetBankAccount", "Error: ${result.message}")
+                        _state.value = State.Error(result.message ?: "An unexpected error occurred")
+                    }
+                    is Resource.Loading -> {
+                        _state.value = State.Loading
+                    }
+                    is Resource.Success -> {
+                        _state.value = result.data?.let { State.Success(it) }
+                    }
+                }
+            }
+        }
+
     }
 
     private val _savedBankAcc = MutableLiveData<State<ListState<BankAccount>>>()

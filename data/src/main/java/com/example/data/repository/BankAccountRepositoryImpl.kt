@@ -35,6 +35,18 @@ class BankAccountRepositoryImpl(
         )
     }
 
+    override suspend fun getBankAccountByAccountNumber(accountNumber: String): BankAccount {
+        val (userId, token) = getUserCredentials()
+
+        val response = safeApiRequest {
+            apiService.getBankAccountByAccountNumber(accountNumber, "Bearer $token")
+        }
+
+        val bankAccountResponse = response.data ?: throw Exception("Bank account not found")
+        return bankAccountResponse.toDomain()
+
+    }
+
     override suspend fun getSavedBankAccount(): List<BankAccount> {
         val (userId, token) = getUserCredentials()
 
@@ -80,9 +92,7 @@ class BankAccountRepositoryImpl(
 
 
 
-//    override suspend fun getBankAccountByAccountNumber(accountNumber: String): BankAccount {
-//        TODO("Not yet implemented")
-//    }
+
 //
 //    override suspend fun getAllBankAccount(): BankAccount {
 //        TODO("Not yet implemented")

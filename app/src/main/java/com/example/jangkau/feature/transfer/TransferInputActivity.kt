@@ -4,17 +4,21 @@ import android.os.Bundle
 import android.view.View
 import com.example.domain.model.SavedAccount
 import com.example.jangkau.R
+import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityTransferInputBinding
 import com.example.jangkau.databinding.BottomSheetTransferConfirmationBinding
 import com.example.jangkau.gone
+import com.example.jangkau.viewmodel.BankAccountViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.example.jangkau.visible
+import org.koin.android.ext.android.inject
 
 class TransferInputActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTransferInputBinding
+    private val bankViewModel : BankAccountViewModel by inject()
 
     private val bottomSheetBinding: BottomSheetTransferConfirmationBinding by lazy {
         BottomSheetTransferConfirmationBinding.inflate(layoutInflater)
@@ -65,9 +69,31 @@ class TransferInputActivity : BaseActivity() {
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.show()
 
+        if (namaRekening.isNullOrEmpty()){
+            bankViewModel.searchDataBankByAccNumber(rekeningTujuan)
+            bankViewModel.state.observe(this){state->
+                when(state){
+                    is State.Error -> {
+                        showToast(state.error)
+                    }
+                    State.Loading -> {
+
+                    }
+                    is State.Success -> {
+                        bottomSheetBinding.apply {
+                            tvName.text = state.data.ownerName
+                        }
+                    }
+                }
+            }
+        }else{
+            bottomSheetBinding.apply {
+                tvName.text = namaRekening
+            }
+        }
+
         // should use if else condition when namaRekening = null, will collect data from api based on accountNumber
         bottomSheetBinding.apply {
-            tvName.text = namaRekening
             tvRekening.text = rekeningTujuan
             tvNominal.text = nominal
             tvCatatan.text = catatan

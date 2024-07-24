@@ -1,5 +1,7 @@
 package com.example.jangkau.feature.home
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
@@ -53,6 +55,13 @@ class HomeActivity : BaseActivity() {
                     binding.tv2.text = state.data.ownerName
                     binding.tvSaldo.text = moneyFormatter(state.data.balance?.toLong())
                     binding.tvRekening.text = state.data.accountNumber
+                    binding.btnCopy.setOnClickListener {
+                        val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val accountNumber = state.data.accountNumber
+                        val clipData = android.content.ClipData.newPlainText("Account Number", accountNumber)
+                        clipboardManager.setPrimaryClip(clipData)
+                        showToast("$accountNumber copied to clipboard")
+                    }
                 }
             }
         }

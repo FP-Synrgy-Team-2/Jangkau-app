@@ -49,7 +49,6 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
             when(state){
                 is State.Error -> {
                     showToast(state.error)
-
                 }
                 State.Loading -> {
 

@@ -70,6 +70,13 @@ class DataStorePref(private val context: Context) {
         emit(false)
     }
 
+    suspend fun storeUserAccountData(
+        accountNumber : String,
+        accountId : String
+        ): Flow<Boolean> = flow {
+
+    }
+
 
 
 }
