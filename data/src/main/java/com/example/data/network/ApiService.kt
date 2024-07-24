@@ -28,4 +28,11 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<ApiResponse<BankAccountResponse>>
 
+    @GET("/api/saved-accounts/{id}")
+    suspend fun getSavedBankAccount(
+        @Path("id") userId: String,
+        @Header("Authorization") token: String
+    ) : Response<ApiResponse<List<BankAccountResponse>>>
+
+
 }

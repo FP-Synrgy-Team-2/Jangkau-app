@@ -1,16 +1,12 @@
 package com.example.jangkau.feature.auth
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityLoginBinding
+import com.example.jangkau.viewmodel.AuthViewModel
 import org.koin.android.ext.android.inject
 
 class LoginActivity : BaseActivity() {

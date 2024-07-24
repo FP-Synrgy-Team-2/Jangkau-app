@@ -17,8 +17,8 @@ fun View.invisible() {
 
 fun String.shorten() = substring(0, lastIndex)
 
-fun moneyFormatter(value: Long, withPrefix: Boolean = true): String {
+fun moneyFormatter(value: Long?, withPrefix: Boolean = true): String {
     val myFormatter = DecimalFormat("#,###.###")
-    val formatted = myFormatter.format(value.toDouble()).replace(",".toRegex(), ".")
+    val formatted = myFormatter.format(value?.toDouble()).replace(",".toRegex(), ".")
     return if (withPrefix) "Rp$formatted" else formatted
 }

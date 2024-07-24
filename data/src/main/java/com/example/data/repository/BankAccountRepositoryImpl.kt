@@ -19,20 +19,7 @@ class BankAccountRepositoryImpl(
     }
 
     override suspend fun getBankAccountById(): BankAccount {
-        val userId = dataStorePref.userId.firstOrNull()
-        val token = dataStorePref.accessToken.firstOrNull()
-
-        if (userId == null) {
-            Log.e(TAG, "User ID not found")
-            throw Exception("User ID not found in Impl")
-        } else {
-            Log.d(TAG, "User ID found: $userId")
-        }
-
-        if (token == null) {
-            Log.e(TAG, "Access token not found")
-            throw Exception("Access token not found")
-        }
+        val (userId, token) = getUserCredentials()
 
         val response = safeApiRequest {
             apiService.getBankAccountById(userId, "Bearer $token")
@@ -48,6 +35,51 @@ class BankAccountRepositoryImpl(
         )
     }
 
+    override suspend fun getSavedBankAccount(): List<BankAccount> {
+        val (userId, token) = getUserCredentials()
+
+        val response = safeApiRequest {
+            apiService.getSavedBankAccount(userId, "Bearer $token")
+        }
+
+        val bankAccountListResponse = response.data
+        if (bankAccountListResponse.isNullOrEmpty()) {
+            return emptyList()
+        }else{
+            return bankAccountListResponse.map {
+                BankAccount(
+                    accountId = it.accountId,
+                    accountNumber = it.accountNumber,
+                    ownerName = it.ownerName,
+                    balance = null,
+                    userId = null
+                )
+            }
+        }
+
+    }
+
+    private suspend fun getUserCredentials(): Pair<String, String> {
+        val userId = dataStorePref.userId.firstOrNull()
+        val token = dataStorePref.accessToken.firstOrNull()
+
+        if (userId == null) {
+            Log.e(TAG, "User ID not found")
+            throw Exception("User ID not found in Impl")
+        }
+
+        if (token == null) {
+            Log.e(TAG, "Access token not found")
+            throw Exception("Access token not found")
+        }
+
+        return Pair(userId, token)
+    }
+
+}
+
+
+
 //    override suspend fun getBankAccountByAccountNumber(accountNumber: String): BankAccount {
 //        TODO("Not yet implemented")
 //    }
@@ -59,4 +91,3 @@ class BankAccountRepositoryImpl(
 //    override suspend fun getPinValidation(pinValidation: PinValidation): BankAccount {
 //        TODO("Not yet implemented")
 //    }
-}

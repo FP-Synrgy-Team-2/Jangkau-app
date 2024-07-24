@@ -7,6 +7,8 @@ interface BankAccountRepository {
 
     suspend fun getBankAccountById() : BankAccount
 
+    suspend fun getSavedBankAccount() : List<BankAccount>
+
 //    suspend fun getBankAccountByAccountNumber(accountNumber : String) : BankAccount
 //
 //    suspend fun getAllBankAccount() : BankAccount

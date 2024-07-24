@@ -1,30 +1,34 @@
-package com.example.jangkau.feature.auth
+package com.example.jangkau.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.Resource
+import com.example.domain.model.Auth
 import com.example.domain.model.Login
-import com.example.domain.model.User
-import com.example.domain.usecase.user.GetUserUseCase
+import com.example.domain.usecase.auth.LoginUseCase
 import com.example.jangkau.State
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class UserViewModel (
-    private val getUserUseCase: GetUserUseCase
-) : ViewModel(){
+class AuthViewModel(
+    private val loginUseCase : LoginUseCase
+) : ViewModel() {
 
-    private val _state = MutableLiveData<State<User>>()
-    val state : LiveData<State<User>> = _state
+    private val _state = MutableLiveData<State<Login>>()
+    val state : MutableLiveData<State<Login>> = _state
 
-    fun getUser(){
-        getUserUseCase.invoke().onEach { result ->
+//    private val _userLoggedIn = MutableLiveData<Boolean>()
+//    val userLoggedIn: MutableLiveData<Boolean> = _userLoggedIn
+
+    fun loginUser(username : String, password : String){
+        loginUseCase(
+            Auth(username = username, password = password)
+        ).onEach { result ->
             when(result){
                 is Resource.Error -> {
-                    Log.e("GetUser", "Error: ${result.message}")
+                    Log.e("LoginUser", "Error: ${result.message}")
                     _state.value = State.Error(result.message ?: "An unexpected error occurred")
                 }
                 is Resource.Loading -> {

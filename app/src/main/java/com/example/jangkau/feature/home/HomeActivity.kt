@@ -1,16 +1,12 @@
 package com.example.jangkau.feature.home
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityHomeBinding
-import com.example.jangkau.feature.auth.UserViewModel
+import com.example.jangkau.viewmodel.UserViewModel
 import com.example.jangkau.moneyFormatter
+import com.example.jangkau.viewmodel.BankAccountViewModel
 import org.koin.android.ext.android.inject
 
 class HomeActivity : BaseActivity() {
@@ -19,7 +15,7 @@ class HomeActivity : BaseActivity() {
     private val bankViewModel : BankAccountViewModel by inject()
     private val userViewModel : UserViewModel by inject()
 
-    private var isBalanceHidden: Boolean = false // Default to hidden
+    private var isBalanceHidden: Boolean = true // Default to hidden
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -55,7 +51,7 @@ class HomeActivity : BaseActivity() {
                 }
                 is State.Success -> {
                     binding.tv2.text = state.data.ownerName
-                    binding.tvSaldo.text = moneyFormatter(state.data.balance.toLong())
+                    binding.tvSaldo.text = moneyFormatter(state.data.balance?.toLong())
                     binding.tvRekening.text = state.data.accountNumber
                 }
             }
@@ -65,7 +61,7 @@ class HomeActivity : BaseActivity() {
     private fun toggleBalanceVisibility() {
         isBalanceHidden = !isBalanceHidden
         val balance = bankViewModel.state.value?.let {
-            if (it is State.Success) it.data.balance.toLong() else 0L
+            if (it is State.Success) it.data.balance?.toLong() else 0L
         } ?: 0L
         updateBalanceVisibility(balance)
     }
