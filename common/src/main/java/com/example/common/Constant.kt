@@ -1,7 +1,7 @@
 package com.example.common
 
 object Constant {
-    const val BASE_URL = "https://ytterbic-jean-jangkau-186370c4.koyeb.app/"
+    const val BASE_URL = "https://tense-margy-jangkau-a8ec8afe.koyeb.app/"
 
 
 

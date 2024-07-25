@@ -37,8 +37,6 @@ class AuthRepositoryImpl(
             } else {
                 Log.e("AuthRepositoryImpl", "Failed to store login data")
             }
-            apiService.getBankAccountById(loginResponse.userId , loginResponse.accessToken)
-            dataStorePref
         }
 
         return loginResponse.toDomain()

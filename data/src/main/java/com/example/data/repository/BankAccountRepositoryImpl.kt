@@ -26,6 +26,16 @@ class BankAccountRepositoryImpl(
         }
 
         val bankAccountResponse = response.data ?: throw Exception("Bank account not found")
+        Log.d("BankAccountRepositoryImpl", "Storing Account Data")
+        dataStorePref.storeBankAccountData(
+            accountNumber = bankAccountResponse.accountNumber,
+            accountId = bankAccountResponse.accountId).collect {success ->
+                if (success){
+                    Log.d("BankAccountRepositoryImpl", "Account Data Stored")
+                }else{
+                    Log.d("BankAccountRepositoryImpl", "Account Data Not Stored")
+                }
+        }
         return BankAccount(
             accountNumber = bankAccountResponse.accountNumber,
             accountId = bankAccountResponse.accountId,

@@ -69,7 +69,7 @@ class TransferInputActivity : BaseActivity() {
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.show()
 
-        if (namaRekening.isNullOrEmpty()){
+        if (namaRekening == null){
             bankViewModel.searchDataBankByAccNumber(rekeningTujuan)
             bankViewModel.state.observe(this){state->
                 when(state){
