@@ -8,6 +8,7 @@ import com.example.domain.repository.AuthRepository
 import com.example.domain.repository.BankAccountRepository
 import com.example.domain.repository.UserRepository
 import com.example.domain.usecase.auth.LoginUseCase
+import com.example.domain.usecase.auth.PinValidationUseCase
 import com.example.domain.usecase.bank_account.SearchDataBankByAccNumberUseCase
 import com.example.domain.usecase.bank_account.ShowDataBankAccUseCase
 import com.example.domain.usecase.bank_account.ShowSavedBankAccUseCase
@@ -30,13 +31,14 @@ object AppModule {
     }
 
     val viewModelModule = module {
-        viewModel { AuthViewModel(get()) }
+        viewModel { AuthViewModel(get(), get()) }
         viewModel { UserViewModel(get()) }
         viewModel { BankAccountViewModel(get(), get(), get()) }
     }
 
     val useCaseModule = module {
         factory { LoginUseCase(get()) }
+        factory { PinValidationUseCase(get()) }
 
         factory { GetUserUseCase(get()) }
 
