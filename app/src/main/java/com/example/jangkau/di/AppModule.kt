@@ -42,7 +42,8 @@ object AppModule {
 
         factory { ShowDataBankAccUseCase(get()) }
         factory { ShowSavedBankAccUseCase(get()) }
-        factory { SearchDataBankByAccNumberUseCase(get())}
+
+        factory { SearchDataBankByAccNumberUseCase(get()) }
     }
 
 }
