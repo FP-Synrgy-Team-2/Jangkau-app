@@ -1,7 +1,9 @@
 package com.example.jangkau.feature.transfer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
 import com.example.domain.model.SavedAccount
 import com.example.jangkau.R
 import com.example.jangkau.State
@@ -9,16 +11,16 @@ import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityTransferInputBinding
 import com.example.jangkau.databinding.BottomSheetTransferConfirmationBinding
 import com.example.jangkau.gone
+import com.example.jangkau.visible
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.example.jangkau.visible
 import org.koin.android.ext.android.inject
 
 class TransferInputActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTransferInputBinding
-    private val bankViewModel : BankAccountViewModel by inject()
+    private val bankViewModel: BankAccountViewModel by inject()
 
     private val bottomSheetBinding: BottomSheetTransferConfirmationBinding by lazy {
         BottomSheetTransferConfirmationBinding.inflate(layoutInflater)
@@ -49,18 +51,16 @@ class TransferInputActivity : BaseActivity() {
 
         binding.navbar.imgCancel.gone()
 
-        // need to change the logic
         binding.btnNext.setOnClickListener {
             val namaRekening = savedAccount?.ownerName
-            val rekeningTujuan =  binding.textInputLayoutRekeningTujuan.editText?.text.toString()
+            val rekeningTujuan = binding.textInputLayoutRekeningTujuan.editText?.text.toString()
             val nominal = binding.textInputLayoutNominal.editText?.text.toString()
             val catatan = binding.textInputLayoutCatatan.editText?.text.toString()
 
-            if (rekeningTujuan.isNotEmpty()  || nominal.isNotEmpty() || catatan.isNotEmpty()  ){
+            if (rekeningTujuan.isNotEmpty() || nominal.isNotEmpty() || catatan.isNotEmpty()) {
                 openBottomDialog(namaRekening, rekeningTujuan, nominal, catatan)
             }
         }
-
     }
 
     private fun openBottomDialog(namaRekening: String?, rekeningTujuan: String, nominal: String, catatan: String) {
@@ -69,30 +69,28 @@ class TransferInputActivity : BaseActivity() {
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.show()
 
-        if (namaRekening == null){
+        if (namaRekening == null) {
             bankViewModel.searchDataBankByAccNumber(rekeningTujuan)
-            bankViewModel.state.observe(this){state->
-                when(state){
+            bankViewModel.state.observe(this) { state ->
+                when (state) {
                     is State.Error -> {
+                        Log.e("BottomSheet", "Error: ${state.error}")
                         showToast(state.error)
                     }
                     State.Loading -> {
-
+                        Log.d("BottomSheet", "Loading")
+                        // Show loading indicator if needed
                     }
                     is State.Success -> {
-                        bottomSheetBinding.apply {
-                            tvName.text = state.data.ownerName
-                        }
+                        Log.d("BottomSheet", "Success: ${state.data}")
+                        bottomSheetBinding.tvName.text = state.data.ownerName
                     }
                 }
             }
-        }else{
-            bottomSheetBinding.apply {
-                tvName.text = namaRekening
-            }
+        } else {
+            bottomSheetBinding.tvName.text = namaRekening
         }
 
-        // should use if else condition when namaRekening = null, will collect data from api based on accountNumber
         bottomSheetBinding.apply {
             tvRekening.text = rekeningTujuan
             tvNominal.text = nominal
@@ -105,10 +103,7 @@ class TransferInputActivity : BaseActivity() {
             navbar.imgCancel.setOnClickListener {
                 dialog.dismiss()
             }
-
         }
-
-
-
     }
+
 }
