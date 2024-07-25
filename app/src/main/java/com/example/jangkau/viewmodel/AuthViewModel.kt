@@ -8,16 +8,21 @@ import com.example.common.Resource
 import com.example.domain.model.Auth
 import com.example.domain.model.Login
 import com.example.domain.usecase.auth.LoginUseCase
+import com.example.domain.usecase.auth.PinValidationUseCase
 import com.example.jangkau.State
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class AuthViewModel(
-    private val loginUseCase : LoginUseCase
+    private val loginUseCase : LoginUseCase,
+    private val pinValidationUseCase: PinValidationUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<State<Login>>()
     val state : MutableLiveData<State<Login>> = _state
+
+    private val _pinValidated = MutableLiveData<Boolean>()
+    val pinValidated : MutableLiveData<Boolean> = _pinValidated
 
 //    private val _userLoggedIn = MutableLiveData<Boolean>()
 //    val userLoggedIn: MutableLiveData<Boolean> = _userLoggedIn
@@ -41,6 +46,22 @@ class AuthViewModel(
         }.launchIn(viewModelScope)
     }
 
+    fun validatePin(pin : String){
+        pinValidationUseCase(pin).onEach { result ->
+            when(result){
+                is Resource.Error -> {
+                    Log.e("GetSavedBankAccount", "Error: ${result.message}")
+                    _pinValidated.value = false
+                }
+                is Resource.Loading -> {
+                    _pinValidated.value = false
+                }
+                is Resource.Success -> {
+                    _pinValidated.value = true
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
 
 }

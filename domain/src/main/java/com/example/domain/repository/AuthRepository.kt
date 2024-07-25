@@ -8,6 +8,6 @@ import com.example.domain.model.PinValidation
 interface AuthRepository {
     suspend fun login(auth : Auth) : Login
 
-    suspend fun pinValidation(pinValidation: PinValidation) : BankAccount
+    suspend fun pinValidation(pin : String) : BankAccount
 
 }
