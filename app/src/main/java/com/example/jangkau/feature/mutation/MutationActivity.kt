@@ -6,16 +6,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.jangkau.R
+import com.example.jangkau.base.BaseActivity
+import com.example.jangkau.databinding.ActivityMutationBinding
 
-class MutationActivity : AppCompatActivity() {
+class MutationActivity : BaseActivity() {
+    private lateinit var binding: ActivityMutationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_mutation)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityMutationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.btnFilter.setOnClickListener {
+            openMutasiFilterActivity()
         }
+
+
     }
 }

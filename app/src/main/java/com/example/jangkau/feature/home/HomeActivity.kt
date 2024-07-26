@@ -15,7 +15,6 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private val bankViewModel : BankAccountViewModel by inject()
-    private val userViewModel : UserViewModel by inject()
 
     private var isBalanceHidden: Boolean = false // Default to hidden
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +26,10 @@ class HomeActivity : BaseActivity() {
 
         binding.btnTransfer.setOnClickListener {
             openTransferActivity()
+        }
+
+        binding.btnMutasi.setOnClickListener {
+            openMutasiActivity()
         }
 
 

@@ -12,22 +12,21 @@
         android:name=".MainApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Jangkau"
         tools:targetApi="31">
-        <activity android:name=".FilterMutationActivity"
+        <activity android:name=".feature.mutation.MutationActivity"
+            android:exported="false"/>
+
+        <activity android:name=".feature.mutation.FilterMutationActivity"
             android:exported="false"/>
         <activity
             android:name=".feature.PinInputActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".feature.transfer.TransferReceiptActivity"
@@ -42,11 +41,11 @@
         <activity
             android:name=".feature.home.HomeActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".feature.auth.RegisterActivity"
