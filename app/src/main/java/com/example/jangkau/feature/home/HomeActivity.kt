@@ -17,7 +17,7 @@ class HomeActivity : BaseActivity() {
     private val bankViewModel : BankAccountViewModel by inject()
     private val userViewModel : UserViewModel by inject()
 
-    private var isBalanceHidden: Boolean = true // Default to hidden
+    private var isBalanceHidden: Boolean = false // Default to hidden
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -68,7 +68,6 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun toggleBalanceVisibility() {
-        isBalanceHidden = !isBalanceHidden
         val balance = bankViewModel.state.value?.let {
             if (it is State.Success) it.data.balance?.toLong() else 0L
         } ?: 0L

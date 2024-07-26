@@ -45,7 +45,8 @@ interface ApiService {
 
     @POST("/api/bank-accounts/pin-validation")
     suspend fun pinValidation(
-        @Body pinRequest : PinRequest
+        @Body pinRequest : PinRequest,
+        @Header("Authorization") token: String
     ) : Response<ApiResponse<BankAccountResponse>>
 
 }

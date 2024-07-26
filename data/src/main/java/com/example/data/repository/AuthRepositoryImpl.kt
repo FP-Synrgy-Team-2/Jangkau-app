@@ -11,6 +11,7 @@ import com.example.domain.model.BankAccount
 import com.example.domain.model.Login
 import com.example.domain.model.PinValidation
 import com.example.domain.repository.AuthRepository
+import kotlinx.coroutines.flow.firstOrNull
 
 class AuthRepositoryImpl(
     private val apiService: ApiService,
@@ -37,20 +38,21 @@ class AuthRepositoryImpl(
             } else {
                 Log.e("AuthRepositoryImpl", "Failed to store login data")
             }
-            apiService.getBankAccountById(loginResponse.userId , loginResponse.accessToken)
-            dataStorePref
         }
 
         return loginResponse.toDomain()
     }
 
-    override suspend fun pinValidation(pinValidation: PinValidation): BankAccount {
+    override suspend fun pinValidation(pin : String): BankAccount {
+        val accountNumber = dataStorePref.accountNumber.firstOrNull()
+        val token = dataStorePref.accessToken.firstOrNull()
         val response = safeApiRequest {
             apiService.pinValidation(
                 PinRequest(
-                    pin = pinValidation.pin,
-                    accountNumber = pinValidation.accountNumber
-                )
+                    pin = pin,
+                    accountNumber = accountNumber.toString()
+                ),
+                "Bearer $token"
             )
         }
         val pinValidationResponse = response.data ?: throw Exception(response.message)

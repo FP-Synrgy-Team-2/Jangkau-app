@@ -22,6 +22,9 @@ class DataStorePref(private val context: Context) {
         val ACCESS_TOKEN_KEY = stringPreferencesKey("ACCESS_TOKEN")
         val USER_ID_KEY = stringPreferencesKey("USER_ID")
         val TOKEN_TYPE_KEY = stringPreferencesKey("TOKEN_TYPE")
+
+        val ACCOUNT_NUMBER_KEY = stringPreferencesKey("ACCOUNT_NUMBER")
+        val ACCOUNT_ID_KEY = stringPreferencesKey("ACCOUNT_ID")
     }
 
     val accessToken: Flow<String?> = context.dataStore.data
@@ -70,11 +73,44 @@ class DataStorePref(private val context: Context) {
         emit(false)
     }
 
-    suspend fun storeUserAccountData(
+    val accountNumber: Flow<String?> = context.dataStore.data
+        .map {
+            preferences ->
+            preferences[ACCOUNT_NUMBER_KEY]
+        }
+        .catch { e ->
+            Log.e(TAG, "Error fetching account number", e)
+            emit(null)
+        }
+
+    val accountId: Flow<String?> = context.dataStore.data
+        .map {
+            preferences ->
+            preferences[ACCOUNT_ID_KEY]
+        }
+        .catch { e ->
+            Log.e(TAG, "Error fetching account ID", e)
+        }
+
+    suspend fun storeBankAccountData(
         accountNumber : String,
         accountId : String
         ): Flow<Boolean> = flow {
-
+            try {
+                Log.d(TAG, "Storing bank account data: accountNumber = $accountNumber, accountId = $accountId")
+                context.dataStore.edit { preferences->
+                    preferences[ACCOUNT_NUMBER_KEY] = accountNumber
+                    preferences[ACCOUNT_ID_KEY] = accountId
+                }
+                Log.d(TAG, "Bank account data stored successfully")
+                emit(true)
+            }catch (e: Exception){
+                Log.e(TAG, "Error storing bank account data", e)
+                emit(false)
+            }
+    }.catch { e ->
+        Log.e(TAG, "Error in flow while storing bank account data", e)
+        emit(false)
     }
 
 

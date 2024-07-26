@@ -2,17 +2,21 @@ package com.example.jangkau.feature
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import com.example.jangkau.R
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityPinInputBinding
 import com.example.jangkau.gone
 import com.example.jangkau.shorten
+import com.example.jangkau.viewmodel.AuthViewModel
 import com.ygoular.numpadview.NumPadView
+import org.koin.android.ext.android.inject
 
 
 class PinInputActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPinInputBinding
+    private val authViewModel : AuthViewModel by inject()
     private var currentValue: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,13 +40,21 @@ class PinInputActivity : BaseActivity() {
                 binding.firstPinView.setText(newValue)
                 if (newValue.length == 6) {
                     showToast(newValue)
-                    openTranferReceiptActivity()
+                    authViewModel.validatePin(newValue)
                 }
             },
             onRightIconClick = {
                 binding.firstPinView.setText(handleRightValue())
             },
         )
+
+        authViewModel.pinValidated.observe(this){state->
+            if (state){
+                openTranferReceiptActivity()
+            }else{
+                showToast("Pin tidak valid")
+            }
+        }
 
     }
 

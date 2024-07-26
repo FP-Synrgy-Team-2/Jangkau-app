@@ -45,24 +45,25 @@ class BankAccountViewModel (
         }.launchIn(viewModelScope)
     }
 
-    fun searchDataBankByAccNumber(accNumber: String){
+    fun searchDataBankByAccNumber(accNumber: String) {
         viewModelScope.launch {
-            searchDataBankByAccNumberUseCase.invoke(accNumber).onEach {result->
-                when(result){
+            searchDataBankByAccNumberUseCase.invoke(accNumber).collect { result ->
+                when (result) {
                     is Resource.Error -> {
                         Log.e("GetBankAccount", "Error: ${result.message}")
                         _state.value = State.Error(result.message ?: "An unexpected error occurred")
                     }
                     is Resource.Loading -> {
+                        Log.d("GetBankAccount", "Loading")
                         _state.value = State.Loading
                     }
                     is Resource.Success -> {
+                        Log.d("GetBankAccount", "Success: ${result.data}")
                         _state.value = result.data?.let { State.Success(it) }
                     }
                 }
             }
         }
-
     }
 
     private val _savedBankAcc = MutableLiveData<State<ListState<BankAccount>>>()
