@@ -1,5 +1,6 @@
 package com.example.data.repository
 
+import android.util.Log
 import com.example.data.local.DataStorePref
 import com.example.data.network.ApiService
 import com.example.data.network.model.ApiResponse
@@ -12,25 +13,36 @@ abstract class BaseRepository(
     protected val dataStorePref: DataStorePref
 ) : SafeApiRequest() {
 
-    protected suspend fun refreshToken(): Boolean {
-        val refreshToken = dataStorePref.refreshToken.firstOrNull()
-        val clientId = "my-client-web"
-        val clientSecret = "password"
+    companion object {
+        private const val TAG = "BaseRepository"
+    }
 
-        if (refreshToken == null) {
-            throw Exception("Refresh token not found")
+    protected suspend fun refreshToken(): Boolean {
+        val refreshToken = dataStorePref.refreshToken.firstOrNull() ?: run {
+            Log.e(TAG, "Refresh token not found")
+            return false
         }
 
         val response = safeApiRequest {
             apiService.refreshToken(
                 grantType = "refresh_token",
-                clientId = clientId,
-                clientSecret = clientSecret,
+                clientId = "my-client-web",
+                clientSecret = "password",
                 refreshToken = refreshToken
             )
         }
 
-        val refreshResponse = response.data ?: return false
+        if (!response.isSuccessful) {
+            Log.e(TAG, "Failed to refresh token: ${response.errorBody()?.string()}")
+            return false
+        }
+
+        val refreshResponse = response.body() ?: run {
+            Log.e(TAG, "Refresh token response body is null")
+            return false
+        }
+
+        Log.d(TAG, "New access token: ${refreshResponse.accessToken}")
 
         // Save new tokens in dataStorePref
         dataStorePref.updateAccessToken(refreshResponse.accessToken)
@@ -43,17 +55,22 @@ abstract class BaseRepository(
         var token = dataStorePref.accessToken.firstOrNull() ?: throw Exception("Access token not found")
         var response = safeApiRequest { request("Bearer $token") }
 
-        // Check if the response is unauthorized (401) and attempt to refresh the token
-        if (response.code == 401) {
-            val tokenRefreshed = refreshToken()
-            if (tokenRefreshed) {
-                token = dataStorePref.accessToken.firstOrNull() ?: throw Exception("Access token not found after refresh")
-                response = safeApiRequest { request("Bearer $token") }
+        if (response.code() == 401) {
+            val errorBody = response.errorBody()?.string()
+            if (errorBody != null && errorBody.contains("invalid_token") && errorBody.contains("Access token expired")) {
+                Log.d(TAG, "Access token expired, attempting to refresh")
+                val tokenRefreshed = refreshToken()
+                if (tokenRefreshed) {
+                    token = dataStorePref.accessToken.firstOrNull() ?: throw Exception("Access token not found after refresh")
+                    response = safeApiRequest { request("Bearer $token") }
+                } else {
+                    throw Exception("Failed to refresh token")
+                }
             } else {
-                throw Exception("Failed to refresh token")
+                throw Exception("Unauthorized request: ${response.message()}")
             }
         }
 
-        return response
+        return response.body() ?: throw Exception("Response body is null")
     }
 }

@@ -29,7 +29,7 @@ interface ApiService {
         @Field("client_id") clientId: String,
         @Field("client_secret") clientSecret: String,
         @Field("refresh_token") refreshToken: String
-    ): Response<ApiResponse<LoginResponse>>
+    ): Response<LoginResponse>
 
     @GET("api/users/{id}")
     suspend fun getUser(

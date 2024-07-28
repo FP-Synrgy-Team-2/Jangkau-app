@@ -149,4 +149,14 @@
         android:layout_marginVertical="13dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginVertical="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_gravity="center"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

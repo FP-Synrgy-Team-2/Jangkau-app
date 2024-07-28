@@ -16,14 +16,18 @@ class AuthRepositoryImpl(
     dataStorePref: DataStorePref
 ) : BaseRepository(apiService, dataStorePref), AuthRepository {
 
+    companion object {
+        private const val TAG = "AuthRepositoryImpl"
+    }
+
     override suspend fun login(auth: Auth): Login {
         val response = safeApiRequest {
             apiService.loginAuth(AuthRequest(auth.username, auth.password))
         }
 
-        val loginResponse = response.data ?: throw Exception(response.message)
+        val loginResponse = response.body()?.data ?: throw Exception(response.message())
 
-        Log.d("AuthRepositoryImpl", "Storing login data")
+        Log.d(TAG, "Storing login data")
         dataStorePref.storeLoginData(
             accessToken = loginResponse.accessToken,
             userId = loginResponse.userId,
@@ -31,9 +35,9 @@ class AuthRepositoryImpl(
             refreshToken = loginResponse.refreshToken
         ).collect { success ->
             if (success) {
-                Log.d("AuthRepositoryImpl", "Login data stored successfully")
+                Log.d(TAG, "Login data stored successfully")
             } else {
-                Log.e("AuthRepositoryImpl", "Failed to store login data")
+                Log.e(TAG, "Failed to store login data")
             }
         }
 
@@ -51,7 +55,7 @@ class AuthRepositoryImpl(
         val response = performRequestWithTokenHandling {
             apiService.pinValidation(
                 PinRequest(pin = pin, accountNumber = accountNumber),
-                "Bearer $token"
+                it // Pass the token dynamically
             )
         }
 

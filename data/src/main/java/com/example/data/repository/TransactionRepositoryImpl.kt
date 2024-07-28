@@ -34,7 +34,7 @@ class TransactionRepositoryImpl(
                 token = "Bearer $token"
             )
         }
-        val transactionResponse = response.data ?: throw Exception(response.message)
+        val transactionResponse = response.body()?.data ?: throw Exception(response.message())
 
         return Transaction(
             amount = transactionResponse.amount,

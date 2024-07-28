@@ -61,14 +61,39 @@ class TransferInputActivity : BaseActivity() {
         binding.navbar.imgCancel.gone()
 
         binding.btnNext.setOnClickListener {
-            val namaRekening = savedAccount?.ownerName
+            var namaRekening = savedAccount?.ownerName
             val rekeningTujuan = binding.textInputLayoutRekeningTujuan.editText?.text.toString()
             val nominal = binding.textInputLayoutNominal.editText?.text.toString().toInt()
             val catatan = binding.textInputLayoutCatatan.editText?.text.toString()
             val isSaved = binding.cbSimpanRekening.isChecked
 
-            if (rekeningTujuan.isNotEmpty() || nominal.toString().isNotEmpty() || catatan.isNotEmpty()) {
-                openBottomDialog(namaRekening, rekeningTujuan, nominal, catatan, isSaved)
+            if (rekeningTujuan.isNotEmpty() && nominal.toString().isNotEmpty() && catatan.isNotEmpty()) {
+                binding.progressBar.visible()
+                binding.btnNext.gone()
+
+                bankViewModel.searchDataBankByAccNumber(rekeningTujuan)
+                bankViewModel.state.observe(this) { state ->
+                    when (state) {
+                        is State.Error -> {
+                            binding.progressBar.gone()
+                            binding.btnNext.visible()
+                            Log.e("BottomSheet", "Error: ${state.error}")
+                            showToast(state.error)
+                        }
+                        State.Loading -> {
+                            Log.d("BottomSheet", "Loading")
+                        }
+                        is State.Success -> {
+                            binding.progressBar.gone()
+                            binding.btnNext.visible()
+                            Log.d("BottomSheet", "Success: ${state.data}")
+                            namaRekening = state.data.ownerName
+                            openBottomDialog(namaRekening, rekeningTujuan, nominal, catatan, isSaved)
+                        }
+                    }
+                }
+            } else {
+                showToast("Please fill all the fields")
             }
         }
     }
@@ -81,49 +106,34 @@ class TransferInputActivity : BaseActivity() {
         }
     }
 
-    private fun openBottomDialog(namaRekening: String?, rekeningTujuan: String, nominal: Int, catatan: String, isSaved : Boolean) {
+    private fun openBottomDialog(namaRekening: String?, rekeningTujuan: String, nominal: Int, catatan: String, isSaved: Boolean) {
         dialog.setContentView(bottomSheetBinding.root)
         val behavior = BottomSheetBehavior.from(bottomSheetBinding.root.parent as View)
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.show()
 
-        if (namaRekening == null) {
-            bankViewModel.searchDataBankByAccNumber(rekeningTujuan)
-            bankViewModel.state.observe(this) { state ->
-                when (state) {
-                    is State.Error -> {
-                        Log.e("BottomSheet", "Error: ${state.error}")
-                        showToast(state.error)
-                    }
-                    State.Loading -> {
-                        Log.d("BottomSheet", "Loading")
-                        // Show loading indicator if needed
-                    }
-                    is State.Success -> {
-                        Log.d("BottomSheet", "Success: ${state.data}")
-                        bottomSheetBinding.tvName.text = state.data.ownerName
-                    }
-                }
-            }
-        } else {
-            bottomSheetBinding.tvName.text = namaRekening
-        }
-
         bottomSheetBinding.apply {
+            tvName.text = namaRekening
             tvRekening.text = rekeningTujuan
             tvNominal.text = nominal.toString()
             tvCatatan.text = catatan
             btnNext.setOnClickListener {
+                binding.progressBar.visible()
+                binding.btnNext.gone()
                 transactionViewModel.transfer(rekeningTujuan, nominal, catatan, isSaved)
                 transactionViewModel.transactions.observe(this@TransferInputActivity) { state ->
                     when (state) {
                         is State.Error -> {
+                            binding.progressBar.gone()
+                            binding.btnNext.visible()
                             showToast(state.error)
                         }
                         State.Loading -> {
                             Log.d("LoginActivity", "Loading state")  // Debug log
                         }
                         is State.Success -> {
+                            binding.progressBar.gone()
+                            binding.btnNext.visible()
                             openPinInputActivity()
                             Log.d("TransferInputActivity", "Success state: ${state.data}")
                         }
@@ -137,5 +147,4 @@ class TransferInputActivity : BaseActivity() {
             }
         }
     }
-
 }
