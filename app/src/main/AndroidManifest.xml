@@ -18,7 +18,13 @@
         android:theme="@style/Theme.Jangkau"
         tools:targetApi="31">
         <activity
-            android:name=".feature.auth.InputEmailActivity"
+            android:name=".feature.forgot_password.InputNewPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.forgot_password.InputOtpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.forgot_password.InputEmailActivity"
             android:exported="false" />
         <activity
             android:name=".FilterMutationActivity"
@@ -26,11 +32,11 @@
         <activity
             android:name=".feature.PinInputActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".feature.transfer.TransferReceiptActivity"
@@ -62,12 +68,12 @@
             android:name=".SplashActivity"
             android:exported="true">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
 
         </activity>
         <activity

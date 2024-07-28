@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.model.BankAccount
-import com.example.domain.model.SavedAccount
 import com.example.jangkau.feature.PinInputActivity
 import com.example.jangkau.feature.auth.LoginActivity
+import com.example.jangkau.feature.forgot_password.InputEmailActivity
+import com.example.jangkau.feature.forgot_password.InputNewPasswordActivity
+import com.example.jangkau.feature.forgot_password.InputOtpActivity
 import com.example.jangkau.feature.home.HomeActivity
 import com.example.jangkau.feature.transfer.TransferActivity
 import com.example.jangkau.feature.transfer.TransferInputActivity
@@ -66,4 +68,19 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
+    fun openInputEmailActivity(){
+        val intent = Intent(this, InputEmailActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openInputOtpActivity(){
+        val intent = Intent(this, InputOtpActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openInputNewPasswordActivity(){
+        val intent = Intent(this, InputNewPasswordActivity::class.java)
+        startActivity(intent)
+    }
 }
