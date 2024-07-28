@@ -82,6 +82,8 @@ dependencies {
     // pinview
     implementation ("io.github.chaosleung:pinview:1.4.4")
 
+    implementation ("com.github.yuriy-budiyev:code-scanner:2.3.0")
+
     implementation(libs.androidx.datastore.preferences)
 
 

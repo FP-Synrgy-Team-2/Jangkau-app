@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.model.BankAccount
 import com.example.jangkau.feature.PinInputActivity
+import com.example.jangkau.feature.ScanQRActivity
 import com.example.jangkau.feature.auth.LoginActivity
 import com.example.jangkau.feature.forgot_password.InputEmailActivity
 import com.example.jangkau.feature.forgot_password.InputNewPasswordActivity
@@ -81,6 +82,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun openInputNewPasswordActivity(){
         val intent = Intent(this, InputNewPasswordActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openQrisActivity(){
+        val intent = Intent(this, ScanQRActivity::class.java)
         startActivity(intent)
     }
 }
