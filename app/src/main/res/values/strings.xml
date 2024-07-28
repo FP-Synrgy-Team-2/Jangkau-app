@@ -40,4 +40,5 @@
     <string name="teks_filter_sampai_tanggal">Teks FIlter Sampai Tanggal</string>
     <string name="tombol_untuk_menerapkan_filter">Tombol untuk Menerapkan filter</string>
     <string name="teks_filter_dari_tanggal">Teks Filter Dari tanggal</string>
+    <string name="gambar_tidak_ada_akun_yang_tersimpan">Gambar Tidak Ada Akun yang Tersimpan</string>
 </resources>
