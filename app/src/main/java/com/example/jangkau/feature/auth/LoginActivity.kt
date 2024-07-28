@@ -6,6 +6,7 @@ import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityLoginBinding
+import com.example.jangkau.failedPopUp
 import com.example.jangkau.viewmodel.AuthViewModel
 import org.koin.android.ext.android.inject
 
@@ -42,13 +43,19 @@ class LoginActivity : BaseActivity() {
             }
         }
 
-        binding.btnCancel.setOnClickListener { finish() }
+        binding.btnCancel.setOnClickListener {
+            finish()
+        }
 
         binding.btnLogin.setOnClickListener {
             val username = binding.textInputLayoutUsername.editText?.text.toString()
             val password = binding.textInputLayoutPassword.editText?.text.toString()
 
             var hasError = false
+
+            if(username.isEmpty() && password.isEmpty()){
+                failedPopUp("Username dan Password Belum Diisi", this)
+            }
 
             if (username.isEmpty()) {
                 binding.textInputLayoutUsername.error = getString(R.string.empty_username)
@@ -102,4 +109,5 @@ class LoginActivity : BaseActivity() {
 
 
     }
+
 }

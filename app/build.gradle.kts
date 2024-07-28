@@ -35,6 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -94,5 +95,7 @@ dependencies {
     //noinspection UseTomlInstead
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
+    //    AirySnackbar
+    implementation("com.github.akndmr:AirySnackbar:1.0.1")
 
 }
