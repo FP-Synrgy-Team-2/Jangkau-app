@@ -121,6 +121,4 @@
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:shapeAppearance="?attr/shapeAppearanceCornerLarge" />
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
