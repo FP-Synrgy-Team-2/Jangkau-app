@@ -6,7 +6,6 @@ import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityLoginBinding
-import com.example.jangkau.failedPopUp
 import com.example.jangkau.viewmodel.AuthViewModel
 import org.koin.android.ext.android.inject
 
@@ -25,26 +24,10 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        viewModel.state.observe(this) { state ->
-            when (state) {
-                is State.Error -> {
-                    showToast(state.error)
-                }
+        binding.btnCancel.setOnClickListener { finish() }
 
-                State.Loading -> {
-                    Log.d("LoginActivity", "Loading state")  // Debug log
-
-                }
-
-                is State.Success -> {
-                    openHomeActivity()
-                    Log.d("LoginActivity", "User: ${state.data}")
-                }
-            }
-        }
-
-        binding.btnCancel.setOnClickListener {
-            finish()
+        binding.btnForgotPassword.setOnClickListener {
+            openInputEmailActivity()
         }
 
         binding.btnLogin.setOnClickListener {
@@ -52,10 +35,6 @@ class LoginActivity : BaseActivity() {
             val password = binding.textInputLayoutPassword.editText?.text.toString()
 
             var hasError = false
-
-            if(username.isEmpty() && password.isEmpty()){
-                failedPopUp("Username dan Password Belum Diisi", this)
-            }
 
             if (username.isEmpty()) {
                 binding.textInputLayoutUsername.error = getString(R.string.empty_username)
@@ -73,41 +52,27 @@ class LoginActivity : BaseActivity() {
 
             if (!hasError) {
                 viewModel.loginUser(username, password)
-//                viewModel.state.observe(this) { state ->
-//                    when (state) {
-//                        is State.Error -> {
-//                            showToast(state.error)
-//                        }
-//                        State.Loading -> {
-//
-//                        }
-//                        is State.Success -> {
-//                            openHomeActivity()
-//                            Log.d("TAG", "User: ${state.data}")
-//                            userViewModel.getUser(state.data.userId)
-//                            userViewModel.state.observe(this) { state ->
-//                                when (state) {
-//                                    is State.Error -> {
-//                                        showToast(state.error)
-//                                    }
-//                                    State.Loading -> {
-//
-//                                    }
-//                                    is State.Success -> {
-//                                        showToast("Login Success, welcome back $username")
-//                                        openHomeActivity()
-//                                        Log.d("TAG", "User: ${state.data}")
-//                                    }
-//                                }
-//                            }
+
+                viewModel.state.observe(this) { state ->
+                    when (state) {
+                        is State.Error -> {
+                            showToast(state.error)
+                        }
+
+                        State.Loading -> {
+                            Log.d("LoginActivity", "Loading state")  // Debug log
+
+                        }
+
+                        is State.Success -> {
+                            openHomeActivity()
+                            Log.d("LoginActivity", "User: ${state.data}")
                         }
                     }
-//                }
-//            }
-//        }
-
+                }
+            }
+        }
 
 
     }
-
 }
