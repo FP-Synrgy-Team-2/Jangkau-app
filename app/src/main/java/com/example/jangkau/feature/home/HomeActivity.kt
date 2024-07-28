@@ -8,7 +8,7 @@ import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityHomeBinding
 import com.example.jangkau.viewmodel.UserViewModel
 import com.example.jangkau.moneyFormatter
-import com.example.jangkau.succesPopUp
+import com.example.jangkau.successPopUp
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import org.koin.android.ext.android.inject
 
@@ -61,7 +61,7 @@ class HomeActivity : BaseActivity() {
                         val accountNumber = state.data.accountNumber
                         val clipData = android.content.ClipData.newPlainText("Account Number", accountNumber)
                         clipboardManager.setPrimaryClip(clipData)
-                        succesPopUp("Nomor Rekening berhasil disalin!                    ", this)
+                        successPopUp("Nomor Rekening berhasil disalin!                    ", this)
                     }
                 }
             }
