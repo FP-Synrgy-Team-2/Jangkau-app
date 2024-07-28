@@ -36,4 +36,9 @@
     <string name="ok">Oke</string>
     <string name="transaksi_not_found">Tidak Ada Transaksi</string>
     <string name="message_transaction">Maaf, tidak ada transaksi yang ditemukan. Silakan atur kembali filter untuk mendapatkan daftar transaksi yang sesuai</string>
+    <string name="atur_ulang_password">Atur Ulang Password</string>
+    <string name="lanjut">Lanjut</string>
+    <string name="email">Email</string>
+    <string name="lengkapi_data_berikut_untuk_mengatur_ulang_npassword">Lengkapi data berikut untuk mengatur ulang \npassword</string>
+    <string name="textfield_input_untuk_email">Textfield input untuk Email</string>
 </resources>

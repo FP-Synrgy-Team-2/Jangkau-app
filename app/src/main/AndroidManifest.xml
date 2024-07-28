@@ -2,14 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:allowBackup="true"
         android:name=".MainApplication"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -18,8 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jangkau"
         tools:targetApi="31">
-        <activity android:name=".FilterMutationActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".feature.auth.InputEmailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FilterMutationActivity"
+            android:exported="false" />
         <activity
             android:name=".feature.PinInputActivity"
             android:exported="true">
@@ -32,21 +35,22 @@
         <activity
             android:name=".feature.transfer.TransferReceiptActivity"
             android:exported="false" />
-
         <activity
             android:name=".feature.transfer.TransferInputActivity"
             android:exported="false" />
         <activity
             android:name=".feature.transfer.TransferActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".feature.home.HomeActivity"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".feature.auth.RegisterActivity"
@@ -58,14 +62,14 @@
             android:name=".SplashActivity"
             android:exported="true">
 
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
 
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
