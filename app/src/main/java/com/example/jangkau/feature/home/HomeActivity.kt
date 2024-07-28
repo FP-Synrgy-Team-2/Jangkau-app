@@ -2,7 +2,9 @@ package com.example.jangkau.feature.home
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import com.example.jangkau.ErrorActivity
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityHomeBinding
@@ -48,7 +50,9 @@ class HomeActivity : BaseActivity() {
         bankViewModel.state.observe(this){state->
             when(state){
                 is State.Error -> {
-                    showToast(state.error)
+                    val intent = Intent(this, ErrorActivity::class.java)
+                    intent.putExtra("ERROR_MESSAGE", state.error)
+                    startActivity(intent)
 
                 }
                 State.Loading -> {

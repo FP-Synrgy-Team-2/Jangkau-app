@@ -22,6 +22,7 @@ class DataStorePref(private val context: Context) {
         val ACCESS_TOKEN_KEY = stringPreferencesKey("ACCESS_TOKEN")
         val USER_ID_KEY = stringPreferencesKey("USER_ID")
         val TOKEN_TYPE_KEY = stringPreferencesKey("TOKEN_TYPE")
+        val REFRESH_TOKEN_KEY = stringPreferencesKey("REFRESH_TOKEN")
 
         val ACCOUNT_NUMBER_KEY = stringPreferencesKey("ACCOUNT_NUMBER")
         val ACCOUNT_ID_KEY = stringPreferencesKey("ACCOUNT_ID")
@@ -45,6 +46,16 @@ class DataStorePref(private val context: Context) {
             emit(null)
         }
 
+    val refreshToken: Flow<String?> = context.dataStore.data
+        .map { preferences ->
+            preferences[REFRESH_TOKEN_KEY]
+        }
+        .catch { e ->
+            Log.e(TAG, "Error fetching refresh token", e)
+            emit(null)
+        }
+
+
     val tokenType: Flow<String?> = context.dataStore.data
         .map { preferences ->
             preferences[TOKEN_TYPE_KEY]
@@ -54,13 +65,14 @@ class DataStorePref(private val context: Context) {
             emit(null)
         }
 
-    suspend fun storeLoginData(accessToken: String, userId: String, tokenType: String): Flow<Boolean> = flow {
+    suspend fun storeLoginData(accessToken: String, userId: String, tokenType: String, refreshToken : String): Flow<Boolean> = flow {
         try {
-            Log.d(TAG, "Storing login data: userId = $userId, accessToken = $accessToken, tokenType = $tokenType")
+            Log.d(TAG, "Storing login data: userId = $userId, accessToken = $accessToken, tokenType = $tokenType, refreshToken = $refreshToken")
             context.dataStore.edit { preferences ->
                 preferences[ACCESS_TOKEN_KEY] = accessToken
                 preferences[USER_ID_KEY] = userId
                 preferences[TOKEN_TYPE_KEY] = tokenType
+                preferences[REFRESH_TOKEN_KEY] = refreshToken
             }
             Log.d(TAG, "Login data stored successfully")
             emit(true)
@@ -72,6 +84,8 @@ class DataStorePref(private val context: Context) {
         Log.e(TAG, "Error in flow while storing login data", e)
         emit(false)
     }
+
+
 
     val accountNumber: Flow<String?> = context.dataStore.data
         .map {
@@ -112,6 +126,19 @@ class DataStorePref(private val context: Context) {
         Log.e(TAG, "Error in flow while storing bank account data", e)
         emit(false)
     }
+
+    suspend fun updateAccessToken(token: String) {
+        context.dataStore.edit { preferences ->
+            preferences[ACCESS_TOKEN_KEY] = token
+        }
+    }
+
+    suspend fun updateRefreshToken(token: String) {
+        context.dataStore.edit { preferences ->
+            preferences[REFRESH_TOKEN_KEY] = token
+        }
+    }
+
 
 
 

@@ -17,6 +17,7 @@ import com.example.jangkau.feature.mutation.FilterMutationActivity
 import com.example.jangkau.feature.mutation.MutationActivity
 import com.example.jangkau.feature.transfer.TransferActivity
 import com.example.jangkau.feature.transfer.TransferInputActivity
+import com.example.jangkau.feature.transfer.TransferInputActivity.Companion.PIN_INPUT_REQUEST_CODE
 import com.example.jangkau.feature.transfer.TransferReceiptActivity
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -90,7 +91,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun openPinInputActivity(){
         val intent = Intent(this, PinInputActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, PIN_INPUT_REQUEST_CODE)
     }
 
     fun openTranferReceiptActivity(){

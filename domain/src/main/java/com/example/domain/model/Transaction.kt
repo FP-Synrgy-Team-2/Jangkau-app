@@ -7,5 +7,5 @@ data class Transaction(
     val adminFee : Int,
     val transactionDate : String,
     val note : String,
-    val total : Int
+    val isSaved : Boolean
 )

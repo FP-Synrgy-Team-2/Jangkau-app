@@ -5,14 +5,13 @@ import com.example.data.local.DataStorePref
 import com.example.data.network.ApiService
 import com.example.data.network.utils.SafeApiRequest
 import com.example.domain.model.BankAccount
-import com.example.domain.model.PinValidation
 import com.example.domain.repository.BankAccountRepository
 import kotlinx.coroutines.flow.firstOrNull
 
 class BankAccountRepositoryImpl(
-    private val apiService: ApiService,
-    private val dataStorePref: DataStorePref
-) : BankAccountRepository, SafeApiRequest() {
+    apiService: ApiService,
+    dataStorePref: DataStorePref
+) : BaseRepository(apiService, dataStorePref), BankAccountRepository {
 
     companion object {
         private const val TAG = "BankAccountRepoImpl"
@@ -21,21 +20,24 @@ class BankAccountRepositoryImpl(
     override suspend fun getBankAccountById(): BankAccount {
         val (userId, token) = getUserCredentials()
 
-        val response = safeApiRequest {
+        val response = performRequestWithTokenHandling {
             apiService.getBankAccountById(userId, "Bearer $token")
         }
 
         val bankAccountResponse = response.data ?: throw Exception("Bank account not found")
-        Log.d("BankAccountRepositoryImpl", "Storing Account Data")
+
+        Log.d(TAG, "Storing Account Data")
         dataStorePref.storeBankAccountData(
             accountNumber = bankAccountResponse.accountNumber,
-            accountId = bankAccountResponse.accountId).collect {success ->
-                if (success){
-                    Log.d("BankAccountRepositoryImpl", "Account Data Stored")
-                }else{
-                    Log.d("BankAccountRepositoryImpl", "Account Data Not Stored")
-                }
+            accountId = bankAccountResponse.accountId
+        ).collect { success ->
+            if (success) {
+                Log.d(TAG, "Account Data Stored")
+            } else {
+                Log.d(TAG, "Account Data Not Stored")
+            }
         }
+
         return BankAccount(
             accountNumber = bankAccountResponse.accountNumber,
             accountId = bankAccountResponse.accountId,
@@ -48,37 +50,31 @@ class BankAccountRepositoryImpl(
     override suspend fun getBankAccountByAccountNumber(accountNumber: String): BankAccount {
         val (userId, token) = getUserCredentials()
 
-        val response = safeApiRequest {
+        val response = performRequestWithTokenHandling {
             apiService.getBankAccountByAccountNumber(accountNumber, "Bearer $token")
         }
 
         val bankAccountResponse = response.data ?: throw Exception("Bank account not found")
         return bankAccountResponse.toDomain()
-
     }
 
     override suspend fun getSavedBankAccount(): List<BankAccount> {
         val (userId, token) = getUserCredentials()
 
-        val response = safeApiRequest {
+        val response = performRequestWithTokenHandling {
             apiService.getSavedBankAccount(userId, "Bearer $token")
         }
 
         val bankAccountListResponse = response.data
-        if (bankAccountListResponse.isNullOrEmpty()) {
-            return emptyList()
-        }else{
-            return bankAccountListResponse.map {
-                BankAccount(
-                    accountId = it.accountId,
-                    accountNumber = it.accountNumber,
-                    ownerName = it.ownerName,
-                    balance = null,
-                    userId = null
-                )
-            }
-        }
-
+        return bankAccountListResponse?.map {
+            BankAccount(
+                accountId = it.accountId,
+                accountNumber = it.accountNumber,
+                ownerName = it.ownerName,
+                balance = null,
+                userId = null
+            )
+        } ?: emptyList()
     }
 
     private suspend fun getUserCredentials(): Pair<String, String> {
@@ -97,17 +93,4 @@ class BankAccountRepositoryImpl(
 
         return Pair(userId, token)
     }
-
 }
-
-
-
-
-//
-//    override suspend fun getAllBankAccount(): BankAccount {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override suspend fun getPinValidation(pinValidation: PinValidation): BankAccount {
-//        TODO("Not yet implemented")
-//    }
