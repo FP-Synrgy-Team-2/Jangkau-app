@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:paddingTop="50dp"
+    android:paddingHorizontal="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.forgot_password.InputOtpActivity">
+
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/atur_ulang_password"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:height="46dp"
+        android:text="Masukkan 6 digt kode yang telah kami kirimkan \nmelalui e-mail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"/>
+
+    <com.chaos.view.PinView
+        android:id="@+id/firstPinView"
+        style="@style/PinWidget.PinView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="60dp"
+        android:cursorVisible="true"
+        android:inputType="number"
+        android:itemBackground="@drawable/baseline_circle_gray_24"
+        android:textColor="@color/blue_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:cursorWidth="2dp"
+        app:hideLineWhenFilled="true"
+        app:itemCount="6"
+        app:itemHeight="25dp"
+        app:itemRadius="4dp"
+        app:itemSpacing="20dp"
+        app:itemWidth="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSubTitle"
+        app:lineWidth="2dp"
+        app:viewType="none" />
+
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/firstPinView"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnResend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kirim_ulang"
+            android:contentDescription="@string/tombol_kirim_ulang_kode"
+            android:layout_marginHorizontal="6dp"
+            android:enabled="false"
+            style="@style/Widget.Material3.Button.TextButton"
+            app:layout_constraintStart_toStartOf="@+id/firstPinView"
+            app:layout_constraintTop_toBottomOf="@id/firstPinView" />
+
+        <TextView
+            android:id="@+id/tvCountDown"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="6dp"
+            android:gravity="center"
+            android:textColor="@color/blue_primary"
+            android:textStyle="bold"
+            android:text="@string/countdown"
+            app:layout_constraintBottom_toBottomOf="@+id/btnResend"
+            app:layout_constraintEnd_toEndOf="@+id/firstPinView"
+            app:layout_constraintStart_toEndOf="@+id/btnResend"
+            app:layout_constraintTop_toBottomOf="@id/firstPinView" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnLogin"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/lanjut"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:shapeAppearance="?attr/shapeAppearanceCornerLarge" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
