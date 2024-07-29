@@ -58,11 +58,9 @@ class PinInputActivity : BaseActivity() {
 
         authViewModel.pinValidated.observe(this){state->
             if (state){
-// <<<<<<< transfer
-//                 setResult(Activity.RESULT_OK)
-//                 finish()
-// =======
-                handleNavigation()
+                 setResult(Activity.RESULT_OK)
+                 finish()
+//                handleNavigation()
             }else{
                 showToast("Pin tidak valid")
             }

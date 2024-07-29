@@ -1,5 +1,7 @@
 package com.example.jangkau.feature.scan_qr
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -9,9 +11,14 @@ import com.example.jangkau.R
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityQrisConfirmationBinding
 import com.example.jangkau.databinding.ActivityQrisReceiptBinding
+import com.example.jangkau.feature.transfer.TransferInputActivity
 
 class QrisConfirmationActivity : BaseActivity() {
     private lateinit var binding : ActivityQrisConfirmationBinding
+
+    companion object {
+        const val PIN_INPUT_REQUEST_CODE = 1
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityQrisConfirmationBinding.inflate(layoutInflater)
@@ -20,9 +27,17 @@ class QrisConfirmationActivity : BaseActivity() {
         setCardPenerima()
 
         binding.btnNext.setOnClickListener {
-            openPinInputActivity("openQrisReceiptActivity")
+            openPinInputActivity()
         }
 
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PIN_INPUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            openTranferReceiptActivity()
+        }
     }
 
     private fun setCardPenerima(){

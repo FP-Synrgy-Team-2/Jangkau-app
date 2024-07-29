@@ -35,8 +35,10 @@
             android:name=".feature.mutation.FilterMutationActivity"
             android:exported="false" />
 
+        <activity
             android:name=".feature.scan_qr.QrisConfirmationActivity"
             android:exported="false" />
+
         <activity
             android:name=".feature.scan_qr.QrisReceiptActivity"
             android:exported="false" />

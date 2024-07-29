@@ -98,13 +98,11 @@ abstract class BaseActivity : AppCompatActivity() {
 //        startActivity(intent)
 //    }
 
-    fun openPinInputActivity(action: String) {
+    fun openPinInputActivity() {
         val intent = Intent(this, PinInputActivity::class.java)
-// <<<<<<< transfer
-//         startActivityForResult(intent, PIN_INPUT_REQUEST_CODE)
-// =======
-        intent.putExtra(PinInputActivity.EXTRA_TARGET_ACTION, action)
-        startActivity(intent)
+         startActivityForResult(intent, PIN_INPUT_REQUEST_CODE)
+//        intent.putExtra(PinInputActivity.EXTRA_TARGET_ACTION, action)
+//        startActivity(intent)
 
     }
 

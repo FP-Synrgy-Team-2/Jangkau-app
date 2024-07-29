@@ -139,6 +139,44 @@
         app:layout_constraintTop_toBottomOf="@id/btnTransfer" />
 
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <Button
+        android:id="@+id/btnHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:contentDescription="@string/tombol_scan_barcode"
+        android:gravity="center"
+        android:paddingVertical="20dp"
+        android:textColor="@color/blue_primary"
+        app:icon="@drawable/ic_home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnGenerateCode"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.5"
+        style="?attr/materialIconButtonStyle" />
+
+    <Button
+        android:id="@+id/btnGenerateCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:contentDescription="@string/tombol_generate_barcode"
+        android:gravity="center_horizontal"
+        android:paddingVertical="20dp"
+        app:icon="@drawable/ic_scan"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnHome"
+        app:layout_constraintWidth_percent="0.5"
+        style="?attr/materialIconButtonStyle" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

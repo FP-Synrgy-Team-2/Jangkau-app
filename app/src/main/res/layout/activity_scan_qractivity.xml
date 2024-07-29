@@ -105,7 +105,6 @@
         android:clickable="true"
         android:paddingVertical="20dp"
         android:gravity="center"
-        android:enabled="false"
         android:contentDescription="@string/tombol_generate_barcode"
         android:text="Generate Code"
         app:layout_constraintWidth_percent="0.5"

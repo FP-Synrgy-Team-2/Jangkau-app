@@ -41,6 +41,10 @@ class HomeActivity : BaseActivity() {
             toggleBalanceVisibility()
         }
 
+        binding.btnGenerateCode.setOnClickListener {
+            openQrisActivity()
+        }
+
 
 
 

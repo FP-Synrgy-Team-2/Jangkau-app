@@ -6,16 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.jangkau.R
+import com.example.jangkau.base.BaseActivity
+import com.example.jangkau.databinding.ActivityGenerateCodeQractivityBinding
 
-class GenerateCodeQRActivity : AppCompatActivity() {
+class GenerateCodeQRActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityGenerateCodeQractivityBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_generate_code_qractivity)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityGenerateCodeQractivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 }

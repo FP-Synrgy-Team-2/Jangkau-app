@@ -1,6 +1,8 @@
 package com.example.jangkau.feature.scan_qr
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
@@ -16,6 +18,10 @@ class ScanQRActivity : BaseActivity() {
     private lateinit var codeScanner: CodeScanner
     private var isFlashEnabled = false
     private val cameraRequestCode = 101
+
+    companion object {
+        const val PIN_INPUT_REQUEST_CODE = 1
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScanQractivityBinding.inflate(layoutInflater)
@@ -33,7 +39,7 @@ class ScanQRActivity : BaseActivity() {
         }
 
         binding.btnGenerateCode.setOnClickListener {
-            openPinInputActivity("openGenerateCode")
+            openPinInputActivity()
         }
 
         binding.btnFlash.setOnClickListener {
@@ -43,6 +49,14 @@ class ScanQRActivity : BaseActivity() {
         }
         checkPermissions()
 
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PIN_INPUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            openGenerateCodeActivity()
+        }
     }
 
     private fun updateFlashButtonIcon() {
