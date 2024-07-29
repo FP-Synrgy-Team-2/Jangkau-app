@@ -24,25 +24,11 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        viewModel.state.observe(this) { state ->
-            when (state) {
-                is State.Error -> {
-                    showToast(state.error)
-                }
-
-                State.Loading -> {
-                    Log.d("LoginActivity", "Loading state")  // Debug log
-
-                }
-
-                is State.Success -> {
-                    openHomeActivity()
-                    Log.d("LoginActivity", "User: ${state.data}")
-                }
-            }
-        }
-
         binding.btnCancel.setOnClickListener { finish() }
+
+        binding.btnForgotPassword.setOnClickListener {
+            openInputEmailActivity()
+        }
 
         binding.btnLogin.setOnClickListener {
             val username = binding.textInputLayoutUsername.editText?.text.toString()
@@ -66,39 +52,26 @@ class LoginActivity : BaseActivity() {
 
             if (!hasError) {
                 viewModel.loginUser(username, password)
-//                viewModel.state.observe(this) { state ->
-//                    when (state) {
-//                        is State.Error -> {
-//                            showToast(state.error)
-//                        }
-//                        State.Loading -> {
-//
-//                        }
-//                        is State.Success -> {
-//                            openHomeActivity()
-//                            Log.d("TAG", "User: ${state.data}")
-//                            userViewModel.getUser(state.data.userId)
-//                            userViewModel.state.observe(this) { state ->
-//                                when (state) {
-//                                    is State.Error -> {
-//                                        showToast(state.error)
-//                                    }
-//                                    State.Loading -> {
-//
-//                                    }
-//                                    is State.Success -> {
-//                                        showToast("Login Success, welcome back $username")
-//                                        openHomeActivity()
-//                                        Log.d("TAG", "User: ${state.data}")
-//                                    }
-//                                }
-//                            }
+
+                viewModel.state.observe(this) { state ->
+                    when (state) {
+                        is State.Error -> {
+                            showToast(state.error)
+                        }
+
+                        State.Loading -> {
+                            Log.d("LoginActivity", "Loading state")  // Debug log
+
+                        }
+
+                        is State.Success -> {
+                            openHomeActivity()
+                            Log.d("LoginActivity", "User: ${state.data}")
                         }
                     }
-//                }
-//            }
-//        }
-
+                }
+            }
+        }
 
 
     }

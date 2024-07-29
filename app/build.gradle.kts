@@ -35,6 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -82,6 +83,8 @@ dependencies {
     // pinview
     implementation ("io.github.chaosleung:pinview:1.4.4")
 
+    implementation ("com.github.yuriy-budiyev:code-scanner:2.3.0")
+
     implementation(libs.androidx.datastore.preferences)
 
 
@@ -94,5 +97,7 @@ dependencies {
     //noinspection UseTomlInstead
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
+    //    AirySnackbar
+    implementation("com.github.akndmr:AirySnackbar:1.0.1")
 
 }

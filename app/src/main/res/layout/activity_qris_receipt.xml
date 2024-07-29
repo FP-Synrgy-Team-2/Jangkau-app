@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".feature.transfer.TransferReceiptActivity">
+    tools:context=".feature.scan_qr.QrisReceiptActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/tvStatus"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:src="@drawable/baseline_check_circle_24"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -29,17 +26,17 @@
             android:text="Transaksi Berhasil"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvStatus" />
 
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="3dp"
             android:layout_marginTop="8dp"
             android:text="09 Juli 2024"
-            android:layout_marginHorizontal="3dp"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@id/tvDot"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
@@ -52,17 +49,17 @@
             android:src="@drawable/dot_circle"
             android:text="09Juli 2024"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/tvDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <TextView
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginHorizontal="3dp"
+            android:layout_marginTop="8dp"
             android:text="22:44 WIB"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/tvDot"
@@ -72,18 +69,17 @@
             android:id="@+id/line1"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="#C4C4C4"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/tvDot"
-            />
+            android:background="#C4C4C4"
+            app:layout_constraintTop_toBottomOf="@id/tvDot" />
 
         <TextView
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:text="Rekening Sumber"
             android:textColor="#8E8E8E"
-            android:text="Penerima"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/line1" />
@@ -93,9 +89,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
-            android:text="ADILLA SYAFITRI PUTRI"
+            android:text="@string/john_smith"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv1" />
 
@@ -103,13 +99,12 @@
             android:id="@+id/tvDot2"
             android:layout_width="6dp"
             android:layout_height="6dp"
-            android:src="@drawable/dot_circle"
             android:layout_marginHorizontal="10dp"
-            android:text="09Juli 2024"
+            android:src="@drawable/dot_circle"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvName"
             app:layout_constraintStart_toEndOf="@+id/tvName"
-            app:layout_constraintTop_toTopOf="@id/tvName"
-            app:layout_constraintBottom_toBottomOf="@id/tvName"/>
+            app:layout_constraintTop_toTopOf="@id/tvName" />
 
         <TextView
             android:id="@+id/tvRekening"
@@ -118,61 +113,50 @@
             android:layout_marginHorizontal="10dp"
             android:text="8923445590"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvName"
             app:layout_constraintStart_toEndOf="@+id/tvDot2"
-            app:layout_constraintTop_toTopOf="@id/tvName"
-            app:layout_constraintBottom_toBottomOf="@id/tvName" />
+            app:layout_constraintTop_toTopOf="@id/tvName" />
 
         <View
             android:id="@+id/line2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginTop="24dp"
             android:background="#C4C4C4"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/tvRekening"
-            />
+            app:layout_constraintTop_toBottomOf="@id/tvRekening" />
 
-        <TextView
-            android:id="@+id/tv2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:textColor="#8E8E8E"
-            android:text="Detail Transaksi"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line2" />
 
         <TextView
             android:id="@+id/tvLabelNamaMerchant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
-            android:text="Nominal Transfer"
+            android:text="Nama Merchant"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv2" />
+            app:layout_constraintTop_toBottomOf="@id/line2" />
 
         <TextView
             android:id="@+id/tvNamaMerchantRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
-            android:text="Rp 120.000"
+            android:text="Es Teh NasGitel"
             android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/tvLabelNamaMerchant"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvLabelNamaMerchant"
-            app:layout_constraintBottom_toBottomOf="@id/tvLabelNamaMerchant"/>
+            app:layout_constraintTop_toTopOf="@id/tvLabelNamaMerchant" />
 
         <TextView
             android:id="@+id/tvLabelLokasiMerchant"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
-            android:text="Biaya Admin"
+            android:text="Lokasi Merchant"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvLabelNamaMerchant" />
 
@@ -181,133 +165,113 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
-            android:text="Rp 0"
+            android:text="Yogyakarta, Indonesia"
             android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/tvLabelLokasiMerchant"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvLabelLokasiMerchant"
-            app:layout_constraintBottom_toBottomOf="@id/tvLabelLokasiMerchant"/>
+            app:layout_constraintTop_toTopOf="@id/tvLabelLokasiMerchant" />
 
         <View
             android:id="@+id/line3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#C4C4C4"
             android:layout_marginTop="14dp"
-            app:layout_constraintTop_toBottomOf="@id/tvLokasiMerchant"
-            />
+            android:background="#C4C4C4"
+            app:layout_constraintTop_toBottomOf="@id/tvLokasiMerchant" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Rekening Sumber"
+            android:textColor="#8E8E8E"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line3" />
 
         <TextView
             android:id="@+id/tvLabelTransfer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
             android:text="Total Transfer"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line3" />
+            app:layout_constraintTop_toBottomOf="@id/tv2" />
 
         <TextView
             android:id="@+id/tvTransfer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"
             android:text="Rp 120.000"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvLabelTransfer"
-            app:layout_constraintBottom_toBottomOf="@id/tvLabelTransfer"/>
-
-        <View
-            android:id="@+id/line4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#C4C4C4"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/tvTransfer"
-            />
-
-        <TextView
-            android:id="@+id/tv3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:textColor="#8E8E8E"
-            android:text="Catatan"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/line4" />
-
-        <TextView
-            android:id="@+id/tvCatatan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:textStyle="bold"
-            android:text="- Catatan"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv3" />
+            app:layout_constraintBottom_toBottomOf="@id/tvLabelTransfer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvLabelTransfer" />
+
 
         <View
             android:id="@+id/line5"
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="#C4C4C4"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/tvCatatan"
-            />
+            android:background="#C4C4C4"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelTransfer" />
 
         <Button
             android:id="@+id/btnShare"
-            app:icon="@drawable/share_white_42"
             style="@style/Widget.Material3.Button.Icon"
             android:layout_width="0dp"
-            android:textSize="16sp"
             android:layout_height="55dp"
-            app:shapeAppearance="?attr/shapeAppearanceCornerSmall"
+            android:layout_marginVertical="13dp"
+            android:layout_marginEnd="16dp"
             android:text="Bagikan"
+            android:textSize="16sp"
+            app:icon="@drawable/share_white_42"
             app:iconGravity="textStart"
             app:iconSize="38dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginVertical="13dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btnBeranda"
             app:layout_constraintEnd_toStartOf="@id/btnDownload"
-            app:layout_constraintTop_toBottomOf="@id/line5" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:shapeAppearance="?attr/shapeAppearanceCornerSmall" />
 
         <Button
             android:id="@+id/btnDownload"
-            app:icon="@drawable/download_blue_18"
-            app:iconTint="#0066AE"
             style="@style/Widget.Material3.Button.Icon"
             android:layout_width="0dp"
-            app:iconGravity="textStart"
-            android:textSize="16sp"
             android:layout_height="55dp"
-            app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+            android:layout_marginVertical="13dp"
             android:background="@drawable/rounded_edittext"
             android:text="Unduh"
             android:textColor="#0066AE"
-            android:layout_marginVertical="13dp"
+            android:textSize="16sp"
+            app:icon="@drawable/download_blue_18"
+            app:iconGravity="textStart"
+            app:iconTint="#0066AE"
+            app:layout_constraintBottom_toTopOf="@+id/btnBeranda"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnShare"
-            app:layout_constraintTop_toBottomOf="@id/line5" />
+            app:shapeAppearance="?attr/shapeAppearanceCornerLarge" />
 
         <Button
             android:id="@+id/btnBeranda"
             android:layout_width="match_parent"
-            android:textSize="16sp"
             android:layout_height="55dp"
-            app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
-            android:background="@drawable/rounded_edittext"
-            android:text="Beranda"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            android:gravity="start|center"
             android:layout_marginVertical="13dp"
-            app:layout_constraintTop_toBottomOf="@id/btnShare" />
+            android:background="@drawable/rounded_edittext"
+            android:gravity="start|center"
+            android:text="Beranda"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+            tools:layout_editor_absoluteX="16dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+

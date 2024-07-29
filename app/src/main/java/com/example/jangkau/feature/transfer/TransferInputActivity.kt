@@ -139,6 +139,7 @@ class TransferInputActivity : BaseActivity() {
                         }
                     }
                 }
+                openPinInputActivity("openTransferReceipt")
             }
 
             navbar.imgBackArrow.gone()

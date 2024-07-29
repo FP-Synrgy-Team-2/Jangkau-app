@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="16dp"
+    android:paddingTop="100dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".feature.scan_qr.GenerateCodeQRActivity">
+
+    <ImageView
+        android:id="@+id/imgLogoQris"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:maxHeight="36dp"
+        android:src="@drawable/qris_logo"
+        android:contentDescription="@string/qr_code_standar_pembayaran_nasional"
+        app:layout_constraintEnd_toEndOf="@+id/imgQRIS"
+        app:layout_constraintStart_toStartOf="@+id/imgQRIS"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgQRIS"
+        android:layout_width="225dp"
+        android:layout_height="245dp"
+        android:layout_marginTop="34dp"
+        android:src="@drawable/qris_placeholder"
+        android:maxWidth="225dp"
+        android:maxHeight="245dp"
+        android:contentDescription="@string/kode_qris"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgLogoQris"/>
+    
+    <TextView
+        android:id="@+id/tvOwnerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="36dp"
+        android:text="@string/john_smith"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgQRIS"/>
+
+    <TextView
+        android:id="@+id/tvAccountNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:text="@string/_8923445590"
+        app:layout_constraintTop_toBottomOf="@id/tvOwnerName"/>
+
+    <TextView
+        android:id="@+id/tvCountDownTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="@string/silahkan_tunjukkan_kode_qr_ke_kasir_berlaku_hingga"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAccountNumber" />
+
+    <TextView
+        android:id="@+id/tvCountDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/countdown"
+        android:textColor="@color/red_custom"
+        app:layout_constraintEnd_toEndOf="@+id/tvCountDownTitle"
+        app:layout_constraintStart_toStartOf="@+id/tvCountDownTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvCountDownTitle" />
+
+    <Button
+        android:id="@+id/btnBatal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/batalkan"
+        android:textColor="@color/black"
+        android:contentDescription="@string/tombol_batalkan"
+        app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+        android:padding="20dp"
+        android:layout_marginBottom="20dp"
+        style="?attr/materialButtonOutlinedStyle"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
