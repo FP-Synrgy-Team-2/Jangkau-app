@@ -55,4 +55,17 @@
     <string name="email_belum_di_isi">Email belum di isi</string>
     <string name="invalid_email">Format email salah</string>
     <string name="countdown">01:00</string>
+    <string name="tombol_senter">Tombol senter</string>
+    <string name="tombol_kembali">Tombol Kembali</string>
+    <string name="scanning">Scanning</string>
+    <string name="tombol_scan_barcode">Tombol scan barcode</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="tombol_generate_barcode">Tombol generate barcode</string>
+    <string name="batalkan">Batalkan</string>
+    <string name="tombol_batalkan">tombol batalkan</string>
+    <string name="silahkan_tunjukkan_kode_qr_ke_kasir_berlaku_hingga">Silahkan tunjukkan kode QR ke Kasir. Berlaku hingga</string>
+    <string name="_8923445590">8923445590</string>
+    <string name="john_smith">John Smith</string>
+    <string name="kode_qris">Kode Qris</string>
+    <string name="qr_code_standar_pembayaran_nasional">QR Code Standar pembayaran nasional</string>
 </resources>

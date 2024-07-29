@@ -6,11 +6,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.model.BankAccount
 import com.example.jangkau.feature.PinInputActivity
+import com.example.jangkau.feature.scan_qr.ScanQRActivity
 import com.example.jangkau.feature.auth.LoginActivity
 import com.example.jangkau.feature.forgot_password.InputEmailActivity
 import com.example.jangkau.feature.forgot_password.InputNewPasswordActivity
 import com.example.jangkau.feature.forgot_password.InputOtpActivity
 import com.example.jangkau.feature.home.HomeActivity
+import com.example.jangkau.feature.scan_qr.GenerateCodeQRActivity
+import com.example.jangkau.feature.scan_qr.QrisReceiptActivity
 import com.example.jangkau.feature.transfer.TransferActivity
 import com.example.jangkau.feature.transfer.TransferInputActivity
 import com.example.jangkau.feature.transfer.TransferReceiptActivity
@@ -58,8 +61,9 @@ abstract class BaseActivity : AppCompatActivity() {
 //        startActivity(intent)
 //    }
 
-    fun openPinInputActivity(){
+    fun openPinInputActivity(action: String) {
         val intent = Intent(this, PinInputActivity::class.java)
+        intent.putExtra(PinInputActivity.EXTRA_TARGET_ACTION, action)
         startActivity(intent)
     }
 
@@ -81,6 +85,21 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun openInputNewPasswordActivity(){
         val intent = Intent(this, InputNewPasswordActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openQrisActivity(){
+        val intent = Intent(this, ScanQRActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openGenerateCodeActivity(){
+        val intent = Intent(this, GenerateCodeQRActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openQrisReceiptActivity(){
+        val intent = Intent(this, QrisReceiptActivity::class.java)
         startActivity(intent)
     }
 }

@@ -17,6 +17,8 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.btnQris.setOnClickListener { openQrisActivity() }
+
         binding.btnLogin.setOnClickListener { openLoginActivity() }
     }
 }
