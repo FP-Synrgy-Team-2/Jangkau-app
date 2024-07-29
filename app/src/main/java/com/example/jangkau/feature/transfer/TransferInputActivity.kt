@@ -96,7 +96,7 @@ class TransferInputActivity : BaseActivity() {
             tvNominal.text = nominal
             tvCatatan.text = catatan
             btnNext.setOnClickListener {
-                openPinInputActivity()
+                openPinInputActivity("openTransferReceipt")
             }
 
             navbar.imgBackArrow.gone()

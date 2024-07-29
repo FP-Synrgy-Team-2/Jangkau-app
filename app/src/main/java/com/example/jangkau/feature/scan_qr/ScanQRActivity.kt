@@ -1,4 +1,4 @@
-package com.example.jangkau.feature
+package com.example.jangkau.feature.scan_qr
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -32,12 +32,17 @@ class ScanQRActivity : BaseActivity() {
             finish()
         }
 
+        binding.btnGenerateCode.setOnClickListener {
+            openPinInputActivity("openGenerateCode")
+        }
+
         binding.btnFlash.setOnClickListener {
             isFlashEnabled = !isFlashEnabled
             codeScanner.isFlashEnabled = isFlashEnabled
             updateFlashButtonIcon()
         }
         checkPermissions()
+
     }
 
     private fun updateFlashButtonIcon() {

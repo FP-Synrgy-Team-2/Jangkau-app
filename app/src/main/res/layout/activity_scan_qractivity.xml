@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.ScanQRActivity">
+    tools:context=".feature.scan_qr.ScanQRActivity">
 
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scanner_view"
@@ -30,6 +30,7 @@
         android:scaleType="fitCenter"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_margin="12dp"
+        android:contentDescription="@string/tombol_kembali"
         android:src="@drawable/ic_back_arrow_whitebg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,9 +41,75 @@
         android:scaleType="fitCenter"
         android:layout_height="34dp"
         android:layout_margin="12dp"
+        android:contentDescription="@string/tombol_senter"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_flash_disabled"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/scanning"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="224dp"
+        android:text="Arahkan kamera ke code QRIS untuk melakukan pembayaran"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/btnScanQR"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="20dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:contentDescription="@string/tombol_scan_barcode"
+        android:textColor="@color/blue_primary"
+        android:text="@string/scan_qr"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <View
+        android:layout_width="5dp"
+        android:layout_height="0dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="@id/btnGenerateCode"
+        app:layout_constraintEnd_toStartOf="@+id/btnGenerateCode"
+        app:layout_constraintStart_toEndOf="@+id/btnScanQR"
+        app:layout_constraintTop_toTopOf="@id/btnGenerateCode" />
+
+    <TextView
+        android:id="@+id/btnGenerateCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:clickable="true"
+        android:paddingVertical="20dp"
+        android:gravity="center"
+        android:enabled="false"
+        android:contentDescription="@string/tombol_generate_barcode"
+        android:text="Generate Code"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

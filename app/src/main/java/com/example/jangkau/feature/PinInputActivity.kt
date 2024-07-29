@@ -15,13 +15,20 @@ import org.koin.android.ext.android.inject
 
 class PinInputActivity : BaseActivity() {
 
+    companion object {
+        const val EXTRA_TARGET_ACTION = "EXTRA_TARGET_ACTION"
+    }
+
     private lateinit var binding: ActivityPinInputBinding
     private val authViewModel : AuthViewModel by inject()
     private var currentValue: String = ""
+    private var targetAction: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPinInputBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        targetAction = intent.getStringExtra(EXTRA_TARGET_ACTION)
 
 
         binding.navbar.imgCancel.gone()
@@ -50,7 +57,7 @@ class PinInputActivity : BaseActivity() {
 
         authViewModel.pinValidated.observe(this){state->
             if (state){
-                openTranferReceiptActivity()
+                handleNavigation()
             }else{
                 showToast("Pin tidak valid")
             }
@@ -67,6 +74,18 @@ class PinInputActivity : BaseActivity() {
     private fun handleRightValue(): String {
         currentValue = if (currentValue.length > 1) { currentValue.shorten() } else { "" }
         return currentValue
+    }
+
+    private fun handleNavigation() {
+        when (targetAction) {
+            "openTransferReceipt" -> openTranferReceiptActivity()
+            "openGenerateCode" -> openGenerateCodeActivity()
+            "openQrisReceiptActivity" -> openQrisReceiptActivity()
+            else -> {
+                // Default action or close activity
+                finish()
+            }
+        }
     }
 
     private fun setContentDescriptions(numPadView: NumPadView) {
