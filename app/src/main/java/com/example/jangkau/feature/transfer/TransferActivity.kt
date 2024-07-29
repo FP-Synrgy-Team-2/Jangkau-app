@@ -10,6 +10,7 @@ import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityTransferBinding
 import com.example.jangkau.gone
 import com.example.jangkau.viewmodel.BankAccountViewModel
+import com.example.jangkau.visible
 import org.koin.android.ext.android.inject
 
 class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener {
@@ -57,7 +58,8 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
                     when (val data = state.data) {
 
                         ListState.Empty -> {
-                            binding.tvRekeningTersimpan.text = "Belum ada Rekening yang Tersimpan"
+                            binding.rvRekeningTersimpan.gone()
+                            binding.imgEmptySavedAccount.visible()
                         }
                         is ListState.Success -> {
 

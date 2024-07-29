@@ -9,11 +9,11 @@ import com.example.domain.repository.UserRepository
 import kotlinx.coroutines.flow.firstOrNull
 
 class UserRepositoryImpl(
-    private val apiService: ApiService,
-    private val dataStorePref: DataStorePref
-) : UserRepository, SafeApiRequest() {
+    apiService: ApiService,
+    dataStorePref: DataStorePref
+) : BaseRepository(apiService, dataStorePref), UserRepository {
+
     override suspend fun getUserById(): User {
-        val token = dataStorePref.accessToken.firstOrNull()
         val userId = dataStorePref.userId.firstOrNull()
 
         if (userId == null) {
@@ -22,8 +22,8 @@ class UserRepositoryImpl(
             Log.d("UserRepositoryImpl", "User ID found: $userId")
         }
 
-        val response = safeApiRequest {
-            apiService.getUser(userId, "Bearer $token")
+        val response = performRequestWithTokenHandling { token ->
+            apiService.getUser(userId, token)
         }
 
         val userResponse = response.data ?: throw Exception("User not found")

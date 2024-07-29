@@ -1,5 +1,6 @@
 package com.example.jangkau.feature
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -57,6 +58,10 @@ class PinInputActivity : BaseActivity() {
 
         authViewModel.pinValidated.observe(this){state->
             if (state){
+// <<<<<<< transfer
+//                 setResult(Activity.RESULT_OK)
+//                 finish()
+// =======
                 handleNavigation()
             }else{
                 showToast("Pin tidak valid")

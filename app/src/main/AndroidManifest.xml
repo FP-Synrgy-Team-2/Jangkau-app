@@ -5,24 +5,36 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
 
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Jangkau"
         tools:targetApi="31">
         <activity
+
+            android:name=".ErrorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.mutation.MutationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".feature.mutation.FilterMutationActivity"
+            android:exported="false" />
+
             android:name=".feature.scan_qr.QrisConfirmationActivity"
             android:exported="false" />
         <activity
@@ -70,6 +82,7 @@
             android:name=".feature.home.HomeActivity"
             android:exported="true">
 
+
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
 
@@ -88,7 +101,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

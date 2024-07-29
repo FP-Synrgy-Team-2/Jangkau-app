@@ -50,7 +50,7 @@ class AuthViewModel(
         pinValidationUseCase(pin).onEach { result ->
             when(result){
                 is Resource.Error -> {
-                    Log.e("GetSavedBankAccount", "Error: ${result.message}")
+                    Log.e("PinValidation", "Error: ${result.message}")
                     _pinValidated.value = false
                 }
                 is Resource.Loading -> {

@@ -21,4 +21,6 @@ class SplashActivity : BaseActivity() {
 
         binding.btnLogin.setOnClickListener { openLoginActivity() }
     }
+
+
 }

@@ -1,5 +1,7 @@
 package com.example.jangkau.feature.transfer
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,6 +15,7 @@ import com.example.jangkau.databinding.BottomSheetTransferConfirmationBinding
 import com.example.jangkau.gone
 import com.example.jangkau.visible
 import com.example.jangkau.viewmodel.BankAccountViewModel
+import com.example.jangkau.viewmodel.TransactionViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.android.ext.android.inject
@@ -21,6 +24,7 @@ class TransferInputActivity : BaseActivity() {
 
     private lateinit var binding: ActivityTransferInputBinding
     private val bankViewModel: BankAccountViewModel by inject()
+    private val transactionViewModel: TransactionViewModel by inject()
 
     private val bottomSheetBinding: BottomSheetTransferConfirmationBinding by lazy {
         BottomSheetTransferConfirmationBinding.inflate(layoutInflater)
@@ -30,6 +34,10 @@ class TransferInputActivity : BaseActivity() {
         BottomSheetDialog(
             this, R.style.AppTheme_BottomSheetDialog
         )
+    }
+
+    companion object {
+        const val PIN_INPUT_REQUEST_CODE = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +53,7 @@ class TransferInputActivity : BaseActivity() {
 
             binding.edtRekeningTujuan.gone()
             binding.edtRekeningTujuan.setText(savedAccount.accountNumber)
+            binding.cbSimpanRekening.isChecked = false
             binding.cbSimpanRekening.gone()
             binding.textView.gone()
         }
@@ -52,50 +61,84 @@ class TransferInputActivity : BaseActivity() {
         binding.navbar.imgCancel.gone()
 
         binding.btnNext.setOnClickListener {
-            val namaRekening = savedAccount?.ownerName
+            var namaRekening = savedAccount?.ownerName
             val rekeningTujuan = binding.textInputLayoutRekeningTujuan.editText?.text.toString()
-            val nominal = binding.textInputLayoutNominal.editText?.text.toString()
+            val nominal = binding.textInputLayoutNominal.editText?.text.toString().toInt()
             val catatan = binding.textInputLayoutCatatan.editText?.text.toString()
+            val isSaved = binding.cbSimpanRekening.isChecked
 
-            if (rekeningTujuan.isNotEmpty() || nominal.isNotEmpty() || catatan.isNotEmpty()) {
-                openBottomDialog(namaRekening, rekeningTujuan, nominal, catatan)
+            if (rekeningTujuan.isNotEmpty() && nominal.toString().isNotEmpty() && catatan.isNotEmpty()) {
+                binding.progressBar.visible()
+                binding.btnNext.gone()
+
+                bankViewModel.searchDataBankByAccNumber(rekeningTujuan)
+                bankViewModel.state.observe(this) { state ->
+                    when (state) {
+                        is State.Error -> {
+                            binding.progressBar.gone()
+                            binding.btnNext.visible()
+                            Log.e("BottomSheet", "Error: ${state.error}")
+                            showToast(state.error)
+                        }
+                        State.Loading -> {
+                            Log.d("BottomSheet", "Loading")
+                        }
+                        is State.Success -> {
+                            binding.progressBar.gone()
+                            binding.btnNext.visible()
+                            Log.d("BottomSheet", "Success: ${state.data}")
+                            namaRekening = state.data.ownerName
+                            openBottomDialog(namaRekening, rekeningTujuan, nominal, catatan, isSaved)
+                        }
+                    }
+                }
+            } else {
+                showToast("Please fill all the fields")
             }
         }
     }
 
-    private fun openBottomDialog(namaRekening: String?, rekeningTujuan: String, nominal: String, catatan: String) {
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PIN_INPUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            openTranferReceiptActivity()
+        }
+    }
+
+    private fun openBottomDialog(namaRekening: String?, rekeningTujuan: String, nominal: Int, catatan: String, isSaved: Boolean) {
         dialog.setContentView(bottomSheetBinding.root)
         val behavior = BottomSheetBehavior.from(bottomSheetBinding.root.parent as View)
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.show()
 
-        if (namaRekening == null) {
-            bankViewModel.searchDataBankByAccNumber(rekeningTujuan)
-            bankViewModel.state.observe(this) { state ->
-                when (state) {
-                    is State.Error -> {
-                        Log.e("BottomSheet", "Error: ${state.error}")
-                        showToast(state.error)
-                    }
-                    State.Loading -> {
-                        Log.d("BottomSheet", "Loading")
-                        // Show loading indicator if needed
-                    }
-                    is State.Success -> {
-                        Log.d("BottomSheet", "Success: ${state.data}")
-                        bottomSheetBinding.tvName.text = state.data.ownerName
-                    }
-                }
-            }
-        } else {
-            bottomSheetBinding.tvName.text = namaRekening
-        }
-
         bottomSheetBinding.apply {
+            tvName.text = namaRekening
             tvRekening.text = rekeningTujuan
-            tvNominal.text = nominal
+            tvNominal.text = nominal.toString()
             tvCatatan.text = catatan
             btnNext.setOnClickListener {
+                binding.progressBar.visible()
+                binding.btnNext.gone()
+                transactionViewModel.transfer(rekeningTujuan, nominal, catatan, isSaved)
+                transactionViewModel.transactions.observe(this@TransferInputActivity) { state ->
+                    when (state) {
+                        is State.Error -> {
+                            binding.progressBar.gone()
+                            binding.btnNext.visible()
+                            showToast(state.error)
+                        }
+                        State.Loading -> {
+                            Log.d("LoginActivity", "Loading state")  // Debug log
+                        }
+                        is State.Success -> {
+                            binding.progressBar.gone()
+                            binding.btnNext.visible()
+                            openPinInputActivity()
+                            Log.d("TransferInputActivity", "Success state: ${state.data}")
+                        }
+                    }
+                }
                 openPinInputActivity("openTransferReceipt")
             }
 
@@ -105,5 +148,4 @@ class TransferInputActivity : BaseActivity() {
             }
         }
     }
-
 }

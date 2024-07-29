@@ -47,6 +47,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnInputBaru"/>
 
+    <ImageView
+        android:id="@+id/imgEmptySavedAccount"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:contentDescription="@string/gambar_tidak_ada_akun_yang_tersimpan"
+        android:layout_margin="50dp"
+        android:src="@drawable/empty_account_saved"
+        app:layout_constraintTop_toBottomOf="@+id/tvRekeningTersimpan"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRekeningTersimpan"

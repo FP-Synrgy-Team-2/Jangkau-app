@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".FilterMutationActivity">
+    tools:context=".feature.mutation.FilterMutationActivity">
 
     <include
         android:id="@+id/navbar"
@@ -18,40 +18,27 @@
 
     <TextView
         android:id="@+id/text_from"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:textSize="14sp"
-        android:textColor="#5D5D5D"
+        android:contentDescription="@string/teks_filter_dari_tanggal"
         android:text="@string/from_date"
-        android:contentDescription="Teks Filter Dari tanggal"
+        android:textColor="#5D5D5D"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/text_to"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/navbar" />
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="216dp"
-        android:layout_height="45dp"
-        app:cardElevation="4dp"
-        app:cardBackgroundColor="@android:color/white"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:layout_constraintBottom_toBottomOf="@id/text_from"
+    <include
+        android:id="@+id/cardFromDate"
+        layout="@layout/choose_date_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/text_from"
         app:layout_constraintTop_toTopOf="@id/text_from"
-        app:layout_constraintEnd_toEndOf="parent">
-
-
-        <EditText
-            android:id="@+id/editText_from_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Pilih tanggal"
-            android:inputType="none"
-            android:padding="10dp"
-            android:background="@drawable/no_underline_edit_text"
-            android:drawableStart="@drawable/baseline_calendar_month_24"
-            android:focusable="false"
-            android:clickable="true" />
-
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintBottom_toBottomOf="@id/text_from"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp" />
 
     <TextView
         android:id="@+id/text_to"
@@ -61,50 +48,33 @@
         android:textSize="14sp"
         android:textColor="#5D5D5D"
         android:text="@string/to_date"
-        android:contentDescription="Teks FIlter Sampai Tanggal"
+        android:contentDescription="@string/teks_filter_sampai_tanggal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_from" />
+        app:layout_constraintTop_toBottomOf="@id/cardFromDate" />
 
-    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="216dp"
-        android:layout_height="45dp"
-        app:cardElevation="4dp"
-        app:cardBackgroundColor="@android:color/white"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:layout_constraintBottom_toBottomOf="@id/text_to"
+    <include
+        android:id="@+id/cardToDate"
+        layout="@layout/choose_date_card"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/text_to"
         app:layout_constraintTop_toTopOf="@id/text_to"
-        app:layout_constraintEnd_toEndOf="parent">
-
-
-        <EditText
-            android:id="@+id/editText_to_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Pilih tanggal"
-            android:inputType="none"
-            android:padding="10dp"
-            android:background="@drawable/no_underline_edit_text"
-            android:drawableStart="@drawable/baseline_calendar_month_24"
-            android:focusable="false"
-            android:clickable="true" />
-
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintBottom_toBottomOf="@id/text_to"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="25dp" />
 
     <Button
         android:id="@+id/btnApply"
         android:layout_width="match_parent"
-        android:textSize="16sp"
         android:layout_height="65dp"
-        app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
         android:layout_marginTop="48dp"
         android:layout_marginBottom="24dp"
         android:text="@string/apply"
-        android:contentDescription="Tombol untuk Menerapkan filter"
+        android:textSize="16sp"
         android:gravity="center"
+        android:contentDescription="@string/tombol_untuk_menerapkan_filter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

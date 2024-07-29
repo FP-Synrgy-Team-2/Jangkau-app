@@ -1,7 +1,7 @@
-package com.example.domain.model
+package com.example.data.network.model.transaction
 
-data class TransferRequest(
-    val accountId : String,
+data class TransactionRequest(
+    val accountId : String?,
     val beneficiaryAccount : String,
     val amount : Int,
     val transactionDate : String,

@@ -5,56 +5,60 @@ import com.example.data.local.DataStorePref
 import com.example.data.network.ApiService
 import com.example.data.network.model.auth.AuthRequest
 import com.example.data.network.model.bank_account.PinRequest
-import com.example.data.network.utils.SafeApiRequest
 import com.example.domain.model.Auth
 import com.example.domain.model.BankAccount
 import com.example.domain.model.Login
-import com.example.domain.model.PinValidation
 import com.example.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.firstOrNull
 
 class AuthRepositoryImpl(
-    private val apiService: ApiService,
-    private val dataStorePref: DataStorePref
-) : AuthRepository, SafeApiRequest() {
+    apiService: ApiService,
+    dataStorePref: DataStorePref
+) : BaseRepository(apiService, dataStorePref), AuthRepository {
+
+    companion object {
+        private const val TAG = "AuthRepositoryImpl"
+    }
 
     override suspend fun login(auth: Auth): Login {
         val response = safeApiRequest {
-            apiService.loginAuth(
-                authRequest = AuthRequest(auth.username, auth.password)
-            )
+            apiService.loginAuth(AuthRequest(auth.username, auth.password))
         }
 
-        val loginResponse = response.data ?: throw Exception(response.message)
+        val loginResponse = response.body()?.data ?: throw Exception(response.message())
 
-        Log.d("AuthRepositoryImpl", "Storing login data")
+        Log.d(TAG, "Storing login data")
         dataStorePref.storeLoginData(
             accessToken = loginResponse.accessToken,
             userId = loginResponse.userId,
-            tokenType = loginResponse.tokenType
+            tokenType = loginResponse.tokenType,
+            refreshToken = loginResponse.refreshToken
         ).collect { success ->
             if (success) {
-                Log.d("AuthRepositoryImpl", "Login data stored successfully")
+                Log.d(TAG, "Login data stored successfully")
             } else {
-                Log.e("AuthRepositoryImpl", "Failed to store login data")
+                Log.e(TAG, "Failed to store login data")
             }
         }
 
         return loginResponse.toDomain()
     }
 
-    override suspend fun pinValidation(pin : String): BankAccount {
+    override suspend fun pinValidation(pin: String): BankAccount {
         val accountNumber = dataStorePref.accountNumber.firstOrNull()
         val token = dataStorePref.accessToken.firstOrNull()
-        val response = safeApiRequest {
+
+        if (accountNumber == null) {
+            throw Exception("Account number not found")
+        }
+
+        val response = performRequestWithTokenHandling {
             apiService.pinValidation(
-                PinRequest(
-                    pin = pin,
-                    accountNumber = accountNumber.toString()
-                ),
-                "Bearer $token"
+                PinRequest(pin = pin, accountNumber = accountNumber),
+                it // Pass the token dynamically
             )
         }
+
         val pinValidationResponse = response.data ?: throw Exception(response.message)
         return BankAccount(
             accountId = pinValidationResponse.accountId,
@@ -64,6 +68,4 @@ class AuthRepositoryImpl(
             userId = null
         )
     }
-
-
 }
