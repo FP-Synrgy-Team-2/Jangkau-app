@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:paddingHorizontal="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoadingActivity">
+
+    <ImageView
+        android:id="@+id/imgLoading"
+        android:layout_width="match_parent"
+        android:layout_height="256dp"
+        android:layout_marginTop="75dp"
+        android:contentDescription="Ilustrasi Proses Pemuatan"
+        android:src="@drawable/loading_illustration"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressCircularLoading"
+        android:contentDescription="Informasi proses pemuatan"
+        android:layout_width="0dp"
+        android:layout_marginBottom="30dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:showAnimationBehavior="outward"
+        app:layout_constraintBottom_toTopOf="@id/imgLoading"
+        app:layout_constraintEnd_toEndOf="@+id/imgLoading"
+        app:layout_constraintStart_toStartOf="@+id/imgLoading"
+        app:trackColor="@android:color/darker_gray"
+        app:trackThickness="12dp" />
+
+    <TextView
+        android:id="@+id/tvSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/kami_sedang_memverifikasi_data_anda"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/progressCircularLoading"
+        app:layout_constraintEnd_toEndOf="@+id/imgLoading"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/harap_tunggu"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/tvSubTitle"
+        app:layout_constraintEnd_toEndOf="@+id/imgLoading"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

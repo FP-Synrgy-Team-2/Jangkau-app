@@ -44,6 +44,8 @@ class AuthRepositoryImpl(
         return loginResponse.toDomain()
     }
 
+
+
     override suspend fun pinValidation(pin: String): BankAccount {
         val accountNumber = dataStorePref.accountNumber.firstOrNull()
         val token = dataStorePref.accessToken.firstOrNull()
@@ -67,5 +69,15 @@ class AuthRepositoryImpl(
             balance = pinValidationResponse.balance,
             userId = null
         )
+    }
+
+    override suspend fun logout() {
+        dataStorePref.clearAllData()
+        dataStorePref.saveLoginStatus(false)
+    }
+
+    override suspend fun getLoginStatus(): Boolean {
+        val loginStatus = dataStorePref.isLogin.firstOrNull()
+        return loginStatus ?: false
     }
 }

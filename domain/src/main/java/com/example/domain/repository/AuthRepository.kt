@@ -10,4 +10,8 @@ interface AuthRepository {
 
     suspend fun pinValidation(pin : String) : BankAccount
 
+    suspend fun logout()
+
+    suspend fun getLoginStatus() : Boolean
+
 }

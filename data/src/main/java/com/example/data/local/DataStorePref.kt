@@ -3,6 +3,7 @@ package com.example.data.local
 import android.content.Context
 import android.util.Log
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -26,6 +27,8 @@ class DataStorePref(private val context: Context) {
 
         val ACCOUNT_NUMBER_KEY = stringPreferencesKey("ACCOUNT_NUMBER")
         val ACCOUNT_ID_KEY = stringPreferencesKey("ACCOUNT_ID")
+
+        val ISLOGIN = booleanPreferencesKey("ISLOGIN")
     }
 
     val accessToken: Flow<String?> = context.dataStore.data
@@ -73,6 +76,7 @@ class DataStorePref(private val context: Context) {
                 preferences[USER_ID_KEY] = userId
                 preferences[TOKEN_TYPE_KEY] = tokenType
                 preferences[REFRESH_TOKEN_KEY] = refreshToken
+                preferences[ISLOGIN] = true
             }
             Log.d(TAG, "Login data stored successfully")
             emit(true)
@@ -104,6 +108,14 @@ class DataStorePref(private val context: Context) {
         }
         .catch { e ->
             Log.e(TAG, "Error fetching account ID", e)
+        }
+
+    val isLogin: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[ISLOGIN] ?: false
+        }
+        .catch { e ->
+            Log.e(TAG, "Error fetching login status", e)
         }
 
     suspend fun storeBankAccountData(
@@ -139,6 +151,17 @@ class DataStorePref(private val context: Context) {
         }
     }
 
+    suspend fun clearAllData() {
+        context.dataStore.edit { preferences ->
+            preferences.clear()
+        }
+    }
+
+    suspend fun saveLoginStatus(status: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[ISLOGIN] = status
+        }
+    }
 
 
 

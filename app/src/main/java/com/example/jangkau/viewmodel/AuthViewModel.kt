@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.Resource
 import com.example.domain.model.Auth
 import com.example.domain.model.Login
+import com.example.domain.usecase.auth.GetLoginStatusUseCase
 import com.example.domain.usecase.auth.LoginUseCase
+import com.example.domain.usecase.auth.LogoutUseCase
 import com.example.domain.usecase.auth.PinValidationUseCase
 import com.example.jangkau.State
 import kotlinx.coroutines.flow.launchIn
@@ -15,7 +17,9 @@ import kotlinx.coroutines.flow.onEach
 
 class AuthViewModel(
     private val loginUseCase : LoginUseCase,
-    private val pinValidationUseCase: PinValidationUseCase
+    private val pinValidationUseCase: PinValidationUseCase,
+    private val getLoginStatusUseCase: GetLoginStatusUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<State<Login>>()
@@ -24,8 +28,10 @@ class AuthViewModel(
     private val _pinValidated = MutableLiveData<Boolean>()
     val pinValidated : MutableLiveData<Boolean> = _pinValidated
 
-//    private val _userLoggedIn = MutableLiveData<Boolean>()
-//    val userLoggedIn: MutableLiveData<Boolean> = _userLoggedIn
+    private val _userLoggedIn = MutableLiveData<Boolean>()
+    val userLoggedIn: MutableLiveData<Boolean> = _userLoggedIn
+
+
 
     fun loginUser(username : String, password : String){
         loginUseCase(
@@ -41,6 +47,7 @@ class AuthViewModel(
                 }
                 is Resource.Success -> {
                     _state.value = result.data?.let { State.Success(it) }
+                    _userLoggedIn.value = true
                 }
             }
         }.launchIn(viewModelScope)
@@ -58,6 +65,22 @@ class AuthViewModel(
                 }
                 is Resource.Success -> {
                     _pinValidated.value = true
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun logoutUser() {
+        logoutUseCase().onEach { result ->
+            when (result) {
+                is Resource.Error -> {
+                    Log.e("LogoutUser", "Error: ${result.message}")
+                }
+                is Resource.Loading -> {
+                    // Handle loading state if necessary
+                }
+                is Resource.Success -> {
+                    _userLoggedIn.value = false
                 }
             }
         }.launchIn(viewModelScope)

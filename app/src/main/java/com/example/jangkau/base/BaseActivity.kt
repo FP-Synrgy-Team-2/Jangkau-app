@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.model.BankAccount
 
 import com.example.domain.model.SavedAccount
+import com.example.jangkau.LoadingActivity
 import com.example.jangkau.R
 import com.example.jangkau.databinding.NavbarBinding
 import com.example.jangkau.feature.PinInputActivity
@@ -28,9 +29,12 @@ import com.example.jangkau.feature.transfer.TransferActivity
 import com.example.jangkau.feature.transfer.TransferInputActivity
 import com.example.jangkau.feature.transfer.TransferInputActivity.Companion.PIN_INPUT_REQUEST_CODE
 import com.example.jangkau.feature.transfer.TransferReceiptActivity
+import com.example.jangkau.viewmodel.AuthViewModel
+import org.koin.android.ext.android.inject
 
 abstract class BaseActivity : AppCompatActivity() {
 
+    private val authViewModel : AuthViewModel by inject()
     private lateinit var navbarBinding: NavbarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -139,6 +143,15 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun openQrisReceiptActivity(){
         val intent = Intent(this, QrisReceiptActivity::class.java)
+        startActivity(intent)
+    }
+
+
+    fun openLoadingActivity(username: String, password: String) {
+        val intent = Intent(this, LoadingActivity::class.java).apply {
+            putExtra("USERNAME", username)
+            putExtra("PASSWORD", password)
+        }
         startActivity(intent)
     }
 }

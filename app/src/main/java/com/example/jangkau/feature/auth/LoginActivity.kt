@@ -51,25 +51,7 @@ class LoginActivity : BaseActivity() {
             }
 
             if (!hasError) {
-                viewModel.loginUser(username, password)
-
-                viewModel.state.observe(this) { state ->
-                    when (state) {
-                        is State.Error -> {
-                            showToast(state.error)
-                        }
-
-                        State.Loading -> {
-                            Log.d("LoginActivity", "Loading state")  // Debug log
-
-                        }
-
-                        is State.Success -> {
-                            openHomeActivity()
-                            Log.d("LoginActivity", "User: ${state.data}")
-                        }
-                    }
-                }
+                openLoadingActivity(username, password)
             }
         }
 
