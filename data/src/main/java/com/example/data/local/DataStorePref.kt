@@ -154,6 +154,7 @@ class DataStorePref(private val context: Context) {
     suspend fun clearAllData() {
         context.dataStore.edit { preferences ->
             preferences.clear()
+            preferences[ISLOGIN] = false
         }
     }
 

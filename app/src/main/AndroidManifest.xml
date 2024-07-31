@@ -59,7 +59,7 @@
             android:name=".FilterMutationActivity"
             android:exported="false" />
         <activity
-            android:name=".feature.PinInputActivity"
+            android:name=".feature.PinValidationActivity"
             android:exported="true">
 
             <!-- <intent-filter> -->

@@ -6,14 +6,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class LogoutUseCase(private val authRepository: AuthRepository) {
-    operator fun invoke(): Flow<Resource<Unit>> = flow {
-        emit(Resource.Loading())
+
+    suspend fun execute(): Flow<Boolean> = flow {
         try {
-            val response = authRepository.logout()
-            emit(Resource.Success(response))
+            authRepository.logout()
+            emit(true)
         } catch (e: Exception) {
-            emit(Resource.Error(e.localizedMessage ?: "An unexpected error occurred"))
+            emit(false)
         }
     }
-
 }

@@ -9,6 +9,7 @@ import com.example.domain.model.Auth
 import com.example.domain.model.BankAccount
 import com.example.domain.model.Login
 import com.example.domain.repository.AuthRepository
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 
 class AuthRepositoryImpl(
@@ -73,11 +74,9 @@ class AuthRepositoryImpl(
 
     override suspend fun logout() {
         dataStorePref.clearAllData()
-        dataStorePref.saveLoginStatus(false)
     }
 
     override suspend fun getLoginStatus(): Boolean {
-        val loginStatus = dataStorePref.isLogin.firstOrNull()
-        return loginStatus ?: false
+        return dataStorePref.isLogin.first()
     }
 }

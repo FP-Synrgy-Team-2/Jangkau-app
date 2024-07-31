@@ -12,8 +12,11 @@ import com.example.domain.usecase.auth.LoginUseCase
 import com.example.domain.usecase.auth.LogoutUseCase
 import com.example.domain.usecase.auth.PinValidationUseCase
 import com.example.jangkau.State
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val loginUseCase : LoginUseCase,
@@ -28,9 +31,18 @@ class AuthViewModel(
     private val _pinValidated = MutableLiveData<Boolean>()
     val pinValidated : MutableLiveData<Boolean> = _pinValidated
 
-    private val _userLoggedIn = MutableLiveData<Boolean>()
-    val userLoggedIn: MutableLiveData<Boolean> = _userLoggedIn
+    private val _isLoggedIn = MutableStateFlow(false)
+    val isLoggedIn: StateFlow<Boolean> get() = _isLoggedIn
 
+    init {
+        checkLoginStatus()
+    }
+
+    private fun checkLoginStatus() {
+        viewModelScope.launch {
+            _isLoggedIn.value = getLoginStatusUseCase.isLoggedIn()
+        }
+    }
 
 
     fun loginUser(username : String, password : String){
@@ -47,7 +59,7 @@ class AuthViewModel(
                 }
                 is Resource.Success -> {
                     _state.value = result.data?.let { State.Success(it) }
-                    _userLoggedIn.value = true
+                    _isLoggedIn.value = true
                 }
             }
         }.launchIn(viewModelScope)
@@ -70,20 +82,14 @@ class AuthViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun logoutUser() {
-        logoutUseCase().onEach { result ->
-            when (result) {
-                is Resource.Error -> {
-                    Log.e("LogoutUser", "Error: ${result.message}")
-                }
-                is Resource.Loading -> {
-                    // Handle loading state if necessary
-                }
-                is Resource.Success -> {
-                    _userLoggedIn.value = false
+    fun logout() {
+        viewModelScope.launch {
+            logoutUseCase.execute().collect { success ->
+                if (success) {
+                    _isLoggedIn.value = false
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
 

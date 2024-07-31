@@ -2,17 +2,13 @@ package com.example.jangkau.base
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.model.BankAccount
 
-import com.example.domain.model.SavedAccount
 import com.example.jangkau.LoadingActivity
-import com.example.jangkau.R
 import com.example.jangkau.databinding.NavbarBinding
-import com.example.jangkau.feature.PinInputActivity
+import com.example.jangkau.feature.PinValidationActivity
 import com.example.jangkau.feature.scan_qr.ScanQRActivity
 import com.example.jangkau.feature.auth.LoginActivity
 import com.example.jangkau.feature.forgot_password.InputEmailActivity
@@ -46,10 +42,14 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-            /** logic for session login **/
+
     }
 
-    private fun setupNavbar() {
+
+//    fun checkLoginStatus() {
+//
+//    }
+    fun setupNavbar() {
         navbarBinding = NavbarBinding.inflate(layoutInflater)
         setContentView(navbarBinding.root)
 
@@ -103,14 +103,14 @@ abstract class BaseActivity : AppCompatActivity() {
 //    }
 
     fun openPinInputActivity() {
-        val intent = Intent(this, PinInputActivity::class.java)
+        val intent = Intent(this, PinValidationActivity::class.java)
          startActivityForResult(intent, PIN_INPUT_REQUEST_CODE)
 //        intent.putExtra(PinInputActivity.EXTRA_TARGET_ACTION, action)
 //        startActivity(intent)
 
     }
 
-    fun openTranferReceiptActivity(){
+    fun openTransferReceiptActivity(){
         val intent = Intent(this, TransferReceiptActivity::class.java)
         startActivity(intent)
     }

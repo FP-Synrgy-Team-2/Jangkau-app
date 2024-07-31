@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.Observer
 import com.example.domain.model.SavedAccount
 import com.example.jangkau.R
 import com.example.jangkau.State
@@ -102,7 +101,7 @@ class TransferInputActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PIN_INPUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            openTranferReceiptActivity()
+            openTransferReceiptActivity()
         }
     }
 
