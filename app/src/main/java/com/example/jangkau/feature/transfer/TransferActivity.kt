@@ -19,6 +19,8 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
     private lateinit var accountAdapter : AdapterAccountSaved
     private val bankViewModel : BankAccountViewModel by inject()
 
+    private var savedAccount : List<BankAccount> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTransferBinding.inflate(layoutInflater)
@@ -34,6 +36,7 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
         binding.btnInputBaru.setOnClickListener {
             openTransferInputActivity()
         }
+
 
 
 
@@ -64,6 +67,7 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
                         is ListState.Success -> {
 
                             accountAdapter = AdapterAccountSaved(data.data.toMutableList(), this)
+                            savedAccount = data.data.toMutableList()
 
                             binding.rvRekeningTersimpan.apply {
                                 layoutManager = LinearLayoutManager(this@TransferActivity)

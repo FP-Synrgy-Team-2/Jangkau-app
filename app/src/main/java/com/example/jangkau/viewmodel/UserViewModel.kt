@@ -16,21 +16,21 @@ class UserViewModel (
     private val getUserUseCase: GetUserUseCase
 ) : ViewModel(){
 
-    private val _state = MutableLiveData<State<User>>()
-    val state : LiveData<State<User>> = _state
+    private val _userState = MutableLiveData<State<User>>()
+    val userState : LiveData<State<User>> = _userState
 
     fun getUser(){
         getUserUseCase.invoke().onEach { result ->
             when(result){
                 is Resource.Error -> {
                     Log.e("GetUser", "Error: ${result.message}")
-                    _state.value = State.Error(result.message ?: "An unexpected error occurred")
+                    _userState.value = State.Error(result.message ?: "An unexpected error occurred")
                 }
                 is Resource.Loading -> {
-                    _state.value = State.Loading
+                    _userState.value = State.Loading
                 }
                 is Resource.Success -> {
-                    _state.value = result.data?.let { State.Success(it) }
+                    _userState.value = result.data?.let { State.Success(it) }
                 }
             }
         }.launchIn(viewModelScope)

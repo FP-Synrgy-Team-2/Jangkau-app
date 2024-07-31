@@ -19,14 +19,14 @@ class TransactionRepositoryImpl(
     override suspend fun makeTransferRequest(rekeningTujuan: String, nominal: Int, catatan: String, isSaved : Boolean) : Transaction {
         val accountId = dataStorePref.accountId.firstOrNull()
         val token = dataStorePref.accessToken.firstOrNull()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
         val currentDateTime = LocalDateTime.now().format(formatter)
         val response = safeApiRequest {
             apiService.transaction(
                 transactionRequest = TransactionRequest(
-                    accountId = accountId,
+                    accountId = accountId.toString(),
                     note = catatan,
-                    isSaved = isSaved,
+                    saved = isSaved,
                     amount = nominal,
                     transactionDate = currentDateTime,
                     beneficiaryAccount = rekeningTujuan
@@ -37,11 +37,12 @@ class TransactionRepositoryImpl(
         val transactionResponse = response.body()?.data ?: throw Exception(response.message())
 
         return Transaction(
+            transactionId = transactionResponse.transactionId,
             amount = transactionResponse.amount,
             beneficiaryAccount = transactionResponse.beneficiaryAccount,
             note = transactionResponse.note,
             transactionDate = transactionResponse.transactionDate,
-            isSaved = true,
+            isSaved = isSaved,
             accountId = transactionResponse.accountId,
             adminFee = transactionResponse.adminFee
         )

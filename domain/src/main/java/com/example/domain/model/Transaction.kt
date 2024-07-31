@@ -1,6 +1,7 @@
 package com.example.domain.model
 
 data class Transaction(
+    val transactionId : String,
     val accountId : String,
     val beneficiaryAccount : String,
     val amount : Int,
