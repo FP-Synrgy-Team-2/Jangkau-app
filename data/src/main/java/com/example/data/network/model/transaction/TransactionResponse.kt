@@ -1,6 +1,7 @@
 package com.example.data.network.model.transaction
 
 
+import com.example.domain.model.Transaction
 import com.google.gson.annotations.SerializedName
 
 data class TransactionResponse(
@@ -20,4 +21,17 @@ data class TransactionResponse(
     val transactionDate: String,
     @SerializedName("transaction_id")
     val transactionId: String
-)
+) {
+    fun toDomain(): Transaction {
+        return Transaction(
+            accountId = accountId,
+            adminFee = adminFee,
+            amount = amount,
+            beneficiaryAccount = beneficiaryAccount,
+            note = note,
+            transactionDate = transactionDate,
+            transactionId = transactionId,
+            isSaved = null
+        )
+    }
+}

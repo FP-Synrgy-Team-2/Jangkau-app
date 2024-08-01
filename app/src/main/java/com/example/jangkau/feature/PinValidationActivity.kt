@@ -80,7 +80,7 @@ class PinValidationActivity : BaseActivity() {
 
     private fun handleNavigation() {
         when (targetAction) {
-            "openTransferReceipt" -> openTransferReceiptActivity()
+//            "openTransferReceipt" -> openTransferReceiptActivity()
             "openGenerateCode" -> openGenerateCodeActivity()
             "openQrisReceiptActivity" -> openQrisReceiptActivity()
             "openHomeActivity" -> openHomeActivity()

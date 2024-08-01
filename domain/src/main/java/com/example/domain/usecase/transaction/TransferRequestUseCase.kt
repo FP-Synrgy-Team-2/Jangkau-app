@@ -1,4 +1,4 @@
-package com.example.domain.usecase.transfer
+package com.example.domain.usecase.transaction
 
 import android.util.Log
 import com.example.common.Resource

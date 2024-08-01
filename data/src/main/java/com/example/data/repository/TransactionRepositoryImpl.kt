@@ -12,19 +12,45 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class TransactionRepositoryImpl(
-    private val apiService: ApiService,
-    private val dataStorePref: DataStorePref
-) : TransactionRepository, SafeApiRequest() {
+    apiService: ApiService,
+    dataStorePref: DataStorePref
+) : BaseRepository(apiService, dataStorePref), TransactionRepository {
+    override suspend fun getTransactionById(transactionId: String): Transaction {
+        val accountId = dataStorePref.accountId.firstOrNull()
+        val token = dataStorePref.accessToken.firstOrNull()
 
-    override suspend fun makeTransferRequest(rekeningTujuan: String, nominal: Int, catatan: String, isSaved : Boolean) : Transaction {
+        if (accountId == null || token == null) {
+            throw Exception("Account ID or Access Token not found")
+        }
+        val response = performRequestWithTokenHandling {
+            apiService.getTransactionById(
+                transactionId = transactionId,
+                token = "Bearer $token"
+            )
+        }
+        val transactionResponse = response.data ?: throw Exception(response.message)
+        return transactionResponse.toDomain()
+    }
+
+    override suspend fun makeTransferRequest(
+        rekeningTujuan: String,
+        nominal: Int,
+        catatan: String,
+        isSaved: Boolean
+    ): Transaction {
         val accountId = dataStorePref.accountId.firstOrNull()
         val token = dataStorePref.accessToken.firstOrNull()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
         val currentDateTime = LocalDateTime.now().format(formatter)
-        val response = safeApiRequest {
+
+        if (accountId == null || token == null) {
+            throw Exception("Account ID or Access Token not found")
+        }
+
+        val response = performRequestWithTokenHandling {
             apiService.transaction(
                 transactionRequest = TransactionRequest(
-                    accountId = accountId.toString(),
+                    accountId = accountId,
                     note = catatan,
                     saved = isSaved,
                     amount = nominal,
@@ -34,7 +60,8 @@ class TransactionRepositoryImpl(
                 token = "Bearer $token"
             )
         }
-        val transactionResponse = response.body()?.data ?: throw Exception(response.message())
+
+        val transactionResponse = response.data ?: throw Exception(response.message)
 
         return Transaction(
             transactionId = transactionResponse.transactionId,
@@ -46,7 +73,7 @@ class TransactionRepositoryImpl(
             accountId = transactionResponse.accountId,
             adminFee = transactionResponse.adminFee
         )
-
     }
+
 
 }

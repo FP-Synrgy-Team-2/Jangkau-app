@@ -26,6 +26,8 @@ class TransferInputActivity : BaseActivity() {
     private val bankViewModel: BankAccountViewModel by inject()
     private val transactionViewModel: TransactionViewModel by inject()
 
+    private var transactionId = ""
+
     private val bottomSheetBinding: BottomSheetTransferConfirmationBinding by lazy {
         BottomSheetTransferConfirmationBinding.inflate(layoutInflater)
     }
@@ -103,7 +105,7 @@ class TransferInputActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PIN_INPUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            openTransferReceiptActivity()
+            openTransferReceiptActivity(transactionId)
         }
     }
 
@@ -135,6 +137,7 @@ class TransferInputActivity : BaseActivity() {
                         is State.Success -> {
                             bottomSheetBinding.progressBar.gone()
                             bottomSheetBinding.btnNext.visible()
+                            transactionId = state.data.transactionId
                             openPinInputActivity()
                             Log.d("TransferInputActivity", "Success state: ${state.data}")
                         }

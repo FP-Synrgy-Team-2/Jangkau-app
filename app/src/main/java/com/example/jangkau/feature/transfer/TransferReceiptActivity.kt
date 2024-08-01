@@ -1,18 +1,19 @@
 package com.example.jangkau.feature.transfer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.jangkau.R
+import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityTransferReceiptBinding
 import com.example.jangkau.databinding.BottomSheetShareBinding
 import com.example.jangkau.gone
+import com.example.jangkau.viewmodel.BankAccountViewModel
+import com.example.jangkau.viewmodel.TransactionViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import org.koin.android.ext.android.inject
 
 class TransferReceiptActivity : BaseActivity() {
 
@@ -27,10 +28,40 @@ class TransferReceiptActivity : BaseActivity() {
             this, R.style.AppTheme_BottomSheetDialog
         )
     }
+
+    private val transactionViewModel : TransactionViewModel by inject()
+    private val bankViewModel : BankAccountViewModel by inject()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTransferReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val transactionId = intent.getStringExtra("EXTRA_TRANSACTION_ID")
+
+        if (transactionId != null){
+            transactionViewModel.getTransactionById(transactionId)
+            transactionViewModel.transactions.observe(this){state->
+                when(state){
+                    is State.Error -> {
+                        Log.d("GetTransactionById", "Error : ${state.error}")
+                        showToast(state.error)
+                    }
+                    State.Loading -> {
+                        Log.d("GetTransactionById", "Loading")
+                    }
+                    is State.Success -> {
+                        bankViewModel
+                        binding.apply {
+                            tvTitle.text = state.data.transactionId
+                            tvName.text = state.data.beneficiaryAccount
+
+                        }
+                    }
+                }
+            }
+        }
 
         binding.btnBeranda.setOnClickListener {
             openHomeActivity()

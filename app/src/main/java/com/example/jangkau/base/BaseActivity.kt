@@ -110,8 +110,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     }
 
-    fun openTransferReceiptActivity(){
-        val intent = Intent(this, TransferReceiptActivity::class.java)
+    fun openTransferReceiptActivity(transactionId : String){
+        val intent = Intent(this, TransferReceiptActivity::class.java).apply {
+            putExtra("EXTRA_TRANSACTION_ID", transactionId)
+        }
         startActivity(intent)
     }
 
