@@ -25,6 +25,11 @@ class AuthRepositoryImpl(
             apiService.loginAuth(AuthRequest(auth.username, auth.password))
         }
 
+        when (response.code()) {
+            400, 404 -> throw Exception("Username dan password belum sesuai, ulangi pengisian")
+            500 -> throw Exception("Server sedang bermasalah, silahkan coba beberapa saat lagi")
+        }
+
         val loginResponse = response.body()?.data ?: throw Exception(response.message())
 
         Log.d(TAG, "Storing login data")

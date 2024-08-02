@@ -6,6 +6,7 @@ import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityLoginBinding
+import com.example.jangkau.failedPopUp
 import com.example.jangkau.viewmodel.AuthViewModel
 import org.koin.android.ext.android.inject
 
@@ -57,6 +58,7 @@ class LoginActivity : BaseActivity() {
                     when (state) {
                         is State.Error -> {
                             showToast(state.error)
+                            failedPopUp(state.error, this)
                         }
 
                         State.Loading -> {
