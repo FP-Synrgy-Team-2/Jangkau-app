@@ -38,6 +38,13 @@ class TransferInputActivity : BaseActivity() {
         )
     }
 
+    private lateinit var idRekeningPenerima: String
+    private lateinit var namaRekening: String
+    private lateinit var rekeningTujuan: String
+    private var nominal: Int = 0
+    private lateinit var catatan: String
+    private var isSaved: Boolean = false
+
     companion object {
         const val PIN_INPUT_REQUEST_CODE = 1
     }
@@ -63,11 +70,11 @@ class TransferInputActivity : BaseActivity() {
         binding.navbar.imgCancel.gone()
 
         binding.btnNext.setOnClickListener {
-            var namaRekening = savedAccount?.ownerName
-            val rekeningTujuan = binding.textInputLayoutRekeningTujuan.editText?.text.toString()
-            val nominal = binding.textInputLayoutNominal.editText?.text.toString().toInt()
-            val catatan = binding.textInputLayoutCatatan.editText?.text.toString()
-            val isSaved = binding.cbSimpanRekening.isChecked
+            namaRekening = savedAccount?.ownerName ?: ""
+            rekeningTujuan = binding.textInputLayoutRekeningTujuan.editText?.text.toString()
+            nominal = binding.textInputLayoutNominal.editText?.text.toString().toInt()
+            catatan = binding.textInputLayoutCatatan.editText?.text.toString()
+            isSaved = binding.cbSimpanRekening.isChecked
 
             if (rekeningTujuan.isNotEmpty() && nominal.toString().isNotEmpty() && catatan.isNotEmpty()) {
                 binding.progressBar.visible()
@@ -90,7 +97,7 @@ class TransferInputActivity : BaseActivity() {
                             binding.btnNext.visible()
                             Log.d("BottomSheet", "Success: ${state.data}")
                             namaRekening = state.data.ownerName
-                            val idRekeningPenerima = state.data.accountId ?: ""
+                            idRekeningPenerima = state.data.accountId ?: ""
                             openBottomDialog(idRekeningPenerima, namaRekening, rekeningTujuan, nominal, catatan, isSaved)
                         }
                     }
@@ -105,7 +112,7 @@ class TransferInputActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PIN_INPUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            openTransferReceiptActivity(transactionId)
+            executeTransfer()
         }
     }
 
@@ -121,33 +128,37 @@ class TransferInputActivity : BaseActivity() {
             tvNominal.text = nominal.toString()
             tvCatatan.text = catatan
             btnNext.setOnClickListener {
-                bottomSheetBinding.progressBar.visible()
-                bottomSheetBinding.btnNext.invisible()
-                transactionViewModel.transfer(idRekeningPenerima, nominal, catatan, isSaved)
-                transactionViewModel.transactions.observe(this@TransferInputActivity) { state ->
-                    when (state) {
-                        is State.Error -> {
-                            bottomSheetBinding.progressBar.gone()
-                            bottomSheetBinding.btnNext.visible()
-                            showToast(state.error)
-                        }
-                        State.Loading -> {
-                            Log.d("Transfer", "Loading state")  // Debug log
-                        }
-                        is State.Success -> {
-                            bottomSheetBinding.progressBar.gone()
-                            bottomSheetBinding.btnNext.visible()
-                            transactionId = state.data.transactionId
-                            openPinInputActivity()
-                            Log.d("TransferInputActivity", "Success state: ${state.data}")
-                        }
-                    }
-                }
+                openPinInputActivity()
             }
 
             navbar.imgBackArrow.gone()
             navbar.imgCancel.setOnClickListener {
                 dialog.dismiss()
+            }
+        }
+    }
+
+    private fun executeTransfer() {
+        bottomSheetBinding.progressBar.visible()
+        bottomSheetBinding.btnNext.invisible()
+        transactionViewModel.transfer(idRekeningPenerima, nominal, catatan, isSaved)
+        transactionViewModel.transactions.observe(this) { state ->
+            when (state) {
+                is State.Error -> {
+                    bottomSheetBinding.progressBar.gone()
+                    bottomSheetBinding.btnNext.visible()
+                    showToast(state.error)
+                }
+                State.Loading -> {
+                    Log.d("Transfer", "Loading state")  // Debug log
+                }
+                is State.Success -> {
+                    bottomSheetBinding.progressBar.gone()
+                    bottomSheetBinding.btnNext.visible()
+                    transactionId = state.data.transactionId
+                    openTransferReceiptActivity(transactionId)
+                    Log.d("TransferInputActivity", "Success state: ${state.data}")
+                }
             }
         }
     }

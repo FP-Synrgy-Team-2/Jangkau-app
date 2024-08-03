@@ -9,6 +9,7 @@ import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityTransferReceiptBinding
 import com.example.jangkau.databinding.BottomSheetShareBinding
 import com.example.jangkau.gone
+import com.example.jangkau.moneyFormatter
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import com.example.jangkau.viewmodel.TransactionViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -55,8 +56,12 @@ class TransferReceiptActivity : BaseActivity() {
                         bankViewModel
                         binding.apply {
                             tvTitle.text = state.data.transactionId
-                            tvName.text = state.data.beneficiaryAccount
-
+                            tvName.text = state.data.beneficiaryName
+                            tvRekening.text = state.data.beneficiaryAccount
+                            tvDate.text = state.data.date
+                            tvNominal.text = moneyFormatter(state.data.amount.toLong())
+                            tvBiayaAdmin.text = moneyFormatter(state.data.adminFee.toLong())
+                            tvCatatan.text = "- ${state.data.note}"
                         }
                     }
                 }

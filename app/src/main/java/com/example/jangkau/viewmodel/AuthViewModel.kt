@@ -29,8 +29,8 @@ class AuthViewModel(
     private val _state = MutableLiveData<State<Login>>()
     val state : MutableLiveData<State<Login>> = _state
 
-    private val _pinValidated = MutableLiveData<Boolean>()
-    val pinValidated : MutableLiveData<Boolean> = _pinValidated
+    private val _pinValidated = MutableLiveData<State<Boolean>>()
+    val pinValidated: MutableLiveData<State<Boolean>> = _pinValidated
 
     private val _isLoggedIn = MutableStateFlow(false)
     val isLoggedIn: StateFlow<Boolean> get() = _isLoggedIn
@@ -66,18 +66,19 @@ class AuthViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun validatePin(pin : String){
+    fun validatePin(pin: String) {
+        _pinValidated.value = State.Loading
         pinValidationUseCase(pin).onEach { result ->
-            when(result){
+            when (result) {
                 is Resource.Error -> {
                     Log.e("PinValidation", "Error: ${result.message}")
-                    _pinValidated.value = false
+                    _pinValidated.value = State.Error(result.message ?: "An unexpected error occurred")
                 }
                 is Resource.Loading -> {
-                    _pinValidated.value = false
+                    _pinValidated.value = State.Loading
                 }
                 is Resource.Success -> {
-                    _pinValidated.value = true
+                    _pinValidated.value = State.Success(true)
                 }
             }
         }.launchIn(viewModelScope)

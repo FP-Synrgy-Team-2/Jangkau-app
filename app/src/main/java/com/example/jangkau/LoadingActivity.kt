@@ -22,9 +22,26 @@ class LoadingActivity : BaseActivity() {
         binding = ActivityLoadingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val username = intent.getStringExtra("USERNAME") ?: return
-        val password = intent.getStringExtra("PASSWORD") ?: return
+        val username = intent.getStringExtra("USERNAME")
+        val password = intent.getStringExtra("PASSWORD")
+        val pin = intent.getStringExtra("PIN")
 
+        when {
+            username != null && password != null -> {
+                observeLoginState()
+                viewModel.loginUser(username, password)
+            }
+            pin != null -> {
+                observePinValidationState()
+                viewModel.validatePin(pin)
+            }
+            else -> {
+                finish()
+            }
+        }
+    }
+
+    private fun observeLoginState() {
         viewModel.state.observe(this, Observer { state ->
             when (state) {
                 is State.Error -> {
@@ -45,11 +62,33 @@ class LoadingActivity : BaseActivity() {
                 }
             }
         })
-        viewModel.loginUser(username, password)
+    }
+
+    private fun observePinValidationState() {
+        viewModel.pinValidated.observe(this, Observer { state ->
+            when (state) {
+                is State.Error -> {
+                    lifecycleScope.launch {
+                        sendResult("ERROR", state.error)
+                        delay(2000)
+                        finish()
+                    }
+                }
+
+                State.Loading -> {
+                    // Show loading state if necessary
+                }
+
+                is State.Success -> {
+                    sendResult("SUCCESS")
+                    finish()
+                }
+            }
+        })
     }
 
     private fun sendResult(result: String, error: String? = null) {
-        val intent = Intent("LOGIN_RESULT").apply {
+        val intent = Intent("RESULT_ACTION").apply {
             putExtra("RESULT", result)
             error?.let { putExtra("ERROR", it) }
         }

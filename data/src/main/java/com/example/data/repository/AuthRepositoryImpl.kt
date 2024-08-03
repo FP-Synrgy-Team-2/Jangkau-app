@@ -26,9 +26,9 @@ class AuthRepositoryImpl(
             apiService.loginAuth(AuthRequest(auth.username, auth.password))
         }
 
-        when (response.code()) {
-            400, 404 -> throw Exception("Username dan password belum sesuai, ulangi pengisian")
-            500 -> throw Exception("Server sedang bermasalah, silahkan coba beberapa saat lagi")
+        val errorMessage = handleResponseCodes(response)
+        if (errorMessage != null) {
+            throw Exception(errorMessage)
         }
 
         val loginResponse = response.body()?.data ?: throw Exception(response.message())
@@ -49,8 +49,6 @@ class AuthRepositoryImpl(
 
         return loginResponse.toDomain()
     }
-
-
 
     override suspend fun pinValidation(pin: String): BankAccount {
         val accountNumber = dataStorePref.accountNumber.firstOrNull()

@@ -1,28 +1,33 @@
 package com.example.jangkau.feature
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.jangkau.LoadingActivity
 import com.example.jangkau.R
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityPinInputBinding
+import com.example.jangkau.failedPopUp
 import com.example.jangkau.gone
 import com.example.jangkau.shorten
-import com.example.jangkau.viewmodel.AuthViewModel
 import com.ygoular.numpadview.NumPadView
-import org.koin.android.ext.android.inject
-
 
 class PinValidationActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_TARGET_ACTION = "EXTRA_TARGET_ACTION"
+        const val EXTRA_PIN = "EXTRA_PIN"
     }
 
     private lateinit var binding: ActivityPinInputBinding
-    private val authViewModel : AuthViewModel by inject()
     private var currentValue: String = ""
     private var targetAction: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPinInputBinding.inflate(layoutInflater)
@@ -30,24 +35,19 @@ class PinValidationActivity : BaseActivity() {
 
         targetAction = intent.getStringExtra(EXTRA_TARGET_ACTION)
 
-
         binding.navbar.imgCancel.gone()
         binding.navbar.tvTitlePage.gone()
 
         binding.firstPinView.isPasswordHidden = true
 
-
-        // need to be tested for talkback
         setContentDescriptions(binding.numPadView)
-
 
         binding.numPadView.setOnInteractionListener(
             onNewValue = {
                 val newValue = handleNewValue(it)
                 binding.firstPinView.setText(newValue)
                 if (newValue.length == 6) {
-                    showToast(newValue)
-                    authViewModel.validatePin(newValue)
+                    showLoadingActivity(newValue)
                 }
             },
             onRightIconClick = {
@@ -55,37 +55,45 @@ class PinValidationActivity : BaseActivity() {
             },
         )
 
-        authViewModel.pinValidated.observe(this) { state ->
-            if (state) {
-//                handleNavigation()
-                setResult(Activity.RESULT_OK)
-                finish()
-            } else {
-                showToast("PIN tidak valid")
-            }
-        }
-
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(pinValidationReceiver, IntentFilter("RESULT_ACTION"))
     }
 
-    // NEED TO BE CLEANED
+    private val pinValidationReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val result = intent?.getStringExtra("RESULT")
+            val error = intent?.getStringExtra("ERROR")
+            when (result) {
+                "SUCCESS" -> {
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                }
+                "ERROR" -> {
+                    failedPopUp(error ?: "PIN validation failed", this@PinValidationActivity)
+                    showToast(error ?: "PIN validation failed")
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this)
+            .unregisterReceiver(pinValidationReceiver)
+    }
+
     private fun handleNewValue(value: String): String {
         currentValue += value
         return currentValue
     }
 
     private fun handleRightValue(): String {
-        currentValue = if (currentValue.length > 1) { currentValue.shorten() } else { "" }
-        return currentValue
-    }
-
-    private fun handleNavigation() {
-        when (targetAction) {
-//            "openTransferReceipt" -> openTransferReceiptActivity()
-            "openGenerateCode" -> openGenerateCodeActivity()
-            "openQrisReceiptActivity" -> openQrisReceiptActivity()
-            "openHomeActivity" -> openHomeActivity()
-            else -> finish()
+        currentValue = if (currentValue.length > 1) {
+            currentValue.shorten()
+        } else {
+            ""
         }
+        return currentValue
     }
 
     private fun setContentDescriptions(numPadView: NumPadView) {
@@ -114,7 +122,12 @@ class PinValidationActivity : BaseActivity() {
         val leftIconId = com.ygoular.numpadview.R.id.pad_number_left_icon
         val leftIcon = numPadView.findViewById<View>(leftIconId)
         leftIcon.visibility = View.GONE
-
     }
 
+    private fun showLoadingActivity(pin: String) {
+        val intent = Intent(this, LoadingActivity::class.java).apply {
+            putExtra("PIN", pin)
+        }
+        startActivity(intent)
+    }
 }
