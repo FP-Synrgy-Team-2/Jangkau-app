@@ -66,12 +66,15 @@ class TransactionRepositoryImpl(
         return Transaction(
             transactionId = transactionResponse.transactionId,
             amount = transactionResponse.amount,
-            beneficiaryAccount = transactionResponse.beneficiaryAccount,
+            beneficiaryAccount = transactionResponse.beneficiaryAccount?.accountNumber ?: "",
+            beneficiaryAccountId = transactionResponse.beneficiaryAccount?.accountId ?: "",
+            beneficiaryName = transactionResponse.beneficiaryAccount?.ownerName ?: "",
             note = transactionResponse.note,
-            transactionDate = transactionResponse.transactionDate,
+            transactionDate = transactionResponse.transactionDate ?: "",
             isSaved = isSaved,
             accountId = transactionResponse.accountId,
-            adminFee = transactionResponse.adminFee
+            adminFee = transactionResponse.adminFee,
+            date = transactionResponse.date ?: ""
         )
     }
 

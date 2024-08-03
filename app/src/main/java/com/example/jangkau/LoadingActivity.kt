@@ -1,16 +1,15 @@
 package com.example.jangkau
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityLoadingBinding
 import com.example.jangkau.viewmodel.AuthViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class LoadingActivity : BaseActivity() {
@@ -29,20 +28,31 @@ class LoadingActivity : BaseActivity() {
         viewModel.state.observe(this, Observer { state ->
             when (state) {
                 is State.Error -> {
-                    showToast(state.error)
-                    finish()
+                    lifecycleScope.launch {
+                        sendResult("ERROR", state.error)
+                        delay(2000)
+                        finish()
+                    }
                 }
 
                 State.Loading -> {
-                    Log.d("LoadingActivity", "Loading state")  // Debug log
+                    // Show loading state if necessary
                 }
 
                 is State.Success -> {
-                    openHomeActivity()
+                    sendResult("SUCCESS")
                     finish()
                 }
             }
         })
         viewModel.loginUser(username, password)
+    }
+
+    private fun sendResult(result: String, error: String? = null) {
+        val intent = Intent("LOGIN_RESULT").apply {
+            putExtra("RESULT", result)
+            error?.let { putExtra("ERROR", it) }
+        }
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 }

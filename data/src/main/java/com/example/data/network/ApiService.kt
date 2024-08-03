@@ -77,7 +77,7 @@ interface ApiService {
     ) : Response<ApiResponse<TransactionResponse>>
 
 
-    @GET("/api/transaction/{transaction_id}")
+    @GET("/api/transactions/{transaction_id}")
     suspend fun getTransactionById(
         @Path("transaction_id") transactionId : String,
         @Header("Authorization") token: String
