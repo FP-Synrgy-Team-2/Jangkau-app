@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.Observer
 import com.example.domain.model.SavedAccount
 import com.example.jangkau.R
 import com.example.jangkau.State
@@ -13,6 +12,7 @@ import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityTransferInputBinding
 import com.example.jangkau.databinding.BottomSheetTransferConfirmationBinding
 import com.example.jangkau.gone
+import com.example.jangkau.invisible
 import com.example.jangkau.visible
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import com.example.jangkau.viewmodel.TransactionViewModel
@@ -25,6 +25,8 @@ class TransferInputActivity : BaseActivity() {
     private lateinit var binding: ActivityTransferInputBinding
     private val bankViewModel: BankAccountViewModel by inject()
     private val transactionViewModel: TransactionViewModel by inject()
+
+    private var transactionId = ""
 
     private val bottomSheetBinding: BottomSheetTransferConfirmationBinding by lazy {
         BottomSheetTransferConfirmationBinding.inflate(layoutInflater)
@@ -88,7 +90,8 @@ class TransferInputActivity : BaseActivity() {
                             binding.btnNext.visible()
                             Log.d("BottomSheet", "Success: ${state.data}")
                             namaRekening = state.data.ownerName
-                            openBottomDialog(namaRekening, rekeningTujuan, nominal, catatan, isSaved)
+                            val idRekeningPenerima = state.data.accountId ?: ""
+                            openBottomDialog(idRekeningPenerima, namaRekening, rekeningTujuan, nominal, catatan, isSaved)
                         }
                     }
                 }
@@ -102,11 +105,11 @@ class TransferInputActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PIN_INPUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            openTranferReceiptActivity()
+            openTransferReceiptActivity(transactionId)
         }
     }
 
-    private fun openBottomDialog(namaRekening: String?, rekeningTujuan: String, nominal: Int, catatan: String, isSaved: Boolean) {
+    private fun openBottomDialog(idRekeningPenerima: String, namaRekening: String?, rekeningTujuan: String, nominal: Int, catatan: String, isSaved: Boolean) {
         dialog.setContentView(bottomSheetBinding.root)
         val behavior = BottomSheetBehavior.from(bottomSheetBinding.root.parent as View)
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -118,22 +121,23 @@ class TransferInputActivity : BaseActivity() {
             tvNominal.text = nominal.toString()
             tvCatatan.text = catatan
             btnNext.setOnClickListener {
-                binding.progressBar.visible()
-                binding.btnNext.gone()
-                transactionViewModel.transfer(rekeningTujuan, nominal, catatan, isSaved)
+                bottomSheetBinding.progressBar.visible()
+                bottomSheetBinding.btnNext.invisible()
+                transactionViewModel.transfer(idRekeningPenerima, nominal, catatan, isSaved)
                 transactionViewModel.transactions.observe(this@TransferInputActivity) { state ->
                     when (state) {
                         is State.Error -> {
-                            binding.progressBar.gone()
-                            binding.btnNext.visible()
+                            bottomSheetBinding.progressBar.gone()
+                            bottomSheetBinding.btnNext.visible()
                             showToast(state.error)
                         }
                         State.Loading -> {
-                            Log.d("LoginActivity", "Loading state")  // Debug log
+                            Log.d("Transfer", "Loading state")  // Debug log
                         }
                         is State.Success -> {
-                            binding.progressBar.gone()
-                            binding.btnNext.visible()
+                            bottomSheetBinding.progressBar.gone()
+                            bottomSheetBinding.btnNext.visible()
+                            transactionId = state.data.transactionId
                             openPinInputActivity()
                             Log.d("TransferInputActivity", "Success state: ${state.data}")
                         }

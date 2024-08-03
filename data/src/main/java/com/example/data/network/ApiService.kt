@@ -50,6 +50,12 @@ interface ApiService {
     ): Response<ApiResponse<BankAccountResponse>>
 
 
+    @GET("/api/bank-accounts/user/{id}")
+    suspend fun getBankAccounts(
+        @Path("id") userId: String,
+        @Header("Authorization") token: String
+    ): Response<ApiResponse<List<BankAccountResponse>>>
+
     @GET("/api/saved-accounts/{id}")
     suspend fun getSavedBankAccount(
         @Path("id") userId: String,
@@ -67,6 +73,13 @@ interface ApiService {
     @POST("/api/transactions")
     suspend fun transaction(
         @Body transactionRequest: TransactionRequest,
+        @Header("Authorization") token: String
+    ) : Response<ApiResponse<TransactionResponse>>
+
+
+    @GET("/api/transactions/{transaction_id}")
+    suspend fun getTransactionById(
+        @Path("transaction_id") transactionId : String,
         @Header("Authorization") token: String
     ) : Response<ApiResponse<TransactionResponse>>
 

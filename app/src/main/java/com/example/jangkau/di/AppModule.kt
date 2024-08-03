@@ -3,19 +3,21 @@ package com.example.jangkau.di
 import com.example.data.local.DataStorePref
 import com.example.data.repository.AuthRepositoryImpl
 import com.example.data.repository.BankAccountRepositoryImpl
-import com.example.data.repository.BaseRepository
 import com.example.data.repository.TransactionRepositoryImpl
 import com.example.data.repository.UserRepositoryImpl
 import com.example.domain.repository.AuthRepository
 import com.example.domain.repository.BankAccountRepository
 import com.example.domain.repository.TransactionRepository
 import com.example.domain.repository.UserRepository
+import com.example.domain.usecase.auth.GetLoginStatusUseCase
 import com.example.domain.usecase.auth.LoginUseCase
+import com.example.domain.usecase.auth.LogoutUseCase
 import com.example.domain.usecase.auth.PinValidationUseCase
 import com.example.domain.usecase.bank_account.SearchDataBankByAccNumberUseCase
 import com.example.domain.usecase.bank_account.ShowDataBankAccUseCase
 import com.example.domain.usecase.bank_account.ShowSavedBankAccUseCase
-import com.example.domain.usecase.transfer.TransferRequestUseCase
+import com.example.domain.usecase.transaction.GetTransactionByIdUseCase
+import com.example.domain.usecase.transaction.TransferRequestUseCase
 import com.example.domain.usecase.user.GetUserUseCase
 import com.example.jangkau.viewmodel.AuthViewModel
 import com.example.jangkau.viewmodel.UserViewModel
@@ -38,15 +40,17 @@ object AppModule {
     }
 
     val viewModelModule = module {
-        viewModel { AuthViewModel(get(), get()) }
+        viewModel { AuthViewModel(get(), get(), get(), get()) }
         viewModel { UserViewModel(get()) }
         viewModel { BankAccountViewModel(get(), get(), get()) }
-        viewModel {TransactionViewModel(get())}
+        viewModel {TransactionViewModel(get(), get())}
     }
 
     val useCaseModule = module {
         factory { LoginUseCase(get()) }
         factory { PinValidationUseCase(get()) }
+        factory { LogoutUseCase(get()) }
+        factory { GetLoginStatusUseCase(get()) }
 
         factory { GetUserUseCase(get()) }
 
@@ -56,6 +60,7 @@ object AppModule {
         factory { SearchDataBankByAccNumberUseCase(get()) }
 
         factory { TransferRequestUseCase(get()) }
+        factory { GetTransactionByIdUseCase(get()) }
     }
 
 }

@@ -3,7 +3,6 @@ package com.example.jangkau.feature
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
 import com.example.jangkau.R
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityPinInputBinding
@@ -14,7 +13,7 @@ import com.ygoular.numpadview.NumPadView
 import org.koin.android.ext.android.inject
 
 
-class PinInputActivity : BaseActivity() {
+class PinValidationActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_TARGET_ACTION = "EXTRA_TARGET_ACTION"
@@ -56,13 +55,13 @@ class PinInputActivity : BaseActivity() {
             },
         )
 
-        authViewModel.pinValidated.observe(this){state->
-            if (state){
-                 setResult(Activity.RESULT_OK)
-                 finish()
+        authViewModel.pinValidated.observe(this) { state ->
+            if (state) {
 //                handleNavigation()
-            }else{
-                showToast("Pin tidak valid")
+                setResult(Activity.RESULT_OK)
+                finish()
+            } else {
+                showToast("PIN tidak valid")
             }
         }
 
@@ -81,13 +80,11 @@ class PinInputActivity : BaseActivity() {
 
     private fun handleNavigation() {
         when (targetAction) {
-            "openTransferReceipt" -> openTranferReceiptActivity()
+//            "openTransferReceipt" -> openTransferReceiptActivity()
             "openGenerateCode" -> openGenerateCodeActivity()
             "openQrisReceiptActivity" -> openQrisReceiptActivity()
-            else -> {
-                // Default action or close activity
-                finish()
-            }
+            "openHomeActivity" -> openHomeActivity()
+            else -> finish()
         }
     }
 

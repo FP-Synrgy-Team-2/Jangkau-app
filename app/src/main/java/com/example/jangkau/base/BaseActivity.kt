@@ -2,16 +2,13 @@ package com.example.jangkau.base
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.model.BankAccount
 
-import com.example.domain.model.SavedAccount
-import com.example.jangkau.R
+import com.example.jangkau.LoadingActivity
 import com.example.jangkau.databinding.NavbarBinding
-import com.example.jangkau.feature.PinInputActivity
+import com.example.jangkau.feature.PinValidationActivity
 import com.example.jangkau.feature.scan_qr.ScanQRActivity
 import com.example.jangkau.feature.auth.LoginActivity
 import com.example.jangkau.feature.forgot_password.InputEmailActivity
@@ -28,9 +25,12 @@ import com.example.jangkau.feature.transfer.TransferActivity
 import com.example.jangkau.feature.transfer.TransferInputActivity
 import com.example.jangkau.feature.transfer.TransferInputActivity.Companion.PIN_INPUT_REQUEST_CODE
 import com.example.jangkau.feature.transfer.TransferReceiptActivity
+import com.example.jangkau.viewmodel.AuthViewModel
+import org.koin.android.ext.android.inject
 
 abstract class BaseActivity : AppCompatActivity() {
 
+    private val authViewModel : AuthViewModel by inject()
     private lateinit var navbarBinding: NavbarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +42,14 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-            /** logic for session login **/
+
     }
 
-    private fun setupNavbar() {
+
+//    fun checkLoginStatus() {
+//
+//    }
+    fun setupNavbar() {
         navbarBinding = NavbarBinding.inflate(layoutInflater)
         setContentView(navbarBinding.root)
 
@@ -99,15 +103,17 @@ abstract class BaseActivity : AppCompatActivity() {
 //    }
 
     fun openPinInputActivity() {
-        val intent = Intent(this, PinInputActivity::class.java)
+        val intent = Intent(this, PinValidationActivity::class.java)
          startActivityForResult(intent, PIN_INPUT_REQUEST_CODE)
 //        intent.putExtra(PinInputActivity.EXTRA_TARGET_ACTION, action)
 //        startActivity(intent)
 
     }
 
-    fun openTranferReceiptActivity(){
-        val intent = Intent(this, TransferReceiptActivity::class.java)
+    fun openTransferReceiptActivity(transactionId : String){
+        val intent = Intent(this, TransferReceiptActivity::class.java).apply {
+            putExtra("EXTRA_TRANSACTION_ID", transactionId)
+        }
         startActivity(intent)
     }
 
@@ -139,6 +145,15 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun openQrisReceiptActivity(){
         val intent = Intent(this, QrisReceiptActivity::class.java)
+        startActivity(intent)
+    }
+
+
+    fun openLoadingActivity(username: String, password: String) {
+        val intent = Intent(this, LoadingActivity::class.java).apply {
+            putExtra("USERNAME", username)
+            putExtra("PASSWORD", password)
+        }
         startActivity(intent)
     }
 }

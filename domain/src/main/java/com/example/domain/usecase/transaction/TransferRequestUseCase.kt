@@ -1,4 +1,4 @@
-package com.example.domain.usecase.transfer
+package com.example.domain.usecase.transaction
 
 import android.util.Log
 import com.example.common.Resource
@@ -19,7 +19,7 @@ class TransferRequestUseCase (private val transactionRepository: TransactionRepo
             )
             emit(Resource.Success(response))
         } catch (e: Exception) {
-            emit(Resource.Error(e.message ?: "An error occurred"))
+            emit(Resource.Error(e.message.toString()))
             Log.e("TransferRequestUseCase", "Error making transfer request", e)
         }
 

@@ -9,6 +9,7 @@ import com.example.domain.model.Auth
 import com.example.domain.model.BankAccount
 import com.example.domain.model.Login
 import com.example.domain.repository.AuthRepository
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 
 class AuthRepositoryImpl(
@@ -49,6 +50,8 @@ class AuthRepositoryImpl(
         return loginResponse.toDomain()
     }
 
+
+
     override suspend fun pinValidation(pin: String): BankAccount {
         val accountNumber = dataStorePref.accountNumber.firstOrNull()
         val token = dataStorePref.accessToken.firstOrNull()
@@ -72,5 +75,13 @@ class AuthRepositoryImpl(
             balance = pinValidationResponse.balance,
             userId = null
         )
+    }
+
+    override suspend fun logout() {
+        dataStorePref.clearAllData()
+    }
+
+    override suspend fun getLoginStatus(): Boolean {
+        return dataStorePref.isLogin.first()
     }
 }

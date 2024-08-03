@@ -74,5 +74,7 @@
     <string name="john_smith">John Smith</string>
     <string name="kode_qris">Kode Qris</string>
     <string name="qr_code_standar_pembayaran_nasional">QR Code Standar pembayaran nasional</string>
+    <string name="kami_sedang_memverifikasi_data_anda">Kami sedang memverifikasi data anda.</string>
+    <string name="harap_tunggu">Harap Tunggu.</string>
 
 </resources>
