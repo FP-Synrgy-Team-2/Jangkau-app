@@ -14,7 +14,6 @@ import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityLoginBinding
 import com.example.jangkau.failedPopUp
-import com.example.jangkau.feature.transfer.TransferInputActivity
 import com.example.jangkau.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject

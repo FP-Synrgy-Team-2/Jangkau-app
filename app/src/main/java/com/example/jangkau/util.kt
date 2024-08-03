@@ -38,6 +38,86 @@ fun moneyFormatter(value: Long?, withPrefix: Boolean = true): String {
     return if (withPrefix) "Rp$formatted" else formatted
 }
 
+fun showCustomSnackbar(
+    text: String,
+    activity: Activity,
+    iconRes: Int,
+    iconTintRes: Int,
+    radius: Float,
+    onDismissAction: () -> Unit = {}
+) {
+    // Get the root view of the activity
+    val rootView = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
+
+    // Check if the overlay already exists and remove it
+    val existingOverlayView = rootView.findViewById<View>(R.id.overlay_view)
+    existingOverlayView?.let {
+        rootView.removeView(it)
+    }
+
+    // Create the overlay view
+    val overlayView = View(activity).apply {
+        id = R.id.overlay_view
+        setBackgroundColor(Color.parseColor("#80000000")) // semi-transparent black
+        layoutParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        )
+        alpha = 0f
+    }
+
+    // Add the overlay to the root view
+    rootView.addView(overlayView)
+
+    // Animate the overlay to fade in
+    overlayView.animate().alpha(1f).setDuration(300).start()
+
+    // Create and show the snackbar
+    val snackbar = createSnackbar(activity, text, iconRes, iconTintRes, radius, onDismissAction)
+    snackbar.addCallback(object : BaseTransientBottomBar.BaseCallback<AirySnackbar>() {
+        override fun onShown(transientBottomBar: AirySnackbar?) {
+            super.onShown(transientBottomBar)
+            // Ensure the overlay is visible when the snackbar is shown
+            overlayView.alpha = 1f
+        }
+
+        override fun onDismissed(transientBottomBar: AirySnackbar?, event: Int) {
+            // Animate the overlay to fade out and remove it
+            overlayView.animate().alpha(0f).setDuration(300).withEndAction {
+                rootView.removeView(overlayView)
+                onDismissAction()
+            }.start()
+        }
+    })
+
+    snackbar.show()
+}
+
+private fun createSnackbar(
+    activity: Activity,
+    text: String,
+    iconRes: Int,
+    iconTintRes: Int,
+    radius: Float,
+    onDismissAction: () -> Unit
+): AirySnackbar {
+    return AirySnackbar.make(
+        source = AirySnackbarSource.ActivitySource(activity),
+        type = Type.Custom(R.color.white),
+        attributes = listOf(
+            TextAttribute.Text(text = text),
+            TextAttribute.TextColor(textColor = R.color.black),
+            IconAttribute.Icon(iconRes),
+            IconAttribute.IconColor(iconTint = iconTintRes),
+            RadiusAttribute.Radius(radius = radius),
+            SizeAttribute.Margin(left = 4, right = 4, unit = SizeUnit.DP),
+            SizeAttribute.Padding(top = 15, bottom = 15, right = 10, unit = SizeUnit.DP),
+            GravityAttribute.Top,
+            AnimationAttribute.FadeInOut,
+        )
+    )
+}
+
 fun successPopUp(text: String, activity: Activity) {
     showCustomSnackbar(
         text = text,
@@ -58,66 +138,3 @@ fun failedPopUp(text: String, activity: Activity) {
     )
 }
 
-fun showCustomSnackbar(
-    text: String,
-    activity: Activity,
-    iconRes: Int,
-    iconTintRes: Int,
-    radius: Float,
-    onDismissAction: () -> Unit = {}
-) {
-    // Create the overlay view
-    val overlayView = View(activity).apply {
-        setBackgroundColor(Color.parseColor("#80000000")) // semi-transparent black
-        layoutParams = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.MATCH_PARENT,
-            FrameLayout.LayoutParams.MATCH_PARENT
-        )
-        alpha = 0f
-    }
-
-    // Get the root view of the activity
-    val rootView = activity.window.decorView.findViewById<ViewGroup>(android.R.id.content)
-
-    // Add the overlay to the root view
-    rootView.addView(overlayView)
-
-    // Animate the overlay to fade in
-    overlayView.animate().alpha(1f).setDuration(300).start()
-
-    // Create and show the snackbar
-    val snackbar = AirySnackbar.make(
-        source = AirySnackbarSource.ActivitySource(activity),
-        type = Type.Custom(R.color.white),
-        attributes = listOf(
-            TextAttribute.Text(text = text),
-            TextAttribute.TextColor(textColor = R.color.black),
-            IconAttribute.Icon(iconRes),
-            IconAttribute.IconColor(iconTint = iconTintRes),
-            RadiusAttribute.Radius(radius = radius),
-            SizeAttribute.Margin(left = 4, right = 4, unit = SizeUnit.DP),
-            SizeAttribute.Padding(top = 15, bottom = 15, right = 10, unit = SizeUnit.DP),
-            GravityAttribute.Top,
-            AnimationAttribute.FadeInOut,
-        )
-    )
-
-    // Set a callback to remove the overlay when the snackbar is dismissed
-    snackbar.addCallback(object : BaseTransientBottomBar.BaseCallback<AirySnackbar>() {
-        override fun onShown(transientBottomBar: AirySnackbar?) {
-            super.onShown(transientBottomBar)
-            // Ensure the overlay is visible when the snackbar is shown
-            overlayView.alpha = 1f
-        }
-
-        override fun onDismissed(transientBottomBar: AirySnackbar?, event: Int) {
-            // Animate the overlay to fade out and remove it
-            overlayView.animate().alpha(0f).setDuration(300).withEndAction {
-                rootView.removeView(overlayView)
-                onDismissAction()
-            }.start()
-        }
-    })
-
-    snackbar.show()
-}

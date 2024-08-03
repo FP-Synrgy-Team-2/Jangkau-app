@@ -14,6 +14,7 @@ import com.example.domain.usecase.auth.PinValidationUseCase
 import com.example.jangkau.State
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import com.example.jangkau.failedPopUp
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
