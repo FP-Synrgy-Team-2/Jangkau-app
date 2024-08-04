@@ -37,7 +37,6 @@ class LoginActivity : BaseActivity() {
                 openHomeActivity()
                 finish()
             } else if (result == "ERROR") {
-                showToast(error ?: "Unknown error")
                 failedPopUp(error ?: "Unknown error", this@LoginActivity)
             }
         }
@@ -48,7 +47,7 @@ class LoginActivity : BaseActivity() {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
             loginReceiver,
-            IntentFilter("LOGIN_RESULT")
+            IntentFilter("RESULT_ACTION")
         )
 
         binding.btnCancel.setOnClickListener { finish() }

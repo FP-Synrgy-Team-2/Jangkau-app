@@ -31,6 +31,11 @@ class AuthRepositoryImpl(
 //            throw Exception(errorMessage)
 //        }
 
+        when (response.code()) {
+            400, 404 -> throw Exception("Username dan password belum sesuai, ulangi pengisian")
+            500 -> throw Exception("Server sedang bermasalah, silahkan coba beberapa saat lagi")
+        }
+
         val loginResponse = response.body()?.data ?: throw Exception(response.message())
 
         Log.d(TAG, "Storing login data")
@@ -63,6 +68,11 @@ class AuthRepositoryImpl(
                 PinRequest(pin = pin, accountNumber = accountNumber),
                 it // Pass the token dynamically
             )
+        }
+
+        when (response.code) {
+            400, 404 -> throw Exception("Pin yang dimasukkan salah, silahkan coba lagi")
+            500 -> throw Exception("Server sedang bermasalah, silahkan coba beberapa saat lagi")
         }
 
         val pinValidationResponse = response.data ?: throw Exception(response.message)
