@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import com.example.domain.model.BankAccount
 import com.example.domain.model.SavedAccount
+import com.example.jangkau.CurrencyTextWatcher
 import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
@@ -15,6 +16,7 @@ import com.example.jangkau.databinding.BottomSheetTransferConfirmationBinding
 import com.example.jangkau.gone
 import com.example.jangkau.invisible
 import com.example.jangkau.moneyFormatter
+import com.example.jangkau.parseCurrency
 import com.example.jangkau.visible
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import com.example.jangkau.viewmodel.TransactionViewModel
@@ -83,14 +85,16 @@ class TransferInputActivity : BaseActivity() {
 
         binding.navbar.imgCancel.gone()
 
+        binding.edtNominal.addTextChangedListener(CurrencyTextWatcher(binding.edtNominal))
+
         binding.btnNext.setOnClickListener {
             namaRekening = savedAccount?.ownerName ?: ""
             rekeningTujuan = binding.textInputLayoutRekeningTujuan.editText?.text.toString()
-            nominal = binding.textInputLayoutNominal.editText?.text.toString().toInt()
+            nominal = parseCurrency(binding.textInputLayoutNominal.editText?.text.toString()).toInt()
             catatan = binding.textInputLayoutCatatan.editText?.text.toString()
             isSaved = binding.cbSimpanRekening.isChecked
 
-            if (rekeningTujuan.isNotEmpty() && nominal.toString().isNotEmpty() && catatan.isNotEmpty()) {
+            if (rekeningTujuan.isNotEmpty() && nominal > 0 && catatan.isNotEmpty()) {
                 binding.progressBar.visible()
                 binding.btnNext.gone()
 
@@ -117,7 +121,7 @@ class TransferInputActivity : BaseActivity() {
                     }
                 }
             } else {
-                showToast("Please fill all the fields")
+                showToast("Please fill all the fields correctly")
             }
         }
     }

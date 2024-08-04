@@ -2,8 +2,11 @@ package com.example.jangkau
 
 import android.app.Activity
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.FrameLayout
 import com.akndmr.library.AirySnackbar
 import com.akndmr.library.AirySnackbarSource
@@ -17,6 +20,7 @@ import com.akndmr.library.TextAttribute
 import com.akndmr.library.Type
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -154,4 +158,40 @@ fun formatDate(dateString: String): String {
         dateString
     }
 }
+fun formatCurrency(text: String): String {
+    val numberString = text.replace("[^\\d]".toRegex(), "")
+    return if (numberString.isNotEmpty()) {
+        val number = numberString.toLong()
+        "Rp${NumberFormat.getNumberInstance().format(number)}"
+    } else {
+        ""
+    }
+}
 
+fun parseCurrency(text: String): Long {
+    val numberString = text.replace("[^\\d]".toRegex(), "")
+    return if (numberString.isNotEmpty()) {
+        numberString.toLong()
+    } else {
+        0L
+    }
+}
+
+class CurrencyTextWatcher(private val editText: EditText) : TextWatcher {
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+    override fun afterTextChanged(s: Editable?) {
+        if (s == null) return
+        val originalText = s.toString()
+        editText.removeTextChangedListener(this)
+
+        val parsedNumber = parseCurrency(originalText)
+        val formattedText = formatCurrency(originalText)
+
+        editText.setText(formattedText)
+        editText.setSelection(formattedText.length)
+        editText.addTextChangedListener(this)
+    }
+}
