@@ -26,10 +26,10 @@ class AuthRepositoryImpl(
             apiService.loginAuth(AuthRequest(auth.username, auth.password))
         }
 
-        val errorMessage = handleResponseCodes(response)
-        if (errorMessage != null) {
-            throw Exception(errorMessage)
-        }
+//        val errorMessage = handleResponseCodes(response)
+//        if (errorMessage != null) {
+//            throw Exception(errorMessage)
+//        }
 
         val loginResponse = response.body()?.data ?: throw Exception(response.message())
 

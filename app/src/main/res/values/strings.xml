@@ -53,7 +53,7 @@
     <string name="tombol_kirim_ulang_kode">Tombol kirim ulang kode</string>
     <string name="textfield_untuk_input_password">textfield untuk input password</string>
     <string name="password">Password</string>
-    <string name="terdapat_karakter_dsb">Terdapat Karakter (@,!,#,% dsb)</string>
+    <string name="terdapat_karakter_dsb">Terdapat Karakter (@,!,#)</string>
     <string name="terdapat_huruf_kapital">Terdapat Huruf Kapital</string>
     <string name="terdapat_angka">Terdapat Angka</string>
     <string name="minimal_8_huruf">Minimal 8 Huruf</string>

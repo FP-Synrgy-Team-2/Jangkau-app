@@ -39,7 +39,7 @@ class InputNewPasswordActivity : BaseActivity() {
         binding.cbMin8Huruf.isChecked = password.length >= 8
         binding.cbTerdapatAngka.isChecked = password.any { it.isDigit() }
         binding.cbHurufKapital.isChecked = password.any { it.isUpperCase() }
-        binding.cbKarakter.isChecked = password.any { !it.isLetterOrDigit() }
+        binding.cbKarakter.isChecked = password.any { it in listOf('@', '#', '!') }
 
         checkAllCriteriaMet()
     }

@@ -55,10 +55,10 @@ class TransferReceiptActivity : BaseActivity() {
                     is State.Success -> {
                         bankViewModel
                         binding.apply {
-                            tvTitle.text = state.data.transactionId
+                            tvTransactionId.text = state.data.transactionId
                             tvName.text = state.data.beneficiaryName
                             tvRekening.text = state.data.beneficiaryAccount
-                            tvDate.text = state.data.date
+                            tvDate.text = state.data.transactionDate
                             tvNominal.text = moneyFormatter(state.data.amount.toLong())
                             tvBiayaAdmin.text = moneyFormatter(state.data.adminFee.toLong())
                             tvCatatan.text = "- ${state.data.note}"

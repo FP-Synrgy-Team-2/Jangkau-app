@@ -47,6 +47,7 @@ class LoadingActivity : BaseActivity() {
                 is State.Error -> {
                     lifecycleScope.launch {
                         sendResult("ERROR", state.error)
+                        failedPopUp("Login failed", this@LoadingActivity)
                         delay(2000)
                         finish()
                     }
@@ -57,8 +58,7 @@ class LoadingActivity : BaseActivity() {
                 }
 
                 is State.Success -> {
-                    sendResult("SUCCESS")
-                    finish()
+                    openHomeActivity()
                 }
             }
         })

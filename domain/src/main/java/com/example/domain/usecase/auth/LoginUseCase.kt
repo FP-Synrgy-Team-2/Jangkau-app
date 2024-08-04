@@ -19,7 +19,7 @@ class LoginUseCase(private val authRepository: AuthRepository) {
             emit(Resource.Success(response))
         }catch (e: Exception){
             emit(Resource.Error("${e.message}"))
-            Log.e("LoginUseCase", "Login failed", e) // Log the exception
+            Log.e("LoginUseCase", e.message.toString()) // Log the exception
         }
     }
 

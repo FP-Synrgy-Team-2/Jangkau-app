@@ -20,14 +20,14 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
-    private val loginUseCase : LoginUseCase,
+    private val loginUseCase: LoginUseCase,
     private val pinValidationUseCase: PinValidationUseCase,
     private val getLoginStatusUseCase: GetLoginStatusUseCase,
     private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<State<Login>>()
-    val state : MutableLiveData<State<Login>> = _state
+    val state: MutableLiveData<State<Login>> = _state
 
     private val _pinValidated = MutableLiveData<State<Boolean>>()
     val pinValidated: MutableLiveData<State<Boolean>> = _pinValidated
@@ -45,20 +45,22 @@ class AuthViewModel(
         }
     }
 
-
-    fun loginUser(username : String, password : String){
+    fun loginUser(username: String, password: String) {
+        Log.d("AuthViewModel", "loginUser called with username: $username")
         loginUseCase(
             Auth(username = username, password = password)
         ).onEach { result ->
-            when(result){
+            when (result) {
                 is Resource.Error -> {
                     Log.e("LoginUser", "Error: ${result.message}")
                     _state.value = State.Error(result.message ?: "An unexpected error occurred")
                 }
                 is Resource.Loading -> {
+                    Log.d("LoginUser", "Loading...")
                     _state.value = State.Loading
                 }
                 is Resource.Success -> {
+                    Log.d("LoginUser", "Success: ${result.data}")
                     _state.value = result.data?.let { State.Success(it) }
                     _isLoggedIn.value = true
                 }
@@ -67,6 +69,7 @@ class AuthViewModel(
     }
 
     fun validatePin(pin: String) {
+        Log.d("AuthViewModel", "validatePin called with pin: $pin")
         _pinValidated.value = State.Loading
         pinValidationUseCase(pin).onEach { result ->
             when (result) {
@@ -75,9 +78,11 @@ class AuthViewModel(
                     _pinValidated.value = State.Error(result.message ?: "An unexpected error occurred")
                 }
                 is Resource.Loading -> {
+                    Log.d("PinValidation", "Loading...")
                     _pinValidated.value = State.Loading
                 }
                 is Resource.Success -> {
+                    Log.d("PinValidation", "Success")
                     _pinValidated.value = State.Success(true)
                 }
             }
@@ -85,14 +90,16 @@ class AuthViewModel(
     }
 
     fun logout() {
+        Log.d("AuthViewModel", "logout called")
         viewModelScope.launch {
             logoutUseCase.execute().collect { success ->
                 if (success) {
+                    Log.d("AuthViewModel", "Logout successful")
                     _isLoggedIn.value = false
+                } else {
+                    Log.e("AuthViewModel", "Logout failed")
                 }
             }
         }
     }
-
-
 }
