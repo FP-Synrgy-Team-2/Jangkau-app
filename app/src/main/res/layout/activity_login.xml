@@ -34,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:contentDescription="@string/textfield_input_untuk_username"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -41,6 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:contentDescription="@string/textfield_input_untuk_username"
             android:id="@+id/edtUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,6 +65,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:contentDescription="@string/textfield_untuk_input_password"
         android:layout_marginEnd="24dp"
         app:errorEnabled="true"
         app:endIconMode="password_toggle"
@@ -77,6 +80,7 @@
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/textfield_untuk_input_password"
             android:autofillHints=""
             android:inputType="textPassword"
             android:background="@drawable/rounded_edittext" />

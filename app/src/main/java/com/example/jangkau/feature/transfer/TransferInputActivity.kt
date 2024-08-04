@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.example.domain.model.BankAccount
 import com.example.domain.model.SavedAccount
 import com.example.jangkau.R
 import com.example.jangkau.State
@@ -13,6 +14,7 @@ import com.example.jangkau.databinding.ActivityTransferInputBinding
 import com.example.jangkau.databinding.BottomSheetTransferConfirmationBinding
 import com.example.jangkau.gone
 import com.example.jangkau.invisible
+import com.example.jangkau.moneyFormatter
 import com.example.jangkau.visible
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import com.example.jangkau.viewmodel.TransactionViewModel
@@ -53,8 +55,20 @@ class TransferInputActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTransferInputBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.navbar.imgCancel.gone()
+        binding.navbar.imgBackArrow.setOnClickListener {
+            finish()
+        }
 
-        val savedAccount = intent.getSerializableExtra("EXTRA_SAVED_ACCOUNT") as? SavedAccount
+        val accountNumber = intent.getStringExtra("EXTRA_ACCOUNT_NUMBER")
+        val ownerName = intent.getStringExtra("EXTRA_OWNER_NAME")
+
+        if (accountNumber != null && ownerName != null) {
+            binding.cardRekeningSumber.tvNomorRekening.text = accountNumber
+            binding.cardRekeningSumber.tvJenisRekening.text = ownerName
+        }
+
+        val savedAccount = intent.getSerializableExtra("EXTRA_SAVED_ACCOUNT") as? BankAccount
         if (savedAccount != null) {
             binding.cardRekeningTujuan.cardRekeningTujuan.visible()
             binding.cardRekeningTujuan.tvNomorRekening.text = savedAccount.accountNumber
@@ -125,8 +139,10 @@ class TransferInputActivity : BaseActivity() {
         bottomSheetBinding.apply {
             tvName.text = namaRekening
             tvRekening.text = rekeningTujuan
-            tvNominal.text = nominal.toString()
+            tvNominal.text = moneyFormatter(nominal.toLong())
             tvCatatan.text = catatan
+            tvBiayaAdmin.text = moneyFormatter(0)
+            tvTransfer.text = moneyFormatter(nominal.toLong() + 0)
             btnNext.setOnClickListener {
                 openPinInputActivity()
             }

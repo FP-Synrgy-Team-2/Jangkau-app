@@ -25,6 +25,8 @@ class HomeActivity : BaseActivity() {
     private val authViewModel : AuthViewModel by inject()
 
     private var isBalanceHidden: Boolean = false // Default to hidden
+    private var accountNumber = ""
+    private var ownerName = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -33,7 +35,7 @@ class HomeActivity : BaseActivity() {
 
 
         binding.btnTransfer.setOnClickListener {
-            openTransferActivity()
+            openTransferActivity(accountNumber,ownerName)
         }
 
         binding.btnMutasi.setOnClickListener {
@@ -78,12 +80,14 @@ class HomeActivity : BaseActivity() {
                     binding.tv2.text = state.data.ownerName
                     binding.tvSaldo.text = moneyFormatter(state.data.balance?.toLong())
                     binding.tvRekening.text = state.data.accountNumber
+                    accountNumber = state.data.accountNumber
+                    ownerName = state.data.ownerName
                     binding.btnCopy.setOnClickListener {
                         val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val accountNumber = state.data.accountNumber
                         val clipData = android.content.ClipData.newPlainText("Account Number", accountNumber)
                         clipboardManager.setPrimaryClip(clipData)
-                        successPopUp("Nomor Rekening berhasil disalin!                    ", this)
+                        successPopUp("Nomor Rekening berhasil disalin!", this)
                     }
                 }
             }

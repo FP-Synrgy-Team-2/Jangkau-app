@@ -71,6 +71,17 @@ abstract class BaseRepository(
             }
         }
 
-        return response.body() ?: throw Exception("Response body is null")
+        if (response.code() == 500) {
+            throw Exception("Server sedang bermasalah, silahkan coba beberapa saat lagi")
+        }
+
+        if (response.code() == 400) {
+            val errorBody = response.errorBody()?.string()
+            if (errorBody != null && errorBody.contains("Incorrect PIN")){
+                throw Exception("PIN yang Anda masukkan salah")
+            }
+        }
+
+        return response.body()!!
     }
 }

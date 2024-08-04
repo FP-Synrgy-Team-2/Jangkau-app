@@ -16,15 +16,20 @@ import org.koin.android.ext.android.inject
 class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener {
 
     private lateinit var binding: ActivityTransferBinding
-    private lateinit var accountAdapter : AdapterAccountSaved
-    private val bankViewModel : BankAccountViewModel by inject()
+    private lateinit var accountAdapter: AdapterAccountSaved
+    private val bankViewModel: BankAccountViewModel by inject()
 
-    private var savedAccount : List<BankAccount> = emptyList()
+    private var savedAccount: List<BankAccount> = emptyList()
+    private var accountNumber: String? = null
+    private var ownerName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTransferBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        accountNumber = intent.getStringExtra("EXTRA_ACCOUNT_NUMBER")
+        ownerName = intent.getStringExtra("EXTRA_OWNER_NAME")
 
         setObserver()
 
@@ -34,38 +39,38 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
         }
 
         binding.btnInputBaru.setOnClickListener {
-            openTransferInputActivity()
+            openTransferInputActivity(
+                ownerName = ownerName,
+                accountNumber = accountNumber
+            )
         }
-
-
-
-
     }
 
     override fun onItemClick(savedAccount: BankAccount) {
-        openTransferInputActivity(savedAccount)
+        openTransferInputActivity(
+            savedAccount = savedAccount,
+            accountNumber = accountNumber,
+            ownerName = ownerName
+        )
     }
 
     private fun setObserver() {
-
         bankViewModel.showSavedBankAcc()
-        bankViewModel.savedBankAcc.observe(this) {state->
-            when(state){
+        bankViewModel.savedBankAcc.observe(this) { state ->
+            when (state) {
                 is State.Error -> {
                     showToast(state.error)
                 }
                 State.Loading -> {
-
+                    // Handle loading state if necessary
                 }
                 is State.Success -> {
                     when (val data = state.data) {
-
                         ListState.Empty -> {
                             binding.rvRekeningTersimpan.gone()
                             binding.imgEmptySavedAccount.visible()
                         }
                         is ListState.Success -> {
-
                             accountAdapter = AdapterAccountSaved(data.data.toMutableList(), this)
                             savedAccount = data.data.toMutableList()
 
@@ -73,12 +78,10 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
                                 layoutManager = LinearLayoutManager(this@TransferActivity)
                                 adapter = accountAdapter
                             }
-
                         }
                     }
                 }
             }
-
         }
     }
 }

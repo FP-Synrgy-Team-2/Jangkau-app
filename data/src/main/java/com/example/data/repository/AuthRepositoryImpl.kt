@@ -70,10 +70,6 @@ class AuthRepositoryImpl(
             )
         }
 
-        when (response.code) {
-            400, 404 -> throw Exception("Pin yang dimasukkan salah, silahkan coba lagi")
-            500 -> throw Exception("Server sedang bermasalah, silahkan coba beberapa saat lagi")
-        }
 
         val pinValidationResponse = response.data ?: throw Exception(response.message)
         return BankAccount(

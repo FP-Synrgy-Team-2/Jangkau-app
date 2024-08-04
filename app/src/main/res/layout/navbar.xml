@@ -10,7 +10,9 @@
         android:id="@+id/imgBackArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:src="@drawable/back_arrow"
+        android:contentDescription="@string/tombol_kembali"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

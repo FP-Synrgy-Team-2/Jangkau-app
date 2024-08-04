@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.model.BankAccount
+import com.example.domain.model.SavedAccount
 
 import com.example.jangkau.LoadingActivity
 import com.example.jangkau.databinding.NavbarBinding
@@ -74,17 +75,23 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun openTransferActivity() {
-        val intent = Intent(this, TransferActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun openTransferInputActivity(savedAccount: BankAccount? = null) {
-        val intent = Intent(this, TransferInputActivity::class.java).apply {
-            putExtra("EXTRA_SAVED_ACCOUNT", savedAccount)
+    fun openTransferActivity(accountNumber: String?, ownerName: String?) {
+        val intent = Intent(this, TransferActivity::class.java).apply {
+            putExtra("EXTRA_ACCOUNT_NUMBER", accountNumber)
+            putExtra("EXTRA_OWNER_NAME", ownerName)
         }
         startActivity(intent)
     }
+
+    fun openTransferInputActivity(savedAccount: BankAccount? = null, accountNumber: String? = null, ownerName: String? = null) {
+        val intent = Intent(this, TransferInputActivity::class.java).apply {
+            putExtra("EXTRA_SAVED_ACCOUNT", savedAccount)
+            putExtra("EXTRA_ACCOUNT_NUMBER", accountNumber)
+            putExtra("EXTRA_OWNER_NAME", ownerName)
+        }
+        startActivity(intent)
+    }
+
 
 
     fun openMutasiActivity(){

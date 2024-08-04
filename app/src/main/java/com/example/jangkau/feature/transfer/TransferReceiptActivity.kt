@@ -8,6 +8,7 @@ import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityTransferReceiptBinding
 import com.example.jangkau.databinding.BottomSheetShareBinding
+import com.example.jangkau.formatDate
 import com.example.jangkau.gone
 import com.example.jangkau.moneyFormatter
 import com.example.jangkau.viewmodel.BankAccountViewModel
@@ -58,9 +59,10 @@ class TransferReceiptActivity : BaseActivity() {
                             tvTransactionId.text = state.data.transactionId
                             tvName.text = state.data.beneficiaryName
                             tvRekening.text = state.data.beneficiaryAccount
-                            tvDate.text = state.data.transactionDate
+                            tvDate.text = formatDate(state.data.transactionDate)
                             tvNominal.text = moneyFormatter(state.data.amount.toLong())
                             tvBiayaAdmin.text = moneyFormatter(state.data.adminFee.toLong())
+                            tvTransfer.text = moneyFormatter(state.data.amount.toLong())
                             tvCatatan.text = "- ${state.data.note}"
                         }
                     }

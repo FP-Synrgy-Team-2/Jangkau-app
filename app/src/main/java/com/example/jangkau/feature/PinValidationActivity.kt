@@ -16,6 +16,7 @@ import com.example.jangkau.failedPopUp
 import com.example.jangkau.gone
 import com.example.jangkau.shorten
 import com.ygoular.numpadview.NumPadView
+import org.koin.ext.clearQuotes
 
 class PinValidationActivity : BaseActivity() {
 
@@ -69,8 +70,8 @@ class PinValidationActivity : BaseActivity() {
                     finish()
                 }
                 "ERROR" -> {
+                    resetPinInput()
                     failedPopUp(error ?: "PIN validation failed", this@PinValidationActivity)
-                    showToast(error ?: "PIN validation failed")
                 }
             }
         }
@@ -129,5 +130,10 @@ class PinValidationActivity : BaseActivity() {
             putExtra("PIN", pin)
         }
         startActivity(intent)
+    }
+
+    private fun resetPinInput() {
+        currentValue = ""
+        binding.firstPinView.setText(currentValue)
     }
 }

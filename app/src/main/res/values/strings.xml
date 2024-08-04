@@ -76,5 +76,7 @@
     <string name="qr_code_standar_pembayaran_nasional">QR Code Standar pembayaran nasional</string>
     <string name="kami_sedang_memverifikasi_data_anda">Kami sedang memverifikasi data anda.</string>
     <string name="harap_tunggu">Harap Tunggu.</string>
+    <string name="textfield_input_untuk_username">textfield input untuk username</string>
+    <string name="tombol_beranda">tombol beranda</string>
 
 </resources>

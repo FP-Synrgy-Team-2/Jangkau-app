@@ -17,6 +17,8 @@ import com.akndmr.library.TextAttribute
 import com.akndmr.library.Type
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 fun View.gone() {
     this.visibility = View.GONE
@@ -136,5 +138,20 @@ fun failedPopUp(text: String, activity: Activity) {
         iconTintRes = R.color.red_custom,
         radius = 0.4f
     )
+}
+
+fun formatDate(dateString: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
+        val date = inputFormat.parse(dateString)
+        if (date != null) {
+            outputFormat.format(date)
+        } else {
+            dateString
+        }
+    } catch (e: Exception) {
+        dateString
+    }
 }
 
