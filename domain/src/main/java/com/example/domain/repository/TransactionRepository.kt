@@ -8,4 +8,6 @@ interface TransactionRepository {
 
     suspend fun makeTransferRequest(rekeningTujuan: String, nominal: Int, catatan: String, isSaved : Boolean) : Transaction
 
+    suspend fun getTransactionHistory() : List<Transaction>
+
 }

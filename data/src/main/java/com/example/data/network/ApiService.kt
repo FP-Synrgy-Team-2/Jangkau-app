@@ -1,6 +1,7 @@
 package com.example.data.network
 
 import com.example.data.network.model.ApiResponse
+import com.example.data.network.model.TransactionHistoryResponse
 import com.example.data.network.model.auth.AuthRequest
 import com.example.data.network.model.auth.LoginResponse
 import com.example.data.network.model.auth.UserResponse
@@ -82,5 +83,11 @@ interface ApiService {
         @Path("transaction_id") transactionId : String,
         @Header("Authorization") token: String
     ) : Response<ApiResponse<TransactionResponse>>
+
+    @POST("/api/transactions/history/{user_id}")
+    suspend fun getTransactionHistory(
+        @Path("user_id") userId : String,
+        @Header("Authorization") token: String,
+    ) : Response<ApiResponse<List<TransactionHistoryResponse>>>
 
 }
