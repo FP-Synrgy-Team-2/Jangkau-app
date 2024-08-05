@@ -7,6 +7,7 @@ import com.example.data.network.model.auth.LoginResponse
 import com.example.data.network.model.auth.UserResponse
 import com.example.data.network.model.bank_account.BankAccountResponse
 import com.example.data.network.model.bank_account.PinRequest
+import com.example.data.network.model.transaction.TransactionHistoryRequest
 import com.example.data.network.model.transaction.TransactionRequest
 import com.example.data.network.model.transaction.TransactionResponse
 import com.example.domain.model.Login
@@ -86,6 +87,7 @@ interface ApiService {
 
     @POST("/api/transactions/history/{user_id}")
     suspend fun getTransactionHistory(
+        @Body transactionHistoryRequest: TransactionHistoryRequest,
         @Path("user_id") userId : String,
         @Header("Authorization") token: String,
     ) : Response<ApiResponse<List<TransactionHistoryResponse>>>
