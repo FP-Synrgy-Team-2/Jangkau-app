@@ -28,6 +28,7 @@ import com.example.jangkau.feature.transfer.TransferInputActivity.Companion.PIN_
 import com.example.jangkau.feature.transfer.TransferReceiptActivity
 import com.example.jangkau.viewmodel.AuthViewModel
 import org.koin.android.ext.android.inject
+import java.time.LocalDate
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -94,8 +95,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
 
-    fun openMutasiActivity(){
-        val intent = Intent(this, MutationActivity::class.java)
+    fun openMutasiActivity(fromDate : LocalDate, toDate : LocalDate){
+        val intent = Intent(this, MutationActivity::class.java).apply {
+            putExtra("EXTRA_FROM_DATE", fromDate.toString())
+            putExtra("EXTRA_TO_DATE", toDate.toString())
+        }
         startActivity(intent)
     }
 

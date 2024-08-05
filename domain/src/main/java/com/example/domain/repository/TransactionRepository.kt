@@ -9,6 +9,6 @@ interface TransactionRepository {
 
     suspend fun makeTransferRequest(rekeningTujuan: String, nominal: Int, catatan: String, isSaved : Boolean) : Transaction
 
-    suspend fun getTransactionHistory(fromDate: LocalDate, toDate: LocalDate) : List<Transaction>
+    suspend fun getTransactionHistory(fromDate: String, toDate: String) : List<Transaction>
 
 }

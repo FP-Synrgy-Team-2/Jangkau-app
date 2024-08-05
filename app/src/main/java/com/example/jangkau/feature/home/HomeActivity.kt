@@ -17,6 +17,7 @@ import com.example.jangkau.viewmodel.AuthViewModel
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import com.example.jangkau.visible
 import org.koin.android.ext.android.inject
+import java.time.LocalDate
 
 class HomeActivity : BaseActivity() {
 
@@ -39,7 +40,9 @@ class HomeActivity : BaseActivity() {
         }
 
         binding.btnMutasi.setOnClickListener {
-            openMutasiActivity()
+            val fromDate = LocalDate.now()
+            val toDate = fromDate.minusDays(14)
+            openMutasiActivity(fromDate, toDate)
         }
 
 

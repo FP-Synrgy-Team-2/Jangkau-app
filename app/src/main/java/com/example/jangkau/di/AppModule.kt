@@ -17,6 +17,7 @@ import com.example.domain.usecase.bank_account.SearchDataBankByAccNumberUseCase
 import com.example.domain.usecase.bank_account.ShowDataBankAccUseCase
 import com.example.domain.usecase.bank_account.ShowSavedBankAccUseCase
 import com.example.domain.usecase.transaction.GetTransactionByIdUseCase
+import com.example.domain.usecase.transaction.GetTransactionHistoryUseCase
 import com.example.domain.usecase.transaction.TransferRequestUseCase
 import com.example.domain.usecase.user.GetUserUseCase
 import com.example.jangkau.viewmodel.AuthViewModel
@@ -43,7 +44,7 @@ object AppModule {
         viewModel { AuthViewModel(get(), get(), get(), get()) }
         viewModel { UserViewModel(get()) }
         viewModel { BankAccountViewModel(get(), get(), get()) }
-        viewModel {TransactionViewModel(get(), get())}
+        viewModel {TransactionViewModel(get(), get(), get())}
     }
 
     val useCaseModule = module {
@@ -61,6 +62,7 @@ object AppModule {
 
         factory { TransferRequestUseCase(get()) }
         factory { GetTransactionByIdUseCase(get()) }
+        factory { GetTransactionHistoryUseCase(get()) }
     }
 
 }

@@ -79,7 +79,7 @@ class TransactionRepositoryImpl(
         )
     }
 
-    override suspend fun getTransactionHistory(fromDate: LocalDate, toDate: LocalDate): List<Transaction> {
+    override suspend fun getTransactionHistory(fromDate: String, toDate: String): List<Transaction> {
         val userId = dataStorePref.userId.firstOrNull()
         val token = dataStorePref.accessToken.firstOrNull()
 
