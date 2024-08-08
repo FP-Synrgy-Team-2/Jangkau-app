@@ -49,7 +49,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/transaction_history"
+        android:id="@+id/transactionHistory"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         tools:listitem="@layout/item_date_header"

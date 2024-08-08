@@ -6,6 +6,7 @@ import com.example.data.network.model.transaction.TransactionHistoryRequest
 import com.example.data.network.model.transaction.TransactionRequest
 import com.example.data.network.utils.SafeApiRequest
 import com.example.domain.model.Transaction
+import com.example.domain.model.TransactionGroup
 import com.example.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.firstOrNull
 import java.time.LocalDate
@@ -79,7 +80,7 @@ class TransactionRepositoryImpl(
         )
     }
 
-    override suspend fun getTransactionHistory(fromDate: String, toDate: String): List<Transaction> {
+    override suspend fun getTransactionHistory(fromDate: String, toDate: String): List<TransactionGroup> {
         val userId = dataStorePref.userId.firstOrNull()
         val token = dataStorePref.accessToken.firstOrNull()
 
@@ -102,20 +103,23 @@ class TransactionRepositoryImpl(
         }
         val transactionHistoryResponse = response.data ?: throw Exception(response.message)
         return transactionHistoryResponse.map {
-            Transaction(
-                beneficiaryAccount = it.to.accountNumber,
-                beneficiaryName = it.to.ownerName,
-                beneficiaryAccountId = it.to.accountId,
-
-                accountId = it.from.accountId,
-
-                transactionDate = it.transactionDate,
-                adminFee = 0,
+            TransactionGroup(
                 date = it.transactionDate,
-                transactionId = it.transactionId,
-                amount = it.total.toInt(),
-                isSaved = false,
-                note = ""
+                transactions = transactionHistoryResponse.map { transaction ->
+                    Transaction(
+                        accountId = transaction.from.accountId,
+                        adminFee = 0,
+                        amount = transaction.total.toInt(),
+                        date = transaction.transactionDate,
+                        isSaved = null,
+                        note = "",
+                        transactionDate = transaction.transactionDate,
+                        transactionId = transaction.transactionId,
+                        beneficiaryAccount = transaction.to.accountNumber,
+                        beneficiaryName = transaction.to.ownerName,
+                        beneficiaryAccountId = transaction.to.accountId
+                    )
+                }
             )
         }
     }

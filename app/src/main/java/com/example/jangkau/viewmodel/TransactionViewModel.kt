@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.Resource
 import com.example.domain.model.Transaction
+import com.example.domain.model.TransactionGroup
 import com.example.domain.usecase.transaction.GetTransactionByIdUseCase
 import com.example.domain.usecase.transaction.GetTransactionHistoryUseCase
 import com.example.domain.usecase.transaction.TransferRequestUseCase
@@ -24,8 +25,8 @@ class TransactionViewModel(
     private val _transactions = MutableLiveData<State<Transaction>>()
     val transactions: MutableLiveData<State<Transaction>> = _transactions
 
-    private val _transactionsHistory = MutableLiveData<State<List<Transaction>>>()
-    val transactionsHistory: MutableLiveData<State<List<Transaction>>> = _transactionsHistory
+    private val _transactionsHistory = MutableLiveData<State<List<TransactionGroup>>>()
+    val transactionsHistory: MutableLiveData<State<List<TransactionGroup>>> = _transactionsHistory
 
     fun getTransactionById(transactionId: String) {
         getTransactionUseCase.invoke(transactionId).onEach { result ->
