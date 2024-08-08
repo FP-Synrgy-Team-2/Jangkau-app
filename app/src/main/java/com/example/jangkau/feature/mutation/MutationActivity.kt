@@ -2,14 +2,10 @@ package com.example.jangkau.feature.mutation
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.Transaction
 import com.example.domain.model.TransactionGroup
-import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityMutationBinding
@@ -40,11 +36,9 @@ class MutationActivity : BaseActivity() {
                         Log.e("MutationActivity", "Error: ${state.error}")
                         showToast(state.error)
                     }
-
                     State.Loading -> {
                         Log.d("MutationActivity", "Loading transaction history...")
                     }
-
                     is State.Success -> {
                         Log.d("MutationActivity", "Transaction history loaded successfully")
 
@@ -52,10 +46,7 @@ class MutationActivity : BaseActivity() {
                         Log.d("MutationActivity", "Transaction History: ${state.data}")
 
                         transactionHistory = state.data.map { transactionGroupResponse ->
-                            Log.d(
-                                "MutationActivity",
-                                "Mapping TransactionGroup: ${transactionGroupResponse.date}"
-                            )
+                            Log.d("MutationActivity", "Mapping TransactionGroup: ${transactionGroupResponse.date}")
                             TransactionGroup(
                                 date = transactionGroupResponse.date,
                                 transactions = transactionGroupResponse.transactions
@@ -71,54 +62,16 @@ class MutationActivity : BaseActivity() {
                             transactionAdapter.notifyDataSetChanged()
                         }
 
-                        Log.d(
-                            "MutationActivity",
-                            "Adapter set with ${transactionHistory.size} items"
-                        )
+                        Log.d("MutationActivity", "Adapter set with ${transactionHistory.size} items")
                     }
                 }
             }
         } else {
             Log.e("MutationActivity", "Missing date information in intent")
         }
-    }
 
-
-        private fun setupObserver() {
-        transactionViewModel.transactionsHistory.observe(this) { state ->
-            when (state) {
-                is State.Error -> {
-                    Log.e("MutationActivity", "Error: ${state.error}")
-                    showToast(state.error)
-                }
-                State.Loading -> {
-                    Log.d("MutationActivity", "Loading transaction history...")
-                }
-                is State.Success -> {
-                    Log.d("MutationActivity", "Transaction history loaded successfully")
-                    updateTransactionHistory(state.data)
-                }
-            }
+        binding.btnFilter.setOnClickListener {
+            openMutasiFilterActivity()
         }
-    }
-
-    private fun updateTransactionHistory(data: List<TransactionGroup>) {
-        transactionHistory = data.map { transactionGroupResponse ->
-            Log.d("MutationActivity", "Mapping TransactionGroup: ${transactionGroupResponse.date}")
-            TransactionGroup(
-                date = transactionGroupResponse.date,
-                transactions = transactionGroupResponse.transactions
-            )
-        }
-
-        if (!::transactionAdapter.isInitialized) {
-            transactionAdapter = AdapterTransactionGroup(transactionHistory)
-            binding.transactionHistory.layoutManager = LinearLayoutManager(this)
-            binding.transactionHistory.adapter = transactionAdapter
-        } else {
-            transactionAdapter.notifyDataSetChanged()
-        }
-
-        Log.d("MutationActivity", "Adapter set with ${transactionHistory.size} items")
     }
 }

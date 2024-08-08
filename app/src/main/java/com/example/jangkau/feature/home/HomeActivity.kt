@@ -4,6 +4,8 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import com.example.jangkau.ErrorActivity
 import com.example.jangkau.State
@@ -28,15 +30,16 @@ class HomeActivity : BaseActivity() {
     private var isBalanceHidden: Boolean = false // Default to hidden
     private var accountNumber = ""
     private var ownerName = ""
+    private var doubleBackToExitPressedOnce = false // Track back button presses
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setObserver()
 
-
         binding.btnTransfer.setOnClickListener {
-            openTransferActivity(accountNumber,ownerName)
+            openTransferActivity(accountNumber, ownerName)
         }
 
         binding.btnMutasi.setOnClickListener {
@@ -44,7 +47,6 @@ class HomeActivity : BaseActivity() {
             val toDate = fromDate.minusDays(14)
             openMutasiActivity(fromDate, toDate)
         }
-
 
         binding.icon.setOnCheckedChangeListener { _, isChecked ->
             isBalanceHidden = isChecked
@@ -59,21 +61,31 @@ class HomeActivity : BaseActivity() {
             authViewModel.logout()
             openLoginActivity()
         }
-
-
-
-
     }
 
-    private fun setObserver(){
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            // Close the app
+            finishAffinity()
+        } else {
+            this.doubleBackToExitPressedOnce = true
+            showToast("Tekan sekali lagi untuk keluar")
+
+            // Reset the flag after 2 seconds
+            Handler(Looper.getMainLooper()).postDelayed({
+                doubleBackToExitPressedOnce = false
+            }, 2000)
+        }
+    }
+
+    private fun setObserver() {
         bankViewModel.showDataBankAcc()
-        bankViewModel.state.observe(this){state->
-            when(state){
+        bankViewModel.state.observe(this) { state ->
+            when (state) {
                 is State.Error -> {
                     val intent = Intent(this, ErrorActivity::class.java)
                     intent.putExtra("ERROR_MESSAGE", state.error)
                     startActivity(intent)
-
                 }
                 State.Loading -> {
                     binding.main.gone()
