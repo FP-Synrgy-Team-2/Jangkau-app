@@ -85,7 +85,7 @@ class TransactionViewModel(
                     _transactionsHistory.value = result.data?.let { State.Success(it) }
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 
 }

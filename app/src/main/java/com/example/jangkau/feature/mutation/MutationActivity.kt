@@ -29,7 +29,7 @@ class MutationActivity : BaseActivity() {
 
         if (fromDate != null && toDate != null) {
             Log.d("MutationActivity", "From Date: $fromDate, To Date: $toDate")
-            transactionViewModel.getTransactionHistory(fromDate, toDate)
+            transactionViewModel.getTransactionHistory(toDate, fromDate)
             transactionViewModel.transactionsHistory.observe(this) { state ->
                 when (state) {
                     is State.Error -> {
@@ -40,11 +40,6 @@ class MutationActivity : BaseActivity() {
                         Log.d("MutationActivity", "Loading transaction history...")
                     }
                     is State.Success -> {
-                        Log.d("MutationActivity", "Transaction history loaded successfully")
-
-                        // Log the data received
-                        Log.d("MutationActivity", "Transaction History: ${state.data}")
-
                         transactionHistory = state.data.map { transactionGroupResponse ->
                             Log.d("MutationActivity", "Mapping TransactionGroup: ${transactionGroupResponse.date}")
                             TransactionGroup(
@@ -53,7 +48,6 @@ class MutationActivity : BaseActivity() {
                             )
                         }
 
-                        // Initialize the adapter only if it's not already initialized
                         if (!::transactionAdapter.isInitialized) {
                             transactionAdapter = AdapterTransactionGroup(transactionHistory)
                             binding.transactionHistory.layoutManager = LinearLayoutManager(this)

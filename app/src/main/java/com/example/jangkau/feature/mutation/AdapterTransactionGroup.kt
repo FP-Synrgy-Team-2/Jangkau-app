@@ -20,7 +20,6 @@ class AdapterTransactionGroup(private val transactionGroups: List<TransactionGro
 
     override fun onBindViewHolder(holder: TransactionGroupViewHolder, position: Int) {
         val transactionGroup = transactionGroups[position]
-        Log.d("AdapterTransactionGroup", "Binding data for date: ${transactionGroup.date}")
         with(holder.binding) {
             dateHeaderText.text = transactionGroup.date
 
