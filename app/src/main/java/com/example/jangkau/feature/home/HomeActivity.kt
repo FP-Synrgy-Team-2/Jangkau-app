@@ -44,7 +44,7 @@ class HomeActivity : BaseActivity() {
         }
 
         binding.btnMutasi.setOnClickListener {
-            val fromDate = LocalDate.now()
+            val fromDate = LocalDate.now().plusDays(1)
             val toDate = fromDate.minusDays(14)
             openMutasiActivity(fromDate, toDate)
         }

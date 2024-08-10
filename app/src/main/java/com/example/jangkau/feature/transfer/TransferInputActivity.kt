@@ -118,6 +118,12 @@ class TransferInputActivity : BaseActivity() {
                     return@setOnClickListener
                 }
 
+                if (rekeningTujuan == accountNumber){
+                    binding.textInputLayoutRekeningTujuan.error = "Rekening tujuan tidak boleh sama dengan rekening sumber"
+                    return@setOnClickListener
+                }
+
+
                 binding.progressBar.visible()
                 binding.btnNext.gone()
 

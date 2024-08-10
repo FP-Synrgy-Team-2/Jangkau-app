@@ -53,7 +53,8 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
         openTransferInputActivity(
             savedAccount = savedAccount,
             accountNumber = accountNumber,
-            ownerName = ownerName
+            ownerName = ownerName,
+            balance = balance
         )
     }
 

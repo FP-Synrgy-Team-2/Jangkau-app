@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.TransactionGroup
 import com.example.jangkau.databinding.ItemDateHeaderBinding
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class AdapterTransactionGroup(private val transactionGroups: List<TransactionGroup>) :
     RecyclerView.Adapter<AdapterTransactionGroup.TransactionGroupViewHolder>() {
@@ -21,7 +24,7 @@ class AdapterTransactionGroup(private val transactionGroups: List<TransactionGro
     override fun onBindViewHolder(holder: TransactionGroupViewHolder, position: Int) {
         val transactionGroup = transactionGroups[position]
         with(holder.binding) {
-            dateHeaderText.text = transactionGroup.date
+            dateHeaderText.text = formatTime(transactionGroup.date)
 
             val transactionAdapter = AdapterTransactionHistory(transactionGroup.transactions)
             transactionHistory.layoutManager = LinearLayoutManager(holder.itemView.context)
@@ -30,4 +33,11 @@ class AdapterTransactionGroup(private val transactionGroups: List<TransactionGro
     }
 
     override fun getItemCount() = transactionGroups.size
+
+    private fun formatTime(dateString: String): String {
+        val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+        val dateTime = LocalDate.parse(dateString, formatter)
+        val dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("id", "ID"))
+        return dateTime.format(dateFormatter)
+    }
 }
