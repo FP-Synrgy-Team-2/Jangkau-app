@@ -35,9 +35,8 @@ class AdapterTransactionGroup(private val transactionGroups: List<TransactionGro
     override fun getItemCount() = transactionGroups.size
 
     private fun formatTime(dateString: String): String {
-        val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
-        val dateTime = LocalDate.parse(dateString, formatter)
+        val date = LocalDate.parse(dateString)
         val dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale("id", "ID"))
-        return dateTime.format(dateFormatter)
+        return date.format(dateFormatter)
     }
 }
