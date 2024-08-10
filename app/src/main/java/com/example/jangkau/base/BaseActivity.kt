@@ -76,18 +76,20 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun openTransferActivity(accountNumber: String?, ownerName: String?) {
+    fun openTransferActivity(accountNumber: String?, ownerName: String?, balance : Double) {
         val intent = Intent(this, TransferActivity::class.java).apply {
             putExtra("EXTRA_ACCOUNT_NUMBER", accountNumber)
             putExtra("EXTRA_OWNER_NAME", ownerName)
+            putExtra("EXTRA_BALANCE", balance)
         }
         startActivity(intent)
     }
 
-    fun openTransferInputActivity(savedAccount: BankAccount? = null, accountNumber: String? = null, ownerName: String? = null) {
+    fun openTransferInputActivity(savedAccount: BankAccount? = null, accountNumber: String? = null, ownerName: String? = null, balance : Double? = null) {
         val intent = Intent(this, TransferInputActivity::class.java).apply {
             putExtra("EXTRA_SAVED_ACCOUNT", savedAccount)
             putExtra("EXTRA_ACCOUNT_NUMBER", accountNumber)
+            putExtra("EXTRA_BALANCE", balance)
             putExtra("EXTRA_OWNER_NAME", ownerName)
         }
         startActivity(intent)

@@ -3,6 +3,8 @@ package com.example.jangkau.feature.transfer
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import com.example.domain.model.BankAccount
@@ -48,6 +50,7 @@ class TransferInputActivity : BaseActivity() {
     private var nominal: Int = 0
     private lateinit var catatan: String
     private var isSaved: Boolean = false
+    private var balance : Double = 0.0
 
     companion object {
         const val PIN_INPUT_REQUEST_CODE = 1
@@ -64,6 +67,7 @@ class TransferInputActivity : BaseActivity() {
 
         val accountNumber = intent.getStringExtra("EXTRA_ACCOUNT_NUMBER")
         val ownerName = intent.getStringExtra("EXTRA_OWNER_NAME")
+        balance = intent.getDoubleExtra("EXTRA_BALANCE", 0.0)
 
         if (accountNumber != null && ownerName != null) {
             binding.cardRekeningSumber.tvNomorRekening.text = accountNumber
@@ -83,6 +87,20 @@ class TransferInputActivity : BaseActivity() {
             binding.textView.gone()
         }
 
+        binding.textInputLayoutCatatan.editText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null && s.length > 25) {
+                    binding.textInputLayoutCatatan.error = "Catatan tidak bisa melebihi 25 karakter"
+                } else {
+                    binding.textInputLayoutCatatan.error = null
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         binding.navbar.imgCancel.gone()
 
         binding.edtNominal.addTextChangedListener(CurrencyTextWatcher(binding.edtNominal))
@@ -94,7 +112,12 @@ class TransferInputActivity : BaseActivity() {
             catatan = binding.textInputLayoutCatatan.editText?.text.toString()
             isSaved = binding.cbSimpanRekening.isChecked
 
-            if (rekeningTujuan.isNotEmpty() && nominal > 0 && catatan.isNotEmpty()) {
+            if (rekeningTujuan.isNotEmpty() && nominal > 0) {
+                if (nominal > balance) {
+                    binding.textInputLayoutNominal.error = "Saldo anda tidak cukup"
+                    return@setOnClickListener
+                }
+
                 binding.progressBar.visible()
                 binding.btnNext.gone()
 
@@ -121,7 +144,7 @@ class TransferInputActivity : BaseActivity() {
                     }
                 }
             } else {
-                showToast("Please fill all the fields correctly")
+                showToast("Silahkan isi semua form terlebih dahulu")
             }
         }
     }

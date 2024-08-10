@@ -30,6 +30,7 @@ class HomeActivity : BaseActivity() {
     private var isBalanceHidden: Boolean = false // Default to hidden
     private var accountNumber = ""
     private var ownerName = ""
+    private var balance = 0.0
     private var doubleBackToExitPressedOnce = false // Track back button presses
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +40,7 @@ class HomeActivity : BaseActivity() {
         setObserver()
 
         binding.btnTransfer.setOnClickListener {
-            openTransferActivity(accountNumber, ownerName)
+            openTransferActivity(accountNumber, ownerName, balance)
         }
 
         binding.btnMutasi.setOnClickListener {
@@ -97,6 +98,7 @@ class HomeActivity : BaseActivity() {
                     binding.tvRekening.text = state.data.accountNumber
                     accountNumber = state.data.accountNumber
                     ownerName = state.data.ownerName
+                    balance = state.data.balance ?: 0.0
                     binding.btnCopy.setOnClickListener {
                         val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                         val accountNumber = state.data.accountNumber
