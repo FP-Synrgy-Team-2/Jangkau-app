@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.Transaction
 import com.example.domain.model.TransactionGroup
+import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityMutationBinding
+import com.example.jangkau.gone
 import com.example.jangkau.viewmodel.TransactionViewModel
 import org.koin.android.ext.android.inject
 
@@ -23,6 +25,15 @@ class MutationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMutationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        //Setup Navbar
+        binding.navbar.tvTitlePage.text = getString(R.string.mutasi_rekening)
+        binding.navbar.imgBackArrow.setOnClickListener {
+            finish()
+        }
+        binding.navbar.imgCancel.gone()
+
 
         val fromDate = intent.getStringExtra("EXTRA_FROM_DATE")
         val toDate = intent.getStringExtra("EXTRA_TO_DATE")

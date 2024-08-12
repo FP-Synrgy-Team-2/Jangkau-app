@@ -101,7 +101,7 @@
     <Button
         android:id="@+id/btnLogin"
         style="@style/Widget.Material3.Button"
-        android:layout_width="ma"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Masuk"

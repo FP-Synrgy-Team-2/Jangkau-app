@@ -10,20 +10,20 @@
         android:id="@+id/icon_transaction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/dot_circle"
         android:contentDescription="Icon transaksi"
+        android:src="@drawable/ic_transfer"
+        app:layout_constraintBottom_toBottomOf="@+id/description_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="@+id/description_text" />
 
     <TextView
         android:id="@+id/description_text"
         android:layout_width="0dp"
-        android:layout_height="24dp"
+        android:layout_height="wrap_content"
         android:text="@string/transfer"
-        android:contentDescription="Deskripsi transaksi: Transfer"
         android:textStyle="bold"
         android:layout_marginStart="6dp"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@id/icon_transaction"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +33,8 @@
         android:layout_height="wrap_content"
         tools:text="- Rp 2.500.000"
         android:contentDescription="Jumlah transaksi"
-        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textSize="16sp"
         android:textColor="#CB3A31"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,9 +45,9 @@
         android:layout_height="wrap_content"
         android:text="Transfer Antar BCA"
         android:contentDescription="Jenis transfer"
-        android:layout_marginTop="4dp"
-        android:textColor="#8E8E8E"
-        android:textSize="14sp"
+        android:layout_marginTop="6dp"
+        android:textColor="@color/blue_primary"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/description_text" />
 
@@ -55,21 +56,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Ke ADILLA SYAFIRA PUTRI - 9823456612"
-        android:contentDescription="Informasi transfer"
         android:layout_marginTop="4dp"
-        android:textColor="#8E8E8E"
-        android:textSize="14sp"
+        android:textColor="@color/blue_primary"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/transfer_type_text" />
 
     <TextView
         android:id="@+id/time_text"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="wrap_content"
         tools:text="09.00 WIB"
         android:contentDescription="Waktu transaksi"
         android:layout_marginTop="8dp"
-        android:textSize="14sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/transfer_info_text" />
 

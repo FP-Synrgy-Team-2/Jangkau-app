@@ -72,13 +72,13 @@ abstract class BaseRepository(
         }
 
         if (response.code() == 500) {
-            throw Exception("Server sedang bermasalah, silahkan coba beberapa saat lagi")
+            throw Exception("Server bermasalah, coba lagi nanti")
         }
 
         if (response.code() == 400) {
             val errorBody = response.errorBody()?.string()
             if (errorBody != null && errorBody.contains("Incorrect PIN")){
-                throw Exception("PIN yang Anda masukkan salah")
+                throw Exception("PIN Salah")
             }
         }
 

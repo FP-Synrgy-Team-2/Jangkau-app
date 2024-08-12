@@ -122,7 +122,7 @@
 
     <Button
         android:id="@+id/btnTransfer"
-        app:icon="@drawable/transfer"
+        app:icon="@drawable/ic_circle_transfer"
         style="@style/Widget.Material3.Button.Icon"
         android:layout_width="match_parent"
         android:textSize="18sp"

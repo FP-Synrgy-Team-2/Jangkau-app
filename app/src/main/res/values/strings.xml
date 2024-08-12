@@ -78,5 +78,7 @@
     <string name="harap_tunggu">Harap Tunggu.</string>
     <string name="textfield_input_untuk_username">textfield input untuk username</string>
     <string name="tombol_beranda">tombol beranda</string>
+    <string name="hapus_filter">Hapus Filter</string>
+    <string name="mutasi_rekening">Mutasi Rekening</string>
 
 </resources>
