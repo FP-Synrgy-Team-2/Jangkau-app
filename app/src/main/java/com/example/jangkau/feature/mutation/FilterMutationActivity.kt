@@ -6,13 +6,16 @@ import android.os.Bundle
 import com.example.jangkau.R
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityFilterMutationBinding
-import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Locale
 
 class FilterMutationActivity : BaseActivity() {
     private lateinit var binding: ActivityFilterMutationBinding
     private val calendar = Calendar.getInstance()
+
+    private var fromDate: LocalDate? = null
+    private var toDate: LocalDate? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,28 +24,30 @@ class FilterMutationActivity : BaseActivity() {
 
         binding.cardFromDate.root.setOnClickListener {
             showDatePicker(this) { selectedDate ->
-                binding.cardFromDate.editTextFromDate.text = selectedDate
+                fromDate = selectedDate
+                binding.cardFromDate.editTextFromDate.text = selectedDate.formatToDisplay()
             }
         }
 
         binding.cardToDate.root.setOnClickListener {
             showDatePicker(this) { selectedDate ->
-                binding.cardToDate.editTextFromDate.text = selectedDate
+                toDate = selectedDate
+                binding.cardToDate.editTextFromDate.text = selectedDate.formatToDisplay()
             }
+        }
+
+        binding.btnApply.setOnClickListener {
+            validateAndOpenMutasiActivity()
         }
     }
 
-    private fun showDatePicker(context: Context, onDateSelected: (String) -> Unit) {
+    private fun showDatePicker(context: Context, onDateSelected: (LocalDate) -> Unit) {
         val datePickerDialog = DatePickerDialog(
             context,
             R.style.CustomDatePickerDialog,
             { _, year, month, dayOfMonth ->
-                val selectedDate = Calendar.getInstance().apply {
-                    set(year, month, dayOfMonth)
-                }
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val formattedDate = dateFormat.format(selectedDate.time)
-                onDateSelected(formattedDate)
+                val selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                onDateSelected(selectedDate)
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -55,5 +60,28 @@ class FilterMutationActivity : BaseActivity() {
         }
 
         datePickerDialog.show()
+    }
+
+    private fun validateAndOpenMutasiActivity() {
+        when {
+            fromDate == null -> {
+                showToast("Silahkan isi tanggal mulai")
+            }
+            toDate == null -> {
+                showToast("Silahkan isi tanggal akhir")
+            }
+            fromDate!!.isBefore(toDate) -> {
+                showToast("Tanggal mulai harus lebih besar dari tanggal akhir")
+            }
+            else -> {
+                openMutasiActivity(fromDate!!, toDate!!, fromMutationFilter = true)
+                finish()
+            }
+        }
+    }
+
+    private fun LocalDate.formatToDisplay(): String {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        return this.format(formatter)
     }
 }

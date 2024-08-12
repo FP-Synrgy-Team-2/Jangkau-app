@@ -22,6 +22,7 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
     private var savedAccount: List<BankAccount> = emptyList()
     private var accountNumber: String? = null
     private var ownerName: String? = null
+    private var balance : Double? = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
 
         accountNumber = intent.getStringExtra("EXTRA_ACCOUNT_NUMBER")
         ownerName = intent.getStringExtra("EXTRA_OWNER_NAME")
+        balance = intent.getDoubleExtra("EXTRA_BALANCE", 0.0)
 
         setObserver()
 
@@ -41,7 +43,8 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
         binding.btnInputBaru.setOnClickListener {
             openTransferInputActivity(
                 ownerName = ownerName,
-                accountNumber = accountNumber
+                accountNumber = accountNumber,
+                balance = balance
             )
         }
     }
@@ -50,7 +53,8 @@ class TransferActivity : BaseActivity(), AdapterAccountSaved.OnItemClickListener
         openTransferInputActivity(
             savedAccount = savedAccount,
             accountNumber = accountNumber,
-            ownerName = ownerName
+            ownerName = ownerName,
+            balance = balance
         )
     }
 

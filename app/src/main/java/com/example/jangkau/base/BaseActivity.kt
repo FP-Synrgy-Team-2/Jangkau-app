@@ -28,6 +28,7 @@ import com.example.jangkau.feature.transfer.TransferInputActivity.Companion.PIN_
 import com.example.jangkau.feature.transfer.TransferReceiptActivity
 import com.example.jangkau.viewmodel.AuthViewModel
 import org.koin.android.ext.android.inject
+import java.time.LocalDate
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -75,18 +76,20 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun openTransferActivity(accountNumber: String?, ownerName: String?) {
+    fun openTransferActivity(accountNumber: String?, ownerName: String?, balance : Double) {
         val intent = Intent(this, TransferActivity::class.java).apply {
             putExtra("EXTRA_ACCOUNT_NUMBER", accountNumber)
             putExtra("EXTRA_OWNER_NAME", ownerName)
+            putExtra("EXTRA_BALANCE", balance)
         }
         startActivity(intent)
     }
 
-    fun openTransferInputActivity(savedAccount: BankAccount? = null, accountNumber: String? = null, ownerName: String? = null) {
+    fun openTransferInputActivity(savedAccount: BankAccount? = null, accountNumber: String? = null, ownerName: String? = null, balance : Double? = null) {
         val intent = Intent(this, TransferInputActivity::class.java).apply {
             putExtra("EXTRA_SAVED_ACCOUNT", savedAccount)
             putExtra("EXTRA_ACCOUNT_NUMBER", accountNumber)
+            putExtra("EXTRA_BALANCE", balance)
             putExtra("EXTRA_OWNER_NAME", ownerName)
         }
         startActivity(intent)
@@ -94,8 +97,12 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
 
-    fun openMutasiActivity(){
-        val intent = Intent(this, MutationActivity::class.java)
+    fun openMutasiActivity(fromDate : LocalDate, toDate : LocalDate, fromMutationFilter : Boolean = false){
+        val intent = Intent(this, MutationActivity::class.java).apply {
+            putExtra("EXTRA_FROM_DATE", fromDate.toString())
+            putExtra("EXTRA_TO_DATE", toDate.toString())
+            putExtra("EXTRA_FROM_MUTATION_FILTER", fromMutationFilter)
+        }
         startActivity(intent)
     }
 

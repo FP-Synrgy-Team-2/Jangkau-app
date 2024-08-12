@@ -36,23 +36,31 @@
         android:id="@+id/btnQris"
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        app:strokeColor="@color/blue_primary"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
         android:text="QRIS"
-        app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+        android:textSize="20sp"
+        android:paddingVertical="10dp"
         app:circularflow_radiusInDP="40dp"
-        android:layout_marginVertical="10dp"
+        android:contentDescription="tombol scan qris"
         app:layout_constraintBottom_toTopOf="@id/btnLogin"
-        app:layout_constraintTop_toBottomOf="@+id/imgRafiki" />
+        app:layout_constraintTop_toBottomOf="@+id/imgRafiki"
+        app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+        app:strokeColor="@color/blue_primary"
+        tools:layout_editor_absoluteX="16dp" />
 
     <Button
         android:id="@+id/btnLogin"
         style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
-        android:text="Login"
+        android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
-        app:layout_constraintTop_toBottomOf="@id/btnQris" />
+        android:textSize="20sp"
+        android:paddingVertical="10dp"
+        android:text="Masuk"
+        android:contentDescription="Tombol Masuk"
+        app:layout_constraintTop_toBottomOf="@id/btnQris"
+        app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+        tools:layout_editor_absoluteX="16dp" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

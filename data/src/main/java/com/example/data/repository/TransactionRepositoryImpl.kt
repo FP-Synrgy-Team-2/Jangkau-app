@@ -2,9 +2,11 @@ package com.example.data.repository
 
 import com.example.data.local.DataStorePref
 import com.example.data.network.ApiService
+import com.example.data.network.model.transaction.TransactionHistoryRequest
 import com.example.data.network.model.transaction.TransactionRequest
 import com.example.data.network.utils.SafeApiRequest
 import com.example.domain.model.Transaction
+import com.example.domain.model.TransactionGroup
 import com.example.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.firstOrNull
 import java.time.LocalDate
@@ -76,6 +78,57 @@ class TransactionRepositoryImpl(
             adminFee = transactionResponse.adminFee,
             date = transactionResponse.date ?: ""
         )
+    }
+
+    override suspend fun getTransactionHistory(fromDate: String, toDate: String): List<TransactionGroup> {
+        val userId = dataStorePref.userId.firstOrNull()
+        val token = dataStorePref.accessToken.firstOrNull()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formattedFromDate = fromDate.format(formatter)
+        val formattedToDate = toDate.format(formatter)
+
+        if (userId == null || token == null) {
+            throw Exception("User ID or Access Token not found")
+        }
+        val response = performRequestWithTokenHandling {
+            apiService.getTransactionHistory(
+                transactionHistoryRequest = TransactionHistoryRequest(
+                    startDate = formattedFromDate,
+                    endDate = formattedToDate
+                ),
+                userId = userId,
+                token = "Bearer $token"
+            )
+        }
+        val transactionHistoryResponse = response.data ?: throw Exception(response.message)
+
+        // Group transactions by date
+        val groupedTransactions = transactionHistoryResponse.groupBy {
+            // Convert transactionDate to LocalDate and format as yyyy-MM-dd
+            LocalDate.parse(it.transactionDate.substring(0, 10)).toString()
+        }.map { (date, transactions) ->
+            TransactionGroup(
+                date = date,
+                transactions = transactions.map { transaction ->
+                    Transaction(
+                        accountId = transaction.from.accountId,
+                        adminFee = 0,
+                        amount = transaction.total.toInt(),
+                        date = transaction.transactionDate,
+                        isSaved = null,
+                        note = "",
+                        transactionDate = transaction.transactionDate,
+                        transactionId = transaction.transactionId,
+                        beneficiaryAccount = transaction.to.accountNumber,
+                        beneficiaryName = transaction.to.ownerName,
+                        beneficiaryAccountId = transaction.to.accountId
+                    )
+                }
+            )
+        }
+
+        return groupedTransactions
     }
 
 

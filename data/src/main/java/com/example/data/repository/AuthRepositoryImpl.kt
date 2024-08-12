@@ -32,8 +32,8 @@ class AuthRepositoryImpl(
 //        }
 
         when (response.code()) {
-            400, 404 -> throw Exception("Username dan password belum sesuai, ulangi pengisian")
-            500 -> throw Exception("Server sedang bermasalah, silahkan coba beberapa saat lagi")
+            400, 404 -> throw Exception("Username dan password salah, silahkan coba lagi")
+            500 -> throw Exception("Server bermasalah, coba lagi nanti")
         }
 
         val loginResponse = response.body()?.data ?: throw Exception(response.message())

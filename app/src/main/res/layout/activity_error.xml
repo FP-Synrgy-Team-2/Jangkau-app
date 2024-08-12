@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingHorizontal="16dp"
-        android:paddingTop="100dp"
         tools:context=".feature.error.ErrorActivity">
 
     <ImageView
@@ -15,38 +14,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/rafiki_error"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvErrorMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Error message"
+        android:lines="3"
+        android:layout_marginTop="20dp"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/ivRafikiError"
         app:layout_constraintStart_toStartOf="@+id/ivRafikiError"
-        app:layout_constraintTop_toBottomOf="@id/ivRafikiError" />
+        app:layout_constraintBottom_toTopOf="@id/ivRafikiError" />
 
     <Button
         android:id="@+id/btnRefresh"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Refresh"
+        android:layout_marginTop="30dp"
+        android:text="Coba Lagi"
         app:layout_constraintEnd_toEndOf="@+id/ivRafikiError"
         app:layout_constraintStart_toStartOf="@+id/ivRafikiError"
-        app:layout_constraintTop_toBottomOf="@+id/tvErrorMessage" />
+        app:layout_constraintTop_toBottomOf="@+id/ivRafikiError" />
 
     <Button
         android:id="@+id/btnLogout"
+        style="@style/Widget.Material3.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Logout"
-        style="@style/Widget.Material3.Button"
         android:backgroundTint="@color/red_custom"
+        android:layout_marginTop="10dp"
+        android:text="Login Ulang"
         app:layout_constraintEnd_toEndOf="@+id/ivRafikiError"
         app:layout_constraintStart_toStartOf="@+id/ivRafikiError"
         app:layout_constraintTop_toBottomOf="@+id/btnRefresh" />
