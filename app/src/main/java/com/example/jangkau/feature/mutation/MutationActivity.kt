@@ -12,7 +12,9 @@ import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityMutationBinding
 import com.example.jangkau.gone
 import com.example.jangkau.viewmodel.TransactionViewModel
+import com.example.jangkau.visible
 import org.koin.android.ext.android.inject
+import java.time.LocalDate
 
 class MutationActivity : BaseActivity() {
     private lateinit var binding: ActivityMutationBinding
@@ -37,6 +39,19 @@ class MutationActivity : BaseActivity() {
 
         val fromDate = intent.getStringExtra("EXTRA_FROM_DATE")
         val toDate = intent.getStringExtra("EXTRA_TO_DATE")
+        val fromFilterMutationActivity = intent.getBooleanExtra("EXTRA_FROM_MUTATION_FILTER", false)
+
+        if (fromFilterMutationActivity) {
+            binding.btnDeleteFilter.visible()
+            binding.btnFilter.gone()
+
+            binding.btnDeleteFilter.setOnClickListener {
+                val defaultFromDate = LocalDate.now()
+                val defaultToDate = defaultFromDate.minusDays(14)
+                openMutasiActivity(defaultFromDate, defaultToDate)
+                finish()
+            }
+        }
 
         if (fromDate != null && toDate != null) {
             Log.d("MutationActivity", "From Date: $fromDate, To Date: $toDate")
@@ -77,6 +92,7 @@ class MutationActivity : BaseActivity() {
 
         binding.btnFilter.setOnClickListener {
             openMutasiFilterActivity()
+            finish()
         }
     }
 }

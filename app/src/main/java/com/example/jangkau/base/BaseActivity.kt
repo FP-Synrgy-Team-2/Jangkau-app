@@ -97,10 +97,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
 
-    fun openMutasiActivity(fromDate : LocalDate, toDate : LocalDate){
+    fun openMutasiActivity(fromDate : LocalDate, toDate : LocalDate, fromMutationFilter : Boolean = false){
         val intent = Intent(this, MutationActivity::class.java).apply {
             putExtra("EXTRA_FROM_DATE", fromDate.toString())
             putExtra("EXTRA_TO_DATE", toDate.toString())
+            putExtra("EXTRA_FROM_MUTATION_FILTER", fromMutationFilter)
         }
         startActivity(intent)
     }
