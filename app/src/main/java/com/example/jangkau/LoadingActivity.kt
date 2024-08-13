@@ -42,7 +42,7 @@ class LoadingActivity : BaseActivity() {
     }
 
     private fun observeLoginState() {
-        viewModel.state.observe(this, Observer { state ->
+        viewModel.loginState.observe(this, Observer { state ->
             when (state) {
                 is State.Error -> {
                     lifecycleScope.launch {

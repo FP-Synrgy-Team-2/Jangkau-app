@@ -20,7 +20,6 @@ import org.koin.android.ext.android.inject
 
 class LoginActivity : BaseActivity() {
 
-    private val authViewModel: AuthViewModel by inject()
 
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(

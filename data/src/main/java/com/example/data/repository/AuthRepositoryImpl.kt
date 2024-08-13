@@ -21,6 +21,35 @@ class AuthRepositoryImpl(
         private const val TAG = "AuthRepositoryImpl"
     }
 
+
+    override suspend fun validateOTP(otp: String): String {
+        val response = safeApiRequest {
+            apiService.validateOTP(otp)
+        }
+        when (response.code()) {
+            400 -> throw Exception("OTP salah")
+            500 -> throw Exception("Server bermasalah, coba lagi nanti")
+        }
+
+        val validateOTPResponse = response.body()?.data ?: throw Exception(response.message())
+        return validateOTPResponse
+    }
+    override suspend fun forgotPassword(email: String) : String {
+        val response = safeApiRequest {
+            apiService.forgotPassword(email)
+        }
+
+        when (response.code()){
+            404 -> throw Exception("Email belum terdaftar")
+            500 -> throw Exception("Server bermasalah, coba lagi nanti")
+        }
+
+        val forgotPasswordResponse = response.body()?.data ?: throw Exception(response.message())
+
+        return forgotPasswordResponse
+    }
+
+
     override suspend fun login(auth: Auth): Login {
         val response = safeApiRequest {
             apiService.loginAuth(AuthRequest(auth.username, auth.password))

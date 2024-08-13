@@ -92,4 +92,10 @@ interface ApiService {
         @Header("Authorization") token: String,
     ) : Response<ApiResponse<List<TransactionHistoryResponse>>>
 
+    @POST("/api/auth/password")
+    suspend fun forgotPassword(@Body email : String) : Response<ApiResponse<String>>
+
+    @POST("/api/auth/password/otp")
+    suspend fun validateOTP(@Body otp : String) : Response<ApiResponse<String>>
+
 }

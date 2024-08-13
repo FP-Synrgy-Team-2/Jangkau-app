@@ -7,12 +7,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.jangkau.R
+import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityInputOtpBinding
+import com.example.jangkau.failedPopUp
+import com.example.jangkau.gone
+import com.example.jangkau.viewmodel.AuthViewModel
+import com.example.jangkau.visible
+import org.koin.android.ext.android.inject
 
 class InputOtpActivity : BaseActivity() {
 
     private lateinit var binding: ActivityInputOtpBinding
+    private val authViewModel: AuthViewModel by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInputOtpBinding.inflate(layoutInflater)
@@ -23,7 +30,26 @@ class InputOtpActivity : BaseActivity() {
         startCountdownTimer()
 
         binding.btnLogin.setOnClickListener {
-            openInputNewPasswordActivity()
+            val otp = binding.firstPinView.text.toString()
+            authViewModel.validateOtp(otp)
+            authViewModel.state.observe(this){state->
+                when(state){
+                    is State.Error -> {
+                        binding.progressBar.gone()
+                        binding.btnLogin.visible()
+                        failedPopUp(state.error, this)
+                    }
+                    State.Loading -> {
+                        binding.progressBar.visible()
+                        binding.btnLogin.gone()
+                    }
+                    is State.Success -> {
+                        binding.progressBar.gone()
+                        binding.btnLogin.visible()
+                        openInputNewPasswordActivity()
+                    }
+                }
+            }
         }
     }
 

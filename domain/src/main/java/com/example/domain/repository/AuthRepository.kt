@@ -14,4 +14,8 @@ interface AuthRepository {
 
     suspend fun getLoginStatus() : Boolean
 
+    suspend fun forgotPassword(email : String) : String
+
+    suspend fun validateOTP(otp : String) : String
+
 }

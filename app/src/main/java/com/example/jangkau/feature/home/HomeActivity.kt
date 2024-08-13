@@ -61,6 +61,7 @@ class HomeActivity : BaseActivity() {
         binding.btnLogout.setOnClickListener {
             authViewModel.logout()
             openLoginActivity()
+            finish()
         }
     }
 

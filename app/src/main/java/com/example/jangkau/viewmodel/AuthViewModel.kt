@@ -7,14 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.common.Resource
 import com.example.domain.model.Auth
 import com.example.domain.model.Login
+import com.example.domain.usecase.auth.ForgotPasswordUseCase
 import com.example.domain.usecase.auth.GetLoginStatusUseCase
 import com.example.domain.usecase.auth.LoginUseCase
 import com.example.domain.usecase.auth.LogoutUseCase
 import com.example.domain.usecase.auth.PinValidationUseCase
+import com.example.domain.usecase.auth.ValidateOtpUseCase
 import com.example.jangkau.State
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import com.example.jangkau.failedPopUp
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -23,11 +24,17 @@ class AuthViewModel(
     private val loginUseCase: LoginUseCase,
     private val pinValidationUseCase: PinValidationUseCase,
     private val getLoginStatusUseCase: GetLoginStatusUseCase,
+    private val forgotPasswordUseCase: ForgotPasswordUseCase,
+    private val validateOtpUseCase: ValidateOtpUseCase,
     private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<State<Login>>()
-    val state: MutableLiveData<State<Login>> = _state
+
+    private val _state = MutableLiveData<State<String>>()
+    val state: MutableLiveData<State<String>> = _state
+
+    private val _loginState = MutableLiveData<State<Login>>()
+    val loginState: MutableLiveData<State<Login>> = _loginState
 
     private val _pinValidated = MutableLiveData<State<Boolean>>()
     val pinValidated: MutableLiveData<State<Boolean>> = _pinValidated
@@ -45,6 +52,44 @@ class AuthViewModel(
         }
     }
 
+    fun validateOtp(otp: String) {
+        validateOtpUseCase(otp).onEach {result->
+            when(result){
+                is Resource.Error -> {
+                    Log.e("ValidateOTP", "Error: ${result.message}")
+                    state.value = State.Error(result.message ?: "An unexpected error occurred")
+                }
+                is Resource.Loading -> {
+                    Log.d("ValidateOTP", "Loading...")
+                    state.value = State.Loading
+                }
+                is Resource.Success -> {
+                    Log.d("ValidateOTP", "Success: ${result.data}")
+                    state.value = result.data?.let { State.Success(it) }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun forgotPassword(email: String) {
+        forgotPasswordUseCase(email).onEach { result->
+            when(result){
+                is Resource.Error -> {
+                    Log.e("ForgotPassword", "Error: ${result.message}")
+                    state.value = State.Error(result.message ?: "An unexpected error occurred")
+                }
+                is Resource.Loading -> {
+                    Log.d("ForgotPassword", "Loading...")
+                    state.value = State.Loading
+                }
+                is Resource.Success -> {
+                    Log.d("ForgotPassword", "Success: ${result.data}")
+                    state.value = result.data?.let { State.Success(it) }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
     fun loginUser(username: String, password: String) {
         Log.d("AuthViewModel", "loginUser called with username: $username")
         loginUseCase(
@@ -53,15 +98,15 @@ class AuthViewModel(
             when (result) {
                 is Resource.Error -> {
                     Log.e("LoginUser", "Error: ${result.message}")
-                    _state.value = State.Error(result.message ?: "An unexpected error occurred")
+                    _loginState.value = State.Error(result.message ?: "An unexpected error occurred")
                 }
                 is Resource.Loading -> {
                     Log.d("LoginUser", "Loading...")
-                    _state.value = State.Loading
+                    _loginState.value = State.Loading
                 }
                 is Resource.Success -> {
                     Log.d("LoginUser", "Success: ${result.data}")
-                    _state.value = result.data?.let { State.Success(it) }
+                    _loginState.value = result.data?.let { State.Success(it) }
                     _isLoggedIn.value = true
                 }
             }
