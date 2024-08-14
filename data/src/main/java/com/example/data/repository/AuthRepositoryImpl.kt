@@ -26,7 +26,7 @@ class AuthRepositoryImpl(
             val requestBody = mapOf(
                 "email_address" to email,
                 "otp" to otp,
-                "newPassword" to newPassword
+                "new_password" to newPassword
             )
             apiService.resetPassword(requestBody)
         }

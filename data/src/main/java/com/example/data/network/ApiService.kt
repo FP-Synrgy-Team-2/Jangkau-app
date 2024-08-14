@@ -100,7 +100,7 @@ interface ApiService {
     @POST("/api/auth/password/otp")
     suspend fun validateOTP(@Body otp : String) : Response<ApiResponse<String>>
 
-    @PUT("/api/auth/password/reset")
+    @PUT("/api/auth/password")
     suspend fun resetPassword(
         @Body requestBody: Map<String, String>
     ): Response<ApiResponse<String>>

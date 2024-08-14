@@ -145,7 +145,7 @@ class TransferInputActivity : BaseActivity() {
                             Log.d("BottomSheet", "Success: ${state.data}")
                             namaRekening = state.data.ownerName
                             idRekeningPenerima = state.data.accountId ?: ""
-                            openBottomDialog(idRekeningPenerima, namaRekening, rekeningTujuan, nominal, catatan, isSaved)
+                            openBottomDialog(accountNumber, namaRekening, rekeningTujuan, nominal, catatan, isSaved)
                         }
                     }
                 }
@@ -163,7 +163,7 @@ class TransferInputActivity : BaseActivity() {
         }
     }
 
-    private fun openBottomDialog(idRekeningPenerima: String, namaRekening: String?, rekeningTujuan: String, nominal: Int, catatan: String, isSaved: Boolean) {
+    private fun openBottomDialog(accountNumber: String?, namaRekening: String?, rekeningTujuan: String, nominal: Int, catatan: String, isSaved: Boolean) {
         dialog.setContentView(bottomSheetBinding.root)
         val behavior = BottomSheetBehavior.from(bottomSheetBinding.root.parent as View)
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -172,6 +172,7 @@ class TransferInputActivity : BaseActivity() {
         bottomSheetBinding.apply {
             tvName.text = namaRekening
             tvRekening.text = rekeningTujuan
+            tvLabelRekening.text = accountNumber
             tvNominal.text = moneyFormatter(nominal.toLong())
             tvCatatan.text = catatan
             tvBiayaAdmin.text = moneyFormatter(0)

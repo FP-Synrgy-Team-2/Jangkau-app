@@ -45,10 +45,11 @@ class TransactionRepositoryImpl(
     ): Transaction {
         val accountId = dataStorePref.accountId.firstOrNull()
         val token = dataStorePref.accessToken.firstOrNull()
+        val userId = dataStorePref.userId.firstOrNull()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
         val currentDateTime = LocalDateTime.now().format(formatter)
 
-        if (accountId == null || token == null) {
+        if (accountId == null || token == null || userId == null) {
             throw Exception("Account ID or Access Token not found")
         }
 
@@ -73,7 +74,7 @@ class TransactionRepositoryImpl(
             val savedAccount = SavedAccountEntity(
                 ownerName = transactionResponse.beneficiaryAccount?.ownerName ?: "",
                 accountNumber = transactionResponse.beneficiaryAccount?.accountNumber ?: "",
-                savedBy = accountId
+                savedBy = userId
             )
             savedAccountDao.insertSavedAccount(savedAccount)
         }
