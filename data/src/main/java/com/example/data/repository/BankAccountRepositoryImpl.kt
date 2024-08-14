@@ -2,6 +2,7 @@ package com.example.data.repository
 
 import android.util.Log
 import com.example.data.local.DataStorePref
+import com.example.data.local.room.SavedAccountDao
 import com.example.data.network.ApiService
 import com.example.data.network.utils.SafeApiRequest
 import com.example.domain.model.BankAccount
@@ -10,7 +11,8 @@ import kotlinx.coroutines.flow.firstOrNull
 
 class BankAccountRepositoryImpl(
     apiService: ApiService,
-    dataStorePref: DataStorePref
+    dataStorePref: DataStorePref,
+    private val savedAccountDao : SavedAccountDao
 ) : BaseRepository(apiService, dataStorePref), BankAccountRepository {
 
     companion object {
@@ -59,22 +61,19 @@ class BankAccountRepositoryImpl(
     }
 
     override suspend fun getSavedBankAccount(): List<BankAccount> {
-        val (userId, token) = getUserCredentials()
+        val (userId, _) = getUserCredentials()
 
-        val response = performRequestWithTokenHandling {
-            apiService.getSavedBankAccount(userId, "Bearer $token")
-        }
+        val savedAccounts = savedAccountDao.showSavedAccounts(userId)
 
-        val bankAccountListResponse = response.data
-        return bankAccountListResponse?.map {
+        return savedAccounts.map {
             BankAccount(
-                accountId = it.accountId,
+                accountId = null,
                 accountNumber = it.accountNumber,
                 ownerName = it.ownerName,
                 balance = null,
-                userId = null
+                userId = it.savedBy
             )
-        } ?: emptyList()
+        }
     }
 
     private suspend fun getUserCredentials(): Pair<String, String> {

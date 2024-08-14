@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    id("org.jetbrains.kotlin.kapt")
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
@@ -52,5 +53,15 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
     implementation(libs.androidx.datastore.preferences)
+
+    implementation ("androidx.room:room-runtime:2.6.1")
+    implementation ("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.test:core-ktx:1.5.0")
+    kapt ("androidx.room:room-compiler:2.6.1")
+    implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation ("androidx.room:room-ktx:2.6.1")
+
+
 
 }

@@ -1,6 +1,8 @@
 package com.example.data.repository
 
 import com.example.data.local.DataStorePref
+import com.example.data.local.room.SavedAccountDao
+import com.example.data.local.room.SavedAccountEntity
 import com.example.data.network.ApiService
 import com.example.data.network.model.transaction.TransactionHistoryRequest
 import com.example.data.network.model.transaction.TransactionRequest
@@ -15,7 +17,8 @@ import java.time.format.DateTimeFormatter
 
 class TransactionRepositoryImpl(
     apiService: ApiService,
-    dataStorePref: DataStorePref
+    dataStorePref: DataStorePref,
+    private val savedAccountDao : SavedAccountDao
 ) : BaseRepository(apiService, dataStorePref), TransactionRepository {
     override suspend fun getTransactionById(transactionId: String): Transaction {
         val accountId = dataStorePref.accountId.firstOrNull()
@@ -65,6 +68,17 @@ class TransactionRepositoryImpl(
 
         val transactionResponse = response.data ?: throw Exception(response.message)
 
+        // Insert the beneficiary account into saved accounts if isSaved is true
+        if (isSaved) {
+            val savedAccount = SavedAccountEntity(
+                ownerName = transactionResponse.beneficiaryAccount?.ownerName ?: "",
+                accountNumber = transactionResponse.beneficiaryAccount?.accountNumber ?: "",
+                savedBy = accountId
+            )
+            savedAccountDao.insertSavedAccount(savedAccount)
+        }
+
+
         return Transaction(
             transactionId = transactionResponse.transactionId,
             amount = transactionResponse.amount,
@@ -79,6 +93,7 @@ class TransactionRepositoryImpl(
             date = transactionResponse.date ?: ""
         )
     }
+
 
     override suspend fun getTransactionHistory(fromDate: String, toDate: String): List<TransactionGroup> {
         val userId = dataStorePref.userId.firstOrNull()
