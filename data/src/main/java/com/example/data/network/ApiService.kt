@@ -18,7 +18,9 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     @POST("api/auth/login")
@@ -97,5 +99,11 @@ interface ApiService {
 
     @POST("/api/auth/password/otp")
     suspend fun validateOTP(@Body otp : String) : Response<ApiResponse<String>>
+
+    @PUT("/api/auth/password/reset")
+    suspend fun resetPassword(
+        @Body requestBody: Map<String, String>
+    ): Response<ApiResponse<String>>
+
 
 }

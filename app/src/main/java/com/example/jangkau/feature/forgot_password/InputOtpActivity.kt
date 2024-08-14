@@ -24,6 +24,7 @@ class InputOtpActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityInputOtpBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val email = intent.getStringExtra("EXTRA_EMAIL")
 
         binding.firstPinView.isPasswordHidden = true
 
@@ -46,7 +47,8 @@ class InputOtpActivity : BaseActivity() {
                     is State.Success -> {
                         binding.progressBar.gone()
                         binding.btnLogin.visible()
-                        openInputNewPasswordActivity()
+                        openInputNewPasswordActivity(email.toString(),otp)
+                        finish()
                     }
                 }
             }

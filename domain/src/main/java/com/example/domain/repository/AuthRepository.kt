@@ -18,4 +18,6 @@ interface AuthRepository {
 
     suspend fun validateOTP(otp : String) : String
 
+    suspend fun resetPassword(email : String, otp: String, newPassword : String) : String
+
 }

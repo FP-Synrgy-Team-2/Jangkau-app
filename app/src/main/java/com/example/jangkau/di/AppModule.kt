@@ -14,6 +14,7 @@ import com.example.domain.usecase.auth.GetLoginStatusUseCase
 import com.example.domain.usecase.auth.LoginUseCase
 import com.example.domain.usecase.auth.LogoutUseCase
 import com.example.domain.usecase.auth.PinValidationUseCase
+import com.example.domain.usecase.auth.ResetPasswordUseCase
 import com.example.domain.usecase.auth.ValidateOtpUseCase
 import com.example.domain.usecase.bank_account.SearchDataBankByAccNumberUseCase
 import com.example.domain.usecase.bank_account.ShowDataBankAccUseCase
@@ -43,7 +44,7 @@ object AppModule {
     }
 
     val viewModelModule = module {
-        viewModel { AuthViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { UserViewModel(get()) }
         viewModel { BankAccountViewModel(get(), get(), get()) }
         viewModel {TransactionViewModel(get(), get(), get())}
@@ -56,6 +57,7 @@ object AppModule {
         factory { GetLoginStatusUseCase(get()) }
         factory { ForgotPasswordUseCase(get()) }
         factory { ValidateOtpUseCase(get()) }
+        factory { ResetPasswordUseCase(get()) }
 
         factory { GetUserUseCase(get()) }
 

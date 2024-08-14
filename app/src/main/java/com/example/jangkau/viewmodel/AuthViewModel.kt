@@ -12,6 +12,7 @@ import com.example.domain.usecase.auth.GetLoginStatusUseCase
 import com.example.domain.usecase.auth.LoginUseCase
 import com.example.domain.usecase.auth.LogoutUseCase
 import com.example.domain.usecase.auth.PinValidationUseCase
+import com.example.domain.usecase.auth.ResetPasswordUseCase
 import com.example.domain.usecase.auth.ValidateOtpUseCase
 import com.example.jangkau.State
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,7 @@ class AuthViewModel(
     private val getLoginStatusUseCase: GetLoginStatusUseCase,
     private val forgotPasswordUseCase: ForgotPasswordUseCase,
     private val validateOtpUseCase: ValidateOtpUseCase,
+    private val resetPasswordUseCase: ResetPasswordUseCase,
     private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
@@ -50,6 +52,25 @@ class AuthViewModel(
         viewModelScope.launch {
             _isLoggedIn.value = getLoginStatusUseCase.isLoggedIn()
         }
+    }
+
+    fun resetPassword(email : String, otp : String, password : String){
+        resetPasswordUseCase(email, otp, password).onEach { result->
+            when(result){
+                is Resource.Error -> {
+                    Log.e("ResetPassword", "Error: ${result.message}")
+                    state.value = State.Error(result.message ?: "An unexpected error occurred")
+                }
+                is Resource.Loading -> {
+                    Log.d("ResetPassword", "Loading...")
+                    state.value = State.Loading
+                }
+                is Resource.Success -> {
+                    Log.d("ResetPassword", "Success: ${result.data}")
+                    state.value = result.data?.let { State.Success(it) }
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun validateOtp(otp: String) {

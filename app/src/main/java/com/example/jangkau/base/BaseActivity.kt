@@ -137,13 +137,18 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun openInputOtpActivity(){
-        val intent = Intent(this, InputOtpActivity::class.java)
+    fun openInputOtpActivity(email : String){
+        val intent = Intent(this, InputOtpActivity::class.java).apply {
+            putExtra("EXTRA_EMAIL", email)
+        }
         startActivity(intent)
     }
 
-    fun openInputNewPasswordActivity(){
-        val intent = Intent(this, InputNewPasswordActivity::class.java)
+    fun openInputNewPasswordActivity(email : String, otp : String){
+        val intent = Intent(this, InputNewPasswordActivity::class.java).apply {
+            putExtra("EXTRA_OTP", otp)
+            putExtra("EXTRA_EMAIL", email)
+        }
         startActivity(intent)
     }
 

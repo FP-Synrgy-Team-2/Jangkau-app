@@ -58,7 +58,7 @@ class InputEmailActivity : BaseActivity() {
                         is State.Success -> {
                             binding.progressBar.gone()
                             binding.btnNext.visible()
-                            openInputOtpActivity()
+                            openInputOtpActivity(email)
                         }
                     }
                 }

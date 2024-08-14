@@ -72,6 +72,7 @@ class TransferReceiptActivity : BaseActivity() {
 
         binding.btnBeranda.setOnClickListener {
             openHomeActivity()
+            finish()
         }
 
 
