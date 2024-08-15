@@ -78,14 +78,14 @@ interface ApiService {
     suspend fun transaction(
         @Body transactionRequest: TransactionRequest,
         @Header("Authorization") token: String
-    ) : Response<ApiResponse<TransactionResponse>>
+    ) : Response<ApiResponse<TransactionHistoryResponse>>
 
 
     @GET("/api/transactions/{transaction_id}")
     suspend fun getTransactionById(
         @Path("transaction_id") transactionId : String,
         @Header("Authorization") token: String
-    ) : Response<ApiResponse<TransactionResponse>>
+    ) : Response<ApiResponse<TransactionHistoryResponse>>
 
     @POST("/api/transactions/history/{user_id}")
     suspend fun getTransactionHistory(

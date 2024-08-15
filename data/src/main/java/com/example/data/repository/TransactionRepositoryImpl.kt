@@ -34,7 +34,19 @@ class TransactionRepositoryImpl(
             )
         }
         val transactionResponse = response.data ?: throw Exception(response.message)
-        return transactionResponse.toDomain()
+        return Transaction(
+            transactionId = transactionId,
+            accountId = accountId,
+            amount = transactionResponse.total.toInt(),
+            transactionDate = transactionResponse.transactionDate ?: "",
+            date = transactionResponse.transactionDate ?: "",
+            note = transactionResponse.note ?: "",
+            adminFee = transactionResponse.adminFee.toInt(),
+            isSaved = null,
+            beneficiaryAccount = transactionResponse.from.accountNumber ?: "",
+            beneficiaryName = transactionResponse.to.ownerName ?: "",
+            beneficiaryAccountId = transactionResponse.to?.accountId ?: ""
+        )
     }
 
     override suspend fun makeTransferRequest(
@@ -72,8 +84,8 @@ class TransactionRepositoryImpl(
         // Insert the beneficiary account into saved accounts if isSaved is true
         if (isSaved) {
             val savedAccount = SavedAccountEntity(
-                ownerName = transactionResponse.beneficiaryAccount?.ownerName ?: "",
-                accountNumber = transactionResponse.beneficiaryAccount?.accountNumber ?: "",
+                ownerName = transactionResponse.to.ownerName ?: "",
+                accountNumber = transactionResponse.to.accountNumber ?: "",
                 savedBy = userId
             )
             savedAccountDao.insertSavedAccount(savedAccount)
@@ -82,16 +94,16 @@ class TransactionRepositoryImpl(
 
         return Transaction(
             transactionId = transactionResponse.transactionId,
-            amount = transactionResponse.amount,
-            beneficiaryAccount = transactionResponse.beneficiaryAccount?.accountNumber ?: "",
-            beneficiaryAccountId = transactionResponse.beneficiaryAccount?.accountId ?: "",
-            beneficiaryName = transactionResponse.beneficiaryAccount?.ownerName ?: "",
-            note = transactionResponse.note,
+            amount = transactionResponse.total.toInt(),
+            beneficiaryAccount = transactionResponse.to.accountNumber ?: "",
+            beneficiaryAccountId = transactionResponse.to.accountId ?: "",
+            beneficiaryName = transactionResponse.to.ownerName ?: "",
+            note = transactionResponse.note ?: "",
             transactionDate = transactionResponse.transactionDate ?: "",
             isSaved = isSaved,
-            accountId = transactionResponse.accountId,
-            adminFee = transactionResponse.adminFee,
-            date = transactionResponse.date ?: ""
+            accountId = transactionResponse.from.accountId,
+            adminFee = transactionResponse.adminFee.toInt(),
+            date = transactionResponse.transactionDate ?: ""
         )
     }
 
