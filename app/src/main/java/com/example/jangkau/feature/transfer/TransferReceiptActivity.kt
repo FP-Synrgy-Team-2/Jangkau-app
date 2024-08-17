@@ -1,6 +1,14 @@
 package com.example.jangkau.feature.transfer
 
+import android.content.ContentValues
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.media.MediaScannerConnection
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import com.example.jangkau.R
@@ -13,9 +21,11 @@ import com.example.jangkau.gone
 import com.example.jangkau.moneyFormatter
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import com.example.jangkau.viewmodel.TransactionViewModel
+import com.example.jangkau.visible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.koin.android.ext.android.inject
+import java.io.OutputStream
 
 class TransferReceiptActivity : BaseActivity() {
 
@@ -34,7 +44,6 @@ class TransferReceiptActivity : BaseActivity() {
     private val transactionViewModel : TransactionViewModel by inject()
     private val bankViewModel : BankAccountViewModel by inject()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTransferReceiptBinding.inflate(layoutInflater)
@@ -42,10 +51,10 @@ class TransferReceiptActivity : BaseActivity() {
 
         val transactionId = intent.getStringExtra("EXTRA_TRANSACTION_ID")
 
-        if (transactionId != null){
+        if (transactionId != null) {
             transactionViewModel.getTransactionById(transactionId)
-            transactionViewModel.transactions.observe(this){state->
-                when(state){
+            transactionViewModel.transactions.observe(this) { state ->
+                when (state) {
                     is State.Error -> {
                         Log.d("GetTransactionById", "Error : ${state.error}")
                         showToast(state.error)
@@ -75,22 +84,22 @@ class TransferReceiptActivity : BaseActivity() {
             finish()
         }
 
+        binding.btnDownload.setOnClickListener {
+            saveReceiptAsImage()
+        }
 
         binding.btnShare.setOnClickListener {
             openBottomDialog()
         }
-
     }
 
-    private fun openBottomDialog(){
-
+    private fun openBottomDialog() {
         dialog.setContentView(bottomSheetBinding.root)
         val behavior = BottomSheetBehavior.from(bottomSheetBinding.root.parent as View)
         behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.show()
 
         bottomSheetBinding.apply {
-
             btnTelegram.setOnClickListener {
                 // open Telegram
             }
@@ -107,14 +116,68 @@ class TransferReceiptActivity : BaseActivity() {
                 // open Gmail
             }
 
-
             navbar.tvTitlePage.text = getString(R.string.bagikan)
             navbar.imgBackArrow.gone()
             navbar.imgCancel.setOnClickListener {
                 dialog.dismiss()
             }
-
-
         }
     }
+
+    private fun saveReceiptAsImage() {
+        val bitmap = getBitmapFromView(binding.root)
+
+        val filePath = saveBitmapToMediaStore(bitmap)
+
+        if (filePath != null) {
+            showToast("Receipt saved at $filePath")
+        } else {
+            showToast("Failed to save receipt")
+        }
+    }
+
+    private fun getBitmapFromView(view: View): Bitmap {
+        // Hide buttons
+        binding.btnDownload.gone()
+        binding.btnShare.gone()
+        binding.btnBeranda.gone()
+
+        // Capture view
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val bgDrawable = view.background
+        if (bgDrawable != null) {
+            bgDrawable.draw(canvas)
+        } else {
+            canvas.drawColor(Color.WHITE)
+        }
+        view.draw(canvas)
+
+        binding.btnDownload.visible()
+        binding.btnShare.visible()
+        binding.btnBeranda.visible()
+
+        return bitmap
+    }
+
+    private fun saveBitmapToMediaStore(bitmap: Bitmap): String? {
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "Receipt_${System.currentTimeMillis()}.png")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+        }
+
+        val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        return uri?.let {
+            val outputStream: OutputStream? = contentResolver.openOutputStream(it)
+            outputStream?.use { stream ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            }
+            uri.toString()
+        }
+    }
+
+    // Optional: Remove permission handling if targeting API level 29+
+    // If targeting API level 29 or higher, you do not need WRITE_EXTERNAL_STORAGE permission.
 }
