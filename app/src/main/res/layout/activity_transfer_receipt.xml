@@ -230,7 +230,6 @@
             android:text="Rp 120.000"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvLabelTransfer"
             app:layout_constraintBottom_toBottomOf="@id/tvLabelTransfer"/>
 
         <View

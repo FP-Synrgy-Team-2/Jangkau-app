@@ -1,10 +1,12 @@
 package com.example.jangkau.feature.transfer
 
 import android.content.ContentValues
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -101,19 +103,19 @@ class TransferReceiptActivity : BaseActivity() {
 
         bottomSheetBinding.apply {
             btnTelegram.setOnClickListener {
-                // open Telegram
+                shareViaTelegram()
             }
 
             btnWhatsapp.setOnClickListener {
-                // open Whatsapp Share
+                shareViaWhatsapp()
             }
 
             btnInstagram.setOnClickListener {
-                // open Instagram
+                shareViaInstagram()
             }
 
             btnGmail.setOnClickListener {
-                // open Gmail
+                shareViaGmail()
             }
 
             navbar.tvTitlePage.text = getString(R.string.bagikan)
@@ -124,16 +126,80 @@ class TransferReceiptActivity : BaseActivity() {
         }
     }
 
-    private fun saveReceiptAsImage() {
+
+    private fun shareViaTelegram() {
+        val imagePath = saveReceiptAsImage()
+        imagePath?.let {
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, Uri.parse(it))
+                setPackage("org.telegram.messenger")
+            }
+            try {
+                startActivity(shareIntent)
+            } catch (e: Exception) {
+                showToast("Telegram is not installed on this device")
+            }
+        } ?: showToast("Failed to save receipt")
+    }
+
+    private fun shareViaGmail() {
+        val imagePath = saveReceiptAsImage()
+        imagePath?.let {
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, Uri.parse(it))
+                putExtra(Intent.EXTRA_SUBJECT, "Receipt Transaction for BCA Transfer")
+                setPackage("com.google.android.gm")
+            }
+            try {
+                startActivity(shareIntent)
+            } catch (e: Exception) {
+                showToast("Gmail is not installed on this device")
+            }
+        } ?: showToast("Failed to save receipt")
+    }
+
+    private fun shareViaInstagram() {
+        val imagePath = saveReceiptAsImage()
+        imagePath?.let {
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, Uri.parse(it))
+                setPackage("com.instagram.android")
+            }
+            try {
+                startActivity(shareIntent)
+            } catch (e: Exception) {
+                showToast("Instagram is not installed on this device")
+            }
+        } ?: showToast("Failed to save receipt")
+    }
+
+
+    private fun shareViaWhatsapp() {
+        val imagePath = saveReceiptAsImage() // Save the receipt and get the file path
+        imagePath?.let {
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, Uri.parse(it))
+                setPackage("com.whatsapp")
+            }
+            try {
+                startActivity(shareIntent)
+            } catch (e: Exception) {
+                showToast("WhatsApp is not installed on this device")
+            }
+        } ?: showToast("Failed to save receipt")
+    }
+
+    private fun saveReceiptAsImage(): String? {
         val bitmap = getBitmapFromView(binding.root)
-
-        val filePath = saveBitmapToMediaStore(bitmap)
-
-        if (filePath != null) {
-            showToast("Receipt saved at $filePath")
-        } else {
-            showToast("Failed to save receipt")
-        }
+        return saveBitmapToMediaStore(bitmap)
     }
 
     private fun getBitmapFromView(view: View): Bitmap {
