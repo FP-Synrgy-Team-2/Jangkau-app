@@ -24,15 +24,14 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {    
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-//
-//        binding.btnQris.setOnClickListener { openQrisActivity() }
-//
-//        binding.btnLogin.setOnClickListener { openLoginActivity() }
 
         lifecycleScope.launchWhenStarted {
             authViewModel.isLoggedIn.collect { loggedIn ->
                 if (loggedIn) {
                     binding.btnQris.visible()
+                    binding.btnQris.setOnClickListener {
+                        openQrisActivity()
+                    }
                     binding.btnLogin.setOnClickListener {
                         openPinInputActivity()
                     }
