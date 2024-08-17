@@ -139,7 +139,7 @@ class TransferReceiptActivity : BaseActivity() {
             try {
                 startActivity(shareIntent)
             } catch (e: Exception) {
-                showToast("Telegram is not installed on this device")
+                showToast("Telegram belum terinstall pada device anda")
             }
         } ?: showToast("Failed to save receipt")
     }
@@ -157,7 +157,7 @@ class TransferReceiptActivity : BaseActivity() {
             try {
                 startActivity(shareIntent)
             } catch (e: Exception) {
-                showToast("Gmail is not installed on this device")
+                showToast("Gmail belum terinstall pada device anda")
             }
         } ?: showToast("Failed to save receipt")
     }
@@ -174,14 +174,14 @@ class TransferReceiptActivity : BaseActivity() {
             try {
                 startActivity(shareIntent)
             } catch (e: Exception) {
-                showToast("Instagram is not installed on this device")
+                showToast("Instagram belum terinstall pada device anda")
             }
         } ?: showToast("Failed to save receipt")
     }
 
 
     private fun shareViaWhatsapp() {
-        val imagePath = saveReceiptAsImage() // Save the receipt and get the file path
+        val imagePath = saveReceiptAsImage()
         imagePath?.let {
             val shareIntent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -192,7 +192,7 @@ class TransferReceiptActivity : BaseActivity() {
             try {
                 startActivity(shareIntent)
             } catch (e: Exception) {
-                showToast("WhatsApp is not installed on this device")
+                showToast("Whatsapp belum terinstall pada device anda")
             }
         } ?: showToast("Failed to save receipt")
     }

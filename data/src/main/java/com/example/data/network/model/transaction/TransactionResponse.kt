@@ -31,20 +31,4 @@ data class TransactionResponse(
     val adminFee: Int,
     @SerializedName("total")
     val total: Int
-) {
-    fun toDomain(): Transaction {
-        return Transaction(
-            transactionId = transactionId,
-            accountId = accountId,
-            beneficiaryAccount = beneficiaryAccount?.accountNumber ?: "",
-            amount = amount,
-            transactionDate = transactionDate ?: "",
-            date = date ?: "",
-            note = note,
-            adminFee = adminFee,
-            isSaved = null,
-            beneficiaryName = beneficiaryAccount?.ownerName ?: "",
-            beneficiaryAccountId = beneficiaryAccount?.accountId ?: ""
-        )
-    }
-}
+)

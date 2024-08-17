@@ -6,7 +6,6 @@ import com.example.data.local.room.SavedAccountEntity
 import com.example.data.network.ApiService
 import com.example.data.network.model.transaction.TransactionHistoryRequest
 import com.example.data.network.model.transaction.TransactionRequest
-import com.example.data.network.utils.SafeApiRequest
 import com.example.domain.model.Transaction
 import com.example.domain.model.TransactionGroup
 import com.example.domain.repository.TransactionRepository
@@ -36,14 +35,19 @@ class TransactionRepositoryImpl(
         val transactionResponse = response.data ?: throw Exception(response.message)
         return Transaction(
             transactionId = transactionId,
+
             accountId = accountId,
+            ownerName = transactionResponse.from.ownerName,
+            ownerAccount = transactionResponse.from.accountNumber,
+
             amount = transactionResponse.total.toInt(),
             transactionDate = transactionResponse.transactionDate ?: "",
             date = transactionResponse.transactionDate ?: "",
             note = transactionResponse.note ?: "",
             adminFee = transactionResponse.adminFee.toInt(),
             isSaved = null,
-            beneficiaryAccount = transactionResponse.from.accountNumber ?: "",
+
+            beneficiaryAccount = transactionResponse.to.accountNumber ?: "",
             beneficiaryName = transactionResponse.to.ownerName ?: "",
             beneficiaryAccountId = transactionResponse.to?.accountId ?: ""
         )
@@ -103,7 +107,9 @@ class TransactionRepositoryImpl(
             isSaved = isSaved,
             accountId = transactionResponse.from.accountId,
             adminFee = transactionResponse.adminFee.toInt(),
-            date = transactionResponse.transactionDate ?: ""
+            date = transactionResponse.transactionDate ?: "",
+            ownerName = null,
+            ownerAccount = null,
         )
     }
 
@@ -141,6 +147,9 @@ class TransactionRepositoryImpl(
                 transactions = transactions.map { transaction ->
                     Transaction(
                         accountId = transaction.from.accountId,
+                        ownerName = transaction.from.ownerName,
+                        ownerAccount = transaction.from.accountNumber,
+                        type = transaction.type,
                         adminFee = 0,
                         amount = transaction.total.toInt(),
                         date = transaction.transactionDate,

@@ -1,9 +1,11 @@
 package com.example.jangkau.feature.mutation
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.model.Transaction
+import com.example.jangkau.R
 import com.example.jangkau.databinding.ItemTransactionBinding
 import com.example.jangkau.formatDate
 import com.example.jangkau.moneyFormatter
@@ -25,8 +27,17 @@ class AdapterTransactionHistory(private val transactions: List<Transaction>) :
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val transaction = transactions[position]
         with(holder.binding) {
-            amountText.text = moneyFormatter(transaction.amount.toLong())
-            transferInfoText.text = "Ke ${transaction.beneficiaryName} - ${transaction.beneficiaryAccount}"
+            when(transaction.type){
+                "Pemasukan" -> {
+                    amountText.text = "+ ${moneyFormatter(transaction.amount.toLong())}"
+                    amountText.setTextColor(holder.itemView.context.getColor(R.color.success))
+                    transferInfoText.text = "Dari ${transaction.ownerName} - ${transaction.ownerAccount}"
+                }
+                "Pengeluaran" -> {
+                    amountText.text = "- ${moneyFormatter(transaction.amount.toLong())}"
+                    transferInfoText.text = "Ke ${transaction.beneficiaryName} - ${transaction.beneficiaryAccount}"
+                }
+            }
             timeText.text = formatTime(transaction.date)
         }
     }
