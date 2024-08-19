@@ -41,8 +41,12 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.androidx.junit)
+    testImplementation("junit:junit:4.12")
+    testImplementation("org.mockito:mockito-core:3.11.2")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation(libs.androidx.espresso.core)
 
     // Retrofit
     //noinspection UseTomlInstead
@@ -57,6 +61,7 @@ dependencies {
     implementation ("androidx.room:room-runtime:2.6.1")
     implementation ("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.test:core-ktx:1.5.0")
+    testImplementation("junit:junit:4.12")
     kapt ("androidx.room:room-compiler:2.6.1")
     implementation ("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")

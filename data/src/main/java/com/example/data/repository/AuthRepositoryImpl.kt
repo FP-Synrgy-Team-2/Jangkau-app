@@ -84,18 +84,14 @@ class AuthRepositoryImpl(
 
         val loginResponse = response.body()?.data ?: throw Exception(response.message())
 
-        Log.d(TAG, "Storing login data")
+//        Log.d(TAG, "Storing login data")
         dataStorePref.storeLoginData(
             accessToken = loginResponse.accessToken,
             userId = loginResponse.userId,
             tokenType = loginResponse.tokenType,
             refreshToken = loginResponse.refreshToken
         ).collect { success ->
-            if (success) {
-                Log.d(TAG, "Login data stored successfully")
-            } else {
-                Log.e(TAG, "Failed to store login data")
-            }
+            if (!success) throw Exception("Failed to store login data")
         }
 
         return loginResponse.toDomain()
