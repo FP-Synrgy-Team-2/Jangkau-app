@@ -98,12 +98,7 @@ class AuthRepositoryImpl(
     }
 
     override suspend fun pinValidation(pin: String): BankAccount {
-        val accountNumber = dataStorePref.accountNumber.firstOrNull()
-        val token = dataStorePref.accessToken.firstOrNull()
-
-        if (accountNumber == null) {
-            throw Exception("Account number not found")
-        }
+        val accountNumber = dataStorePref.accountNumber.firstOrNull() ?: throw Exception("Account number not found")
 
         val response = performRequestWithTokenHandling {
             apiService.pinValidation(
@@ -111,7 +106,6 @@ class AuthRepositoryImpl(
                 it // Pass the token dynamically
             )
         }
-
 
         val pinValidationResponse = response.data ?: throw Exception(response.message)
         return BankAccount(
