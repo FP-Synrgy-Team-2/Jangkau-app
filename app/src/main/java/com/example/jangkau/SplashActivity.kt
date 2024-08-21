@@ -31,7 +31,6 @@ class SplashActivity : BaseActivity() {
                     binding.btnQris.visible()
                     binding.btnQris.setOnClickListener {
                         openQrisActivity()
-                        finish()
                     }
                     binding.btnLogin.setOnClickListener {
                         openPinInputActivity()

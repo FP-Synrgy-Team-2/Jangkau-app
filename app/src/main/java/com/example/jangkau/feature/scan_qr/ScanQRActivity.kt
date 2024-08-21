@@ -5,9 +5,11 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.CodeScanner
+import com.budiyev.android.codescanner.DecodeCallback
 import com.example.jangkau.R
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityScanQractivityBinding
@@ -22,6 +24,7 @@ class ScanQRActivity : BaseActivity() {
     companion object {
         const val PIN_INPUT_REQUEST_CODE = 1
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScanQractivityBinding.inflate(layoutInflater)
@@ -29,9 +32,10 @@ class ScanQRActivity : BaseActivity() {
 
         codeScanner = CodeScanner(this, binding.scannerView)
 
-        // Initialize CodeScanner settings
-        codeScanner.apply {
-
+        codeScanner.decodeCallback = DecodeCallback {
+            runOnUiThread {
+                Toast.makeText(this, "QR Code Scanned: ${it.text}", Toast.LENGTH_LONG).show()
+            }
         }
 
         binding.btnBack.setOnClickListener {
@@ -47,8 +51,8 @@ class ScanQRActivity : BaseActivity() {
             codeScanner.isFlashEnabled = isFlashEnabled
             updateFlashButtonIcon()
         }
-        checkPermissions()
 
+        checkPermissions()
     }
 
     @Deprecated("Deprecated in Java")
@@ -102,5 +106,4 @@ class ScanQRActivity : BaseActivity() {
         codeScanner.releaseResources()
         super.onPause()
     }
-
 }
