@@ -49,7 +49,8 @@ class TransactionRepositoryImpl(
 
             beneficiaryAccount = transactionResponse.to.accountNumber ?: "",
             beneficiaryName = transactionResponse.to.ownerName ?: "",
-            beneficiaryAccountId = transactionResponse.to?.accountId ?: ""
+            beneficiaryAccountId = transactionResponse.to?.accountId ?: "",
+            transactionalType = transactionResponse.transactionalType
         )
     }
 
@@ -110,6 +111,7 @@ class TransactionRepositoryImpl(
             date = transactionResponse.transactionDate ?: "",
             ownerName = null,
             ownerAccount = null,
+            transactionalType = transactionResponse.transactionalType
         )
     }
 
@@ -157,6 +159,7 @@ class TransactionRepositoryImpl(
                         note = "",
                         transactionDate = transaction.transactionDate,
                         transactionId = transaction.transactionId,
+                        transactionalType = transaction.transactionalType,
                         beneficiaryAccount = transaction.to.accountNumber,
                         beneficiaryName = transaction.to.ownerName,
                         beneficiaryAccountId = transaction.to.accountId

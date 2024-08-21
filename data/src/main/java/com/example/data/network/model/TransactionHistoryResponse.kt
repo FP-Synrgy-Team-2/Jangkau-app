@@ -21,6 +21,8 @@ data class TransactionHistoryResponse(
     val note: String? = "",
     @SerializedName("admin_fee")
     val adminFee: Double = 0.0,
+    @SerializedName("transactional_type")
+    val transactionalType: String
 )
 
 data class To(

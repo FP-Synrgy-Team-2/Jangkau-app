@@ -10,11 +10,13 @@ data class Transaction(
     val beneficiaryAccount: String,
     val beneficiaryName: String,
     val beneficiaryAccountId: String,
+
     val amount: Int,
     val adminFee: Int,
     val transactionDate: String,
     val date: String,
     val note: String,
     val isSaved: Boolean?,
-    val type: String = ""
+    val type: String = "",
+    val transactionalType : String?
 )

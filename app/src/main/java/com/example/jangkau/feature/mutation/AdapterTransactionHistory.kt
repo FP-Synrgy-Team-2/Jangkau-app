@@ -27,17 +27,51 @@ class AdapterTransactionHistory(private val transactions: List<Transaction>) :
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val transaction = transactions[position]
         with(holder.binding) {
-            when(transaction.type){
-                "Pemasukan" -> {
-                    amountText.text = "+ ${moneyFormatter(transaction.amount.toLong())}"
-                    amountText.setTextColor(holder.itemView.context.getColor(R.color.success))
-                    transferInfoText.text = "Dari ${transaction.ownerName} - ${transaction.ownerAccount}"
+            when(transaction.transactionalType){
+                "TRANSFER" -> {
+                    when(transaction.type){
+                        "Pemasukan" -> {
+                            amountText.text = "+ ${moneyFormatter(transaction.amount.toLong())}"
+                            amountText.setTextColor(holder.itemView.context.getColor(R.color.success))
+                            transferInfoText.text = "Dari ${transaction.ownerName} - ${transaction.ownerAccount}"
+                        }
+                        "Pengeluaran" -> {
+                            amountText.text = "- ${moneyFormatter(transaction.amount.toLong())}"
+                            transferInfoText.text = "Ke ${transaction.beneficiaryName} - ${transaction.beneficiaryAccount}"
+                        }
+                    }
                 }
-                "Pengeluaran" -> {
-                    amountText.text = "- ${moneyFormatter(transaction.amount.toLong())}"
-                    transferInfoText.text = "Ke ${transaction.beneficiaryName} - ${transaction.beneficiaryAccount}"
+                "QRIS" ->{
+                    iconTransaction.setImageResource(R.drawable.ic_qris)
+                    transferTypeText.text = "QRIS"
+                    when(transaction.type){
+                        "Pemasukan" -> {
+                            amountText.text = "+ ${moneyFormatter(transaction.amount.toLong())}"
+                            amountText.setTextColor(holder.itemView.context.getColor(R.color.success))
+                            transferInfoText.text = "Dari ${transaction.ownerName}"
+                        }
+                        "Pengeluaran" -> {
+                            amountText.text = "- ${moneyFormatter(transaction.amount.toLong())}"
+                            transferInfoText.text = "Ke ${transaction.beneficiaryName}"
+                        }
+                    }
+                }
+                else -> {
+                    when(transaction.type){
+                        "Pemasukan" -> {
+                            amountText.text = "+ ${moneyFormatter(transaction.amount.toLong())}"
+                            amountText.setTextColor(holder.itemView.context.getColor(R.color.success))
+                            transferInfoText.text = "Dari ${transaction.ownerName} - ${transaction.ownerAccount}"
+                        }
+                        "Pengeluaran" -> {
+                            amountText.text = "- ${moneyFormatter(transaction.amount.toLong())}"
+                            transferInfoText.text = "Ke ${transaction.beneficiaryName} - ${transaction.beneficiaryAccount}"
+                        }
+                    }
                 }
             }
+
+
             timeText.text = formatTime(transaction.date)
         }
     }
