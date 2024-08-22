@@ -1,5 +1,7 @@
 package com.example.data.repository
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.example.data.local.DataStorePref
 import com.example.data.local.room.SavedAccountDao
@@ -104,4 +106,17 @@ class BankAccountRepositoryImpl(
         return response.toDomain()
     }
 
+    override suspend fun generateQr(): Bitmap {
+        val (userId, token) = getUserCredentials()
+        val accountId = dataStorePref.accountId.firstOrNull() ?: throw Exception("Account ID not found")
+        val response = performRequestWithTokenHandlingWithoutApiResponse {
+            val requestBody = mapOf(
+                "id" to accountId
+            )
+            apiService.generateQr(requestBody, "Bearer $token")
+        }
+        response.byteStream().use { inputStream ->
+            return BitmapFactory.decodeStream(inputStream) ?: throw Exception("Failed to decode Bitmap")
+        }
+    }
 }

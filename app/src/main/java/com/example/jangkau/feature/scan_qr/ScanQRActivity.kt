@@ -25,10 +25,9 @@ class ScanQRActivity : BaseActivity() {
     private val bankViewModel: BankAccountViewModel by inject()
     private var isFlashEnabled = false
     private val cameraRequestCode = 101
+    private var accountId: String? = null
 
-    companion object {
-        const val PIN_INPUT_REQUEST_CODE = 1
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +39,7 @@ class ScanQRActivity : BaseActivity() {
 
         binding.btnBack.setOnClickListener { finish() }
 
-        binding.btnGenerateCode.setOnClickListener { openPinInputActivity() }
+        binding.btnGenerateCode.setOnClickListener { openGenerateCodeActivity() }
 
         binding.btnFlash.setOnClickListener {
             isFlashEnabled = !isFlashEnabled
@@ -73,13 +72,6 @@ class ScanQRActivity : BaseActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PIN_INPUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            openGenerateCodeActivity()
-        }
-    }
 
     private fun updateFlashButtonIcon() {
         val flashIcon = if (isFlashEnabled) {

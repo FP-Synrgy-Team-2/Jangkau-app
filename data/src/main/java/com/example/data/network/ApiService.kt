@@ -12,6 +12,7 @@ import com.example.data.network.model.transaction.TransactionHistoryRequest
 import com.example.data.network.model.transaction.TransactionRequest
 import com.example.data.network.model.transaction.TransactionResponse
 import com.example.domain.model.Login
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -121,6 +122,7 @@ interface ApiService {
 
     @POST("api/qris/user/generate-qr")
     suspend fun generateQr(
-        @Body accountId : String,
-    ): Response<ApiResponse<String>>
+        @Body requestBody: Map<String, String>,
+        @Header("Authorization") token: String,
+    ): Response<ResponseBody>
 }

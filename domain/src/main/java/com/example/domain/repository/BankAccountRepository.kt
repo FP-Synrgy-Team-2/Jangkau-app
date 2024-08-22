@@ -1,5 +1,6 @@
 package com.example.domain.repository
 
+import android.graphics.Bitmap
 import com.example.domain.model.BankAccount
 import com.example.domain.model.PinValidation
 
@@ -13,6 +14,7 @@ interface BankAccountRepository {
 
     suspend fun scanQr(encryptedData : String) : BankAccount
 
+    suspend fun generateQr() : Bitmap
 //
 //    suspend fun getAllBankAccount() : BankAccount
 //

@@ -67,15 +67,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvAccountNumber" />
 
-    <TextView
-        android:id="@+id/tvCountDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/countdown"
-        android:textColor="@color/red_custom"
-        app:layout_constraintEnd_toEndOf="@+id/tvCountDownTitle"
-        app:layout_constraintStart_toStartOf="@+id/tvCountDownTitle"
-        app:layout_constraintTop_toBottomOf="@id/tvCountDownTitle" />
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/tvCountDownTitle"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnResend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kirim_ulang"
+            android:contentDescription="@string/tombol_kirim_ulang_kode"
+            android:layout_marginHorizontal="6dp"
+            android:enabled="false"
+            style="@style/Widget.Material3.Button.TextButton"
+            app:layout_constraintStart_toStartOf="@+id/firstPinView"
+            app:layout_constraintTop_toBottomOf="@id/firstPinView" />
+
+        <TextView
+            android:id="@+id/tvCountDown"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="6dp"
+            android:gravity="center"
+            android:textColor="@color/red_custom"
+            android:textStyle="bold"
+            android:text="@string/countdown"
+            app:layout_constraintBottom_toBottomOf="@+id/btnResend"
+            app:layout_constraintEnd_toEndOf="@+id/firstPinView"
+            app:layout_constraintStart_toEndOf="@+id/btnResend"
+            app:layout_constraintTop_toBottomOf="@id/firstPinView" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnBatal"

@@ -1,5 +1,6 @@
 package com.example.jangkau.viewmodel
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.Resource
 import com.example.domain.model.BankAccount
+import com.example.domain.usecase.bank_account.GenerateQrUseCase
 import com.example.domain.usecase.bank_account.SearchDataBankByAccNumberUseCase
 import com.example.domain.usecase.bank_account.SearchDataBankByScanQr
 import com.example.domain.usecase.bank_account.ShowDataBankAccUseCase
@@ -24,11 +26,15 @@ class BankAccountViewModel (
     private val showDataBankAccUseCase: ShowDataBankAccUseCase,
     private val showSavedBankAccUseCase: ShowSavedBankAccUseCase,
     private val searchDataBankByAccNumberUseCase: SearchDataBankByAccNumberUseCase,
-    private val searchDataBankByScanQr: SearchDataBankByScanQr
+    private val searchDataBankByScanQr: SearchDataBankByScanQr,
+    private val generateQrUseCase: GenerateQrUseCase
 ) : ViewModel(){
 
     private val _state = MutableLiveData<State<BankAccount>>()
     val state : LiveData<State<BankAccount>> = _state
+
+    private val _qrState = MutableLiveData<State<Bitmap>>()
+    val qrState : LiveData<State<Bitmap>> = _qrState
 
     fun showDataBankAcc(){
         showDataBankAccUseCase.invoke().onEach { result->
@@ -59,6 +65,23 @@ class BankAccountViewModel (
                 }
                 is Resource.Success -> {
                     _state.value = result.data?.let { State.Success(it) }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun generateQr(){
+        generateQrUseCase.invoke().onEach { result->
+            when(result){
+                is Resource.Error -> {
+                    Log.e("Generate QR", "Error: ${result.message}")
+                    _qrState.value = State.Error(result.message ?: "An unexpected error occurred")
+                }
+                is Resource.Loading -> {
+                    _qrState.value = State.Loading
+                }
+                is Resource.Success -> {
+                    _qrState.value = result.data?.let { State.Success(it) }
                 }
             }
         }.launchIn(viewModelScope)
