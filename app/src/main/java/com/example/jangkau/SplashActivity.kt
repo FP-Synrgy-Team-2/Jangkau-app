@@ -34,13 +34,11 @@ class SplashActivity : BaseActivity() {
                     }
                     binding.btnLogin.setOnClickListener {
                         openPinInputActivity()
-                        finish()
                     }
                 } else {
                     binding.btnQris.gone()
                     binding.btnLogin.setOnClickListener {
                         openLoginActivity()
-                        finish()
                     }
                 }
             }

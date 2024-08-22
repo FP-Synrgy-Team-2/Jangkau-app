@@ -44,8 +44,6 @@ class TransferReceiptActivity : BaseActivity() {
     }
 
     private val transactionViewModel : TransactionViewModel by inject()
-    private val bankViewModel : BankAccountViewModel by inject()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTransferReceiptBinding.inflate(layoutInflater)
@@ -65,7 +63,6 @@ class TransferReceiptActivity : BaseActivity() {
                         Log.d("GetTransactionById", "Loading")
                     }
                     is State.Success -> {
-                        bankViewModel
                         binding.apply {
                             tvTransactionId.text = state.data.transactionId
                             tvName.text = state.data.beneficiaryName

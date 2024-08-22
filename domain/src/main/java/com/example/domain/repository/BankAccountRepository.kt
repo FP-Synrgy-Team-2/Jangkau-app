@@ -10,6 +10,9 @@ interface BankAccountRepository {
     suspend fun getSavedBankAccount() : List<BankAccount>
 
     suspend fun getBankAccountByAccountNumber(accountNumber : String) : BankAccount
+
+    suspend fun scanQr(encryptedData : String) : BankAccount
+
 //
 //    suspend fun getAllBankAccount() : BankAccount
 //

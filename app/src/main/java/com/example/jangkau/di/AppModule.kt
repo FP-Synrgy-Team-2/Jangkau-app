@@ -41,7 +41,7 @@ object AppModule {
     val viewModelModule = module {
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { UserViewModel(get()) }
-        viewModel { BankAccountViewModel(get(), get(), get()) }
+        viewModel { BankAccountViewModel(get(), get(), get(), get()) }
         viewModel {TransactionViewModel(get(), get(), get())}
     }
 
@@ -60,6 +60,7 @@ object AppModule {
         factory { ShowSavedBankAccUseCase(get()) }
 
         factory { SearchDataBankByAccNumberUseCase(get()) }
+        factory { SearchDataBankByScanQr(get()) }
 
         factory { TransferRequestUseCase(get()) }
         factory { GetTransactionByIdUseCase(get()) }

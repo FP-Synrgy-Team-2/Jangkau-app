@@ -139,9 +139,7 @@ class TransactionRepositoryImpl(
         }
         val transactionHistoryResponse = response.data ?: throw Exception(response.message)
 
-        // Group transactions by date
         val groupedTransactions = transactionHistoryResponse.groupBy {
-            // Convert transactionDate to LocalDate and format as yyyy-MM-dd
             LocalDate.parse(it.transactionDate.substring(0, 10)).toString()
         }.map { (date, transactions) ->
             TransactionGroup(

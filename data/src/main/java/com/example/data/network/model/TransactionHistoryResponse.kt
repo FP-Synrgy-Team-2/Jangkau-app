@@ -22,7 +22,7 @@ data class TransactionHistoryResponse(
     @SerializedName("admin_fee")
     val adminFee: Double = 0.0,
     @SerializedName("transactional_type")
-    val transactionalType: String
+    val transactionalType: String? = ""
 )
 
 data class To(

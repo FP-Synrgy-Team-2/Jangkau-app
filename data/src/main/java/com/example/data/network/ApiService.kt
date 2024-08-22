@@ -1,5 +1,6 @@
 package com.example.data.network
 
+import androidx.datastore.preferences.protobuf.Api
 import com.example.data.network.model.ApiResponse
 import com.example.data.network.model.TransactionHistoryResponse
 import com.example.data.network.model.auth.AuthRequest
@@ -106,4 +107,19 @@ interface ApiService {
     ): Response<ApiResponse<String>>
 
 
+    @POST("api/qris")
+    suspend fun tranferQris(
+        @Body requestBody: Map<String, String>,
+    ) : Response<ApiResponse<TransactionHistoryResponse>>
+
+    @POST("api/qris/scan-qr")
+    suspend fun scanQr(
+        @Body requestBody: Map<String, String>,
+        @Header("Authorization") token: String,
+    ) : Response<BankAccountResponse>
+
+    @POST("api/qris/user/generate-qr")
+    suspend fun generateQr(
+        @Body accountId : String,
+    ): Response<ApiResponse<String>>
 }

@@ -51,6 +51,43 @@ abstract class BaseRepository(
         return true
     }
 
+    protected suspend fun <T : Any> performRequestWithTokenHandlingWithoutApiResponse(
+        request: suspend (String) -> Response<T>
+    ): T {
+        var token = dataStorePref.accessToken.firstOrNull() ?: throw Exception("Access token not found")
+        var response = safeApiRequest { request("Bearer $token") }
+
+        if (response.code() == 401) {
+            val errorBody = response.errorBody()?.string()
+            if (errorBody != null && errorBody.contains("invalid_token") && errorBody.contains("Access token expired")) {
+                Log.d(TAG, "Access token expired, attempting to refresh")
+                val tokenRefreshed = refreshToken()
+                if (tokenRefreshed) {
+                    token = dataStorePref.accessToken.firstOrNull() ?: throw Exception("Access token not found after refresh")
+                    response = safeApiRequest { request("Bearer $token") }
+                } else {
+                    throw Exception("Failed to refresh token")
+                }
+            } else {
+                throw Exception("Unauthorized request: ${response.message()}")
+            }
+        }
+
+        if (response.code() == 500) {
+            throw Exception("Server error, please try again later")
+        }
+
+        if (response.code() == 400) {
+            val errorBody = response.errorBody()?.string()
+            if (errorBody != null && errorBody.contains("Incorrect PIN")) {
+                throw Exception("Incorrect PIN")
+            }
+        }
+
+        return response.body() ?: throw Exception("No data found in response")
+    }
+
+
     protected suspend fun <T : Any> performRequestWithTokenHandling(request: suspend (String) -> Response<ApiResponse<T>>): ApiResponse<T> {
         var token = dataStorePref.accessToken.firstOrNull() ?: throw Exception("Access token not found")
         var response = safeApiRequest { request("Bearer $token") }

@@ -92,4 +92,16 @@ class BankAccountRepositoryImpl(
 
         return Pair(userId, token)
     }
+
+    override suspend fun scanQr(encryptedData: String): BankAccount {
+        val (userId, token) = getUserCredentials()
+        val response = performRequestWithTokenHandlingWithoutApiResponse {
+            val requestBody = mapOf(
+                "encryptedData" to encryptedData
+            )
+            apiService.scanQr(requestBody, "Bearer $token")
+        }
+        return response.toDomain()
+    }
+
 }
