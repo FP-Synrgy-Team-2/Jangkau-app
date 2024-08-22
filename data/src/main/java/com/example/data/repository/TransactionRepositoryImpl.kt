@@ -54,6 +54,45 @@ class TransactionRepositoryImpl(
         )
     }
 
+    override suspend fun transferQris(rekeningTujuan: String, nominal: Int): Transaction {
+        val accountId = dataStorePref.accountId.firstOrNull()
+        val token = dataStorePref.accessToken.firstOrNull()
+        val userId = dataStorePref.userId.firstOrNull()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        val currentDateTime = LocalDateTime.now().format(formatter)
+
+        if (accountId == null || token == null || userId == null) {
+            throw Exception("Account ID or Access Token not found")
+        }
+        val response = performRequestWithTokenHandling {
+            val requestBody = mapOf(
+                "account_id" to accountId,
+                "beneficiary_account" to rekeningTujuan,
+                "amount" to nominal.toString(),
+                "transaction_date" to currentDateTime
+            )
+            apiService.tranferQris(requestBody, "Bearer $token")
+        }
+        val transactionResponse = response.data ?: throw Exception(response.message)
+        return Transaction(
+            transactionId = transactionResponse.transactionId,
+            amount = transactionResponse.total.toInt(),
+            beneficiaryAccount = transactionResponse.to.accountNumber ?: "",
+            beneficiaryAccountId = transactionResponse.to.accountId ?: "",
+            beneficiaryName = transactionResponse.to.ownerName ?: "",
+            note = transactionResponse.note ?: "",
+            transactionDate = transactionResponse.transactionDate ?: "",
+            isSaved = false,
+            accountId = transactionResponse.from.accountId,
+            adminFee = transactionResponse.adminFee.toInt(),
+            date = transactionResponse.transactionDate ?: "",
+            ownerName = null,
+            ownerAccount = null,
+            transactionalType = transactionResponse.transactionalType
+        )
+
+
+    }
     override suspend fun makeTransferRequest(
         rekeningTujuan: String,
         nominal: Int,

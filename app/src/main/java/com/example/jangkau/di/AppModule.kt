@@ -42,7 +42,7 @@ object AppModule {
         viewModel { AuthViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { UserViewModel(get()) }
         viewModel { BankAccountViewModel(get(), get(), get(), get()) }
-        viewModel {TransactionViewModel(get(), get(), get())}
+        viewModel {TransactionViewModel(get(), get(), get(), get())}
     }
 
     val useCaseModule = module {
@@ -63,6 +63,7 @@ object AppModule {
         factory { SearchDataBankByScanQr(get()) }
 
         factory { TransferRequestUseCase(get()) }
+        factory { TransferQrisUseCase(get()) }
         factory { GetTransactionByIdUseCase(get()) }
         factory { GetTransactionHistoryUseCase(get()) }
     }

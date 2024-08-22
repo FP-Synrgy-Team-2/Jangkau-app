@@ -9,6 +9,7 @@ import com.example.domain.model.Transaction
 import com.example.domain.model.TransactionGroup
 import com.example.domain.usecase.transaction.GetTransactionByIdUseCase
 import com.example.domain.usecase.transaction.GetTransactionHistoryUseCase
+import com.example.domain.usecase.transaction.TransferQrisUseCase
 import com.example.domain.usecase.transaction.TransferRequestUseCase
 import com.example.jangkau.State
 import kotlinx.coroutines.flow.launchIn
@@ -18,7 +19,8 @@ import java.time.LocalDate
 class TransactionViewModel(
     private val transferRequestUseCase: TransferRequestUseCase,
     private val getTransactionUseCase: GetTransactionByIdUseCase,
-    private val getTransactionHistoryUseCase: GetTransactionHistoryUseCase
+    private val getTransactionHistoryUseCase: GetTransactionHistoryUseCase,
+    private val transferQrisUseCase: TransferQrisUseCase
 
 ) : ViewModel(){
 
@@ -48,6 +50,22 @@ class TransactionViewModel(
         }.launchIn(viewModelScope)
     }
 
+    fun transferWithQris(rekeningTujuan: String, nominal: Int){
+        transferQrisUseCase.invoke(rekeningTujuan,nominal).onEach { result->
+            when(result){
+                is Resource.Error -> {
+                    Log.e("TransferQrisUseCase", "Error: ${result.message}")
+                    _transactions.value = State.Error(result.message ?: "An unexpected error occured")
+                }
+                is Resource.Loading -> {
+                    _transactions.value = State.Loading
+                }
+                is Resource.Success -> {
+                    _transactions.value = result.data?.let { State.Success(it) }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
     fun transfer(rekeningTujuan: String, nominal: Int, catatan: String, isSaved : Boolean){
         transferRequestUseCase.invoke(

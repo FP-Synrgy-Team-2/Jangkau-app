@@ -110,6 +110,7 @@ interface ApiService {
     @POST("api/qris")
     suspend fun tranferQris(
         @Body requestBody: Map<String, String>,
+        @Header("Authorization") token: String,
     ) : Response<ApiResponse<TransactionHistoryResponse>>
 
     @POST("api/qris/scan-qr")

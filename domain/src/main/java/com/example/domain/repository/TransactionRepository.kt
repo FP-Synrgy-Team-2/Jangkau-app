@@ -12,4 +12,6 @@ interface TransactionRepository {
 
     suspend fun getTransactionHistory(fromDate: String, toDate: String) : List<TransactionGroup>
 
+    suspend fun transferQris(rekeningTujuan: String, nominal: Int) : Transaction
+
 }

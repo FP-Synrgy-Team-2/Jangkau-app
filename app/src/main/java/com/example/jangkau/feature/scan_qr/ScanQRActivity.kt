@@ -54,7 +54,13 @@ class ScanQRActivity : BaseActivity() {
             when (state) {
                 is State.Error -> showToast("Error: ${state.error}")
                 State.Loading -> Log.d("ScanQR", "Loading...")
-                is State.Success -> showToast(state.data.accountNumber)
+                is State.Success -> {
+                    openQrisConfirmationActivity(
+                        accountNumber = state.data.accountNumber,
+                        accountId = state.data.accountId,
+                        ownerName = state.data.ownerName
+                    )
+                }
             }
         }
     }

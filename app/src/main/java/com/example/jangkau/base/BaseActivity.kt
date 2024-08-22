@@ -21,6 +21,7 @@ import com.example.jangkau.feature.mutation.FilterMutationActivity
 import com.example.jangkau.feature.mutation.MutationActivity
 
 import com.example.jangkau.feature.scan_qr.GenerateCodeQRActivity
+import com.example.jangkau.feature.scan_qr.QrisConfirmationActivity
 import com.example.jangkau.feature.scan_qr.QrisReceiptActivity
 import com.example.jangkau.feature.transfer.TransferActivity
 import com.example.jangkau.feature.transfer.TransferInputActivity
@@ -164,6 +165,15 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun openQrisReceiptActivity(){
         val intent = Intent(this, QrisReceiptActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openQrisConfirmationActivity(accountNumber: String?, accountId : String?, ownerName: String?){
+        val intent = Intent(this, QrisConfirmationActivity::class.java).apply {
+            putExtra("EXTRA_ACCOUNT_NUMBER", accountNumber)
+            putExtra("EXTRA_ACCOUNT_ID", accountId)
+            putExtra("EXTRA_OWNER_NAME", ownerName)
+        }
         startActivity(intent)
     }
 
