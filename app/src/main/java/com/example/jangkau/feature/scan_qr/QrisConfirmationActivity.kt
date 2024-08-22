@@ -87,7 +87,8 @@ class QrisConfirmationActivity : BaseActivity() {
                 is State.Success -> {
                     binding.progressBar.gone()
                     binding.btnNext.visible()
-                    openQrisReceiptActivity()
+                    openQrisReceiptActivity(state.data.transactionId)
+                    finish()
                     Log.d("TransferInputActivity", "Success state: ${state.data}")
                 }
             }

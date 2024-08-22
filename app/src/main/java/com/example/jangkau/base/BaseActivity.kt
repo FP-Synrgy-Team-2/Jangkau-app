@@ -163,8 +163,10 @@ abstract class BaseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun openQrisReceiptActivity(){
-        val intent = Intent(this, QrisReceiptActivity::class.java)
+    fun openQrisReceiptActivity(transactionId : String){
+        val intent = Intent(this, QrisReceiptActivity::class.java).apply {
+            putExtra("EXTRA_TRANSACTION_ID", transactionId)
+        }
         startActivity(intent)
     }
 
