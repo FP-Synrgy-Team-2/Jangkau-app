@@ -1,5 +1,6 @@
 package com.example.jangkau.base
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +9,7 @@ import com.example.domain.model.BankAccount
 import com.example.domain.model.SavedAccount
 
 import com.example.jangkau.LoadingActivity
+import com.example.jangkau.databinding.DialogLoadingBinding
 import com.example.jangkau.databinding.NavbarBinding
 import com.example.jangkau.feature.PinValidationActivity
 import com.example.jangkau.feature.scan_qr.ScanQRActivity
@@ -35,6 +37,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private val authViewModel : AuthViewModel by inject()
     private lateinit var navbarBinding: NavbarBinding
+    private lateinit var loadingDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +55,25 @@ abstract class BaseActivity : AppCompatActivity() {
 //    fun checkLoginStatus() {
 //
 //    }
+
+    fun showLoadingDialog() {
+        val binding = DialogLoadingBinding.inflate(layoutInflater)
+
+        loadingDialog = AlertDialog.Builder(this)
+            .setView(binding.root)
+            .setCancelable(false)
+            .create()
+
+        loadingDialog.show()
+    }
+
+    fun hideLoadingDialog() {
+        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
+            loadingDialog.dismiss()
+        }
+    }
     fun setupNavbar() {
         navbarBinding = NavbarBinding.inflate(layoutInflater)
-        setContentView(navbarBinding.root)
-
         navbarBinding.imgBackArrow.setOnClickListener {
             finish()
         }

@@ -51,9 +51,15 @@ class ScanQRActivity : BaseActivity() {
 
         bankViewModel.state.observe(this) { state ->
             when (state) {
-                is State.Error -> showToast("Error: ${state.error}")
-                State.Loading -> Log.d("ScanQR", "Loading...")
+                is State.Error -> {
+                    hideLoadingDialog()
+                    showToast("Error: ${state.error}")
+                }
+                State.Loading -> {
+                    showLoadingDialog()
+                }
                 is State.Success -> {
+                    hideLoadingDialog()
                     openQrisConfirmationActivity(
                         accountNumber = state.data.accountNumber,
                         accountId = state.data.accountId,

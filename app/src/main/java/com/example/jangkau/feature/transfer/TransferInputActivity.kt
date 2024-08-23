@@ -160,6 +160,9 @@ class TransferInputActivity : BaseActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PIN_INPUT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             executeTransfer()
+        }else{
+            bottomSheetBinding.progressBar.gone()
+            bottomSheetBinding.btnNext.visible()
         }
     }
 
