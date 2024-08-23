@@ -8,6 +8,7 @@ import com.example.domain.model.Transaction
 import com.example.jangkau.R
 import com.example.jangkau.databinding.ItemTransactionBinding
 import com.example.jangkau.formatDate
+import com.example.jangkau.gone
 import com.example.jangkau.moneyFormatter
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -43,7 +44,8 @@ class AdapterTransactionHistory(private val transactions: List<Transaction>) :
                 }
                 "QRIS" ->{
                     iconTransaction.setImageResource(R.drawable.ic_qris)
-                    transferTypeText.text = "QRIS"
+                    descriptionText.text = "Transfer Via QR"
+                    transferTypeText.gone()
                     when(transaction.type){
                         "Pemasukan" -> {
                             amountText.text = "+ ${moneyFormatter(transaction.amount.toLong())}"

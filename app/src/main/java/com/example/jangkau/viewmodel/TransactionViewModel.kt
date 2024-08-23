@@ -1,6 +1,7 @@
 package com.example.jangkau.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +12,9 @@ import com.example.domain.usecase.transaction.GetTransactionByIdUseCase
 import com.example.domain.usecase.transaction.GetTransactionHistoryUseCase
 import com.example.domain.usecase.transaction.TransferQrisUseCase
 import com.example.domain.usecase.transaction.TransferRequestUseCase
+import com.example.jangkau.ListState
 import com.example.jangkau.State
+import com.example.jangkau.toListState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.time.LocalDate
@@ -26,9 +29,6 @@ class TransactionViewModel(
 
     private val _transactions = MutableLiveData<State<Transaction>>()
     val transactions: MutableLiveData<State<Transaction>> = _transactions
-
-    private val _transactionsHistory = MutableLiveData<State<List<TransactionGroup>>>()
-    val transactionsHistory: MutableLiveData<State<List<TransactionGroup>>> = _transactionsHistory
 
     fun getTransactionById(transactionId: String) {
         getTransactionUseCase.invoke(transactionId).onEach { result ->
@@ -89,21 +89,39 @@ class TransactionViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun getTransactionHistory(fromDate : String, toDate : String){
-        getTransactionHistoryUseCase.invoke(fromDate, toDate).onEach { result->
-            when(result){
+    private val _transactionsHistory = MutableLiveData<State<ListState<TransactionGroup>>>()
+    val transactionsHistory: LiveData<State<ListState<TransactionGroup>>> = _transactionsHistory
+
+    fun getTransactionHistory(fromDate: String, toDate: String) {
+        getTransactionHistoryUseCase.invoke(fromDate, toDate).onEach { result ->
+            when (result) {
                 is Resource.Error -> {
-                    Log.e("GetTransferHistoryUseCase", "Error: ${result.message}")
-                    _transactionsHistory.value = State.Error(result.message ?: "An unexpected error occured")
+                    val errorMessage = result.message ?: "No Transactions Found"
+                    if (errorMessage.contains("No Transactions", ignoreCase = true)) {
+                        _transactionsHistory.value = State.Success(ListState.Empty)
+                    } else {
+                        Log.e("GetTransactionHistory", "Error: $errorMessage")
+                        _transactionsHistory.value = State.Error(errorMessage)
+                    }
                 }
                 is Resource.Loading -> {
                     _transactionsHistory.value = State.Loading
                 }
                 is Resource.Success -> {
-                    _transactionsHistory.value = result.data?.let { State.Success(it) }
+                    _transactionsHistory.value = result.data?.let { list ->
+                        list.toListState().let {
+                            when (it) {
+                                is ListState.Empty -> State.Success(ListState.Empty)
+                                is ListState.Success -> State.Success(it)
+                            }
+                        }
+                    } ?: State.Error("An unexpected error occurred")
                 }
             }
         }.launchIn(viewModelScope)
     }
+
+
+
 
 }

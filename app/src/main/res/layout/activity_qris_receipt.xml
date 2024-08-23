@@ -257,8 +257,7 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
-            tools:layout_editor_absoluteX="16dp" />
+            app:shapeAppearance="?attr/shapeAppearanceCornerLarge" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

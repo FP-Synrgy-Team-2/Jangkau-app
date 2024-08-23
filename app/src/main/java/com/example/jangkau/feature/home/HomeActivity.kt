@@ -1,5 +1,6 @@
 package com.example.jangkau.feature.home
 
+import android.app.AlertDialog
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -11,6 +12,7 @@ import com.example.jangkau.ErrorActivity
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityHomeBinding
+import com.example.jangkau.databinding.DialogLogoutConfirmationBinding
 import com.example.jangkau.gone
 import com.example.jangkau.viewmodel.UserViewModel
 import com.example.jangkau.moneyFormatter
@@ -59,9 +61,7 @@ class HomeActivity : BaseActivity() {
         }
 
         binding.btnLogout.setOnClickListener {
-            authViewModel.logout()
-            openLoginActivity()
-            finish()
+            showLogoutConfirmationDialog()
         }
     }
 
@@ -111,6 +111,28 @@ class HomeActivity : BaseActivity() {
             }
         }
     }
+
+    private fun showLogoutConfirmationDialog() {
+        val binding = DialogLogoutConfirmationBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(binding.root)
+            .create()
+
+        binding.btnYes.setOnClickListener {
+            authViewModel.logout()
+            openLoginActivity()
+            finish()
+            dialog.dismiss()
+        }
+
+        binding.btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
 
     private fun toggleBalanceVisibility() {
         val balance = bankViewModel.state.value?.let {

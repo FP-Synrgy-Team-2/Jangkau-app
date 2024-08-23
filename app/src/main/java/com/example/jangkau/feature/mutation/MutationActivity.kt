@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.model.Transaction
 import com.example.domain.model.TransactionGroup
+import com.example.jangkau.ListState
 import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
@@ -59,36 +60,38 @@ class MutationActivity : BaseActivity() {
             transactionViewModel.transactionsHistory.observe(this) { state ->
                 when (state) {
                     is State.Error -> {
-                        Log.e("MutationActivity", "Error: ${state.error}")
-                        showToast(state.error)
+                        binding.transactionHistory.gone()
+                        binding.imgEmptyTransactionHistory.visible()
+//                        Log.e("MutationActivity", "Error: $errorMessage")
+//                        showToast(state.error)
                     }
                     State.Loading -> {
                         Log.d("MutationActivity", "Loading transaction history...")
                     }
                     is State.Success -> {
-                        transactionHistory = state.data.map { transactionGroupResponse ->
-                            Log.d("MutationActivity", "Mapping TransactionGroup: ${transactionGroupResponse.date}")
-                            TransactionGroup(
-                                date = transactionGroupResponse.date,
-                                transactions = transactionGroupResponse.transactions
-                            )
+                        when (val data = state.data) {
+                            ListState.Empty -> {
+                                binding.transactionHistory.gone()
+                                binding.imgEmptyTransactionHistory.visible()
+                            }
+                            is ListState.Success -> {
+                                transactionHistory = data.data
+                                if (!::transactionAdapter.isInitialized) {
+                                    transactionAdapter = AdapterTransactionGroup(transactionHistory)
+                                    binding.transactionHistory.layoutManager = LinearLayoutManager(this)
+                                    binding.transactionHistory.adapter = transactionAdapter
+                                } else {
+                                    transactionAdapter.notifyDataSetChanged()
+                                }
+                            }
                         }
-
-                        if (!::transactionAdapter.isInitialized) {
-                            transactionAdapter = AdapterTransactionGroup(transactionHistory)
-                            binding.transactionHistory.layoutManager = LinearLayoutManager(this)
-                            binding.transactionHistory.adapter = transactionAdapter
-                        } else {
-                            transactionAdapter.notifyDataSetChanged()
-                        }
-
-                        Log.d("MutationActivity", "Adapter set with ${transactionHistory.size} items")
                     }
                 }
             }
         } else {
             Log.e("MutationActivity", "Missing date information in intent")
         }
+
 
         binding.btnFilter.setOnClickListener {
             openMutasiFilterActivity()
