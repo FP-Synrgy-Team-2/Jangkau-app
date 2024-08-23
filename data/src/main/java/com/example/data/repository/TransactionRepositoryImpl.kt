@@ -116,7 +116,7 @@ class TransactionRepositoryImpl(
                     note = catatan,
                     saved = isSaved,
                     amount = nominal,
-                    transactionDate = currentDateTime,
+//                    transactionDate = currentDateTime,
                     beneficiaryAccount = rekeningTujuan
                 ),
                 token = "Bearer $token"

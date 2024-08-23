@@ -11,6 +11,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
+import com.example.domain.model.BankAccount
+import com.example.domain.model.SavedAccount
+import com.example.jangkau.ErrorActivity
 import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
@@ -60,11 +63,40 @@ class ScanQRActivity : BaseActivity() {
                 }
                 is State.Success -> {
                     hideLoadingDialog()
-                    openQrisConfirmationActivity(
-                        accountNumber = state.data.accountNumber,
-                        accountId = state.data.accountId,
-                        ownerName = state.data.ownerName
-                    )
+                    if(state.data.type  == "User"){
+                        bankViewModel.showDataBankAcc()
+                        bankViewModel.state.observe(this) { stateOwner ->
+                            when (stateOwner) {
+                                is State.Error -> {
+                                    val intent = Intent(this, ErrorActivity::class.java)
+                                    intent.putExtra("ERROR_MESSAGE", stateOwner.error)
+                                    startActivity(intent)
+                                }
+                                State.Loading -> {
+                                    Log.d("QrisConfirmation", "Loading state")
+                                }
+                                is State.Success -> {
+                                    openTransferInputActivity(
+                                        BankAccount(
+                                            accountNumber = state.data.accountNumber,
+                                            accountId = state.data.accountId,
+                                            ownerName = state.data.ownerName
+                                        ),
+                                        accountNumber = stateOwner.data.accountNumber,
+                                        ownerName = stateOwner.data.ownerName,
+                                        balance = stateOwner.data.balance
+                                    )
+
+                                }
+                            }
+                        }
+                    }else{
+                        openQrisConfirmationActivity(
+                            accountNumber = state.data.accountNumber,
+                            accountId = state.data.accountId,
+                            ownerName = state.data.ownerName
+                        )
+                    }
                 }
             }
         }

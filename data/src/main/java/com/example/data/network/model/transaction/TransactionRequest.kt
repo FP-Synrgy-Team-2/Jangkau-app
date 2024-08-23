@@ -12,6 +12,6 @@ data class TransactionRequest(
     val note: String,
     @SerializedName("saved")
     val saved: Boolean,
-    @SerializedName("transaction_date")
-    val transactionDate: String
+//    @SerializedName("transaction_date")
+//    val transactionDate: String
 )

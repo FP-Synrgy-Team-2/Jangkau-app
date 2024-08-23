@@ -21,6 +21,7 @@ import com.example.jangkau.databinding.BottomSheetShareBinding
 import com.example.jangkau.formatDate
 import com.example.jangkau.gone
 import com.example.jangkau.moneyFormatter
+import com.example.jangkau.successPopUp
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import com.example.jangkau.viewmodel.TransactionViewModel
 import com.example.jangkau.visible
@@ -84,6 +85,7 @@ class TransferReceiptActivity : BaseActivity() {
         }
 
         binding.btnDownload.setOnClickListener {
+            successPopUp("Bukti Transaksi berhasil disimpan di galeri anda", this)
             saveReceiptAsImage()
         }
 

@@ -42,6 +42,8 @@ class GenerateCodeQRActivity : BaseActivity() {
             setupObservers()
             startCountdownTimer()
             binding.btnBatal.setOnClickListener { finish() }
+        }else{
+            finish()
         }
     }
 
