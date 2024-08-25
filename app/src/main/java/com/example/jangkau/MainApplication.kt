@@ -6,6 +6,7 @@ import com.example.jangkau.di.AppModule.repositoryModule
 import com.example.jangkau.di.AppModule.useCaseModule
 import com.example.jangkau.di.AppModule.viewModelModule
 import com.example.jangkau.di.NetworkModule.networkModule
+import com.google.firebase.FirebaseApp
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -15,6 +16,7 @@ class MainApplication : Application() {
         super.onCreate()
 
 
+        FirebaseApp.initializeApp(this)
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
