@@ -3,6 +3,8 @@ package com.example.jangkau
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.jangkau.base.BaseActivity
@@ -43,6 +45,17 @@ class SplashActivity : BaseActivity() {
                 }
             }
         }
+
+            // crash test button
+//        val crashButton = Button(this)
+//        crashButton.text = "Test Crash"
+//        crashButton.setOnClickListener {
+//            throw RuntimeException("Test Crash")
+//        }
+//
+//        addContentView(crashButton, ViewGroup.LayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT))
 
     }
 

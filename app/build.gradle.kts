@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -43,6 +45,7 @@ android {
 
 
 dependencies {
+    implementation(libs.firebase.crashlytics)
     val koin_version = "3.5.6"
 
     implementation(project(":common"))

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "111648331799",
+    "project_id": "jangkau-db6fc",
+    "storage_bucket": "jangkau-db6fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111648331799:android:df25bae9193933e95da452",
+        "android_client_info": {
+          "package_name": "com.example.jangkau"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6nWKTTwKfcmno8HjJ6JEDoMZ-N-1cQno"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
