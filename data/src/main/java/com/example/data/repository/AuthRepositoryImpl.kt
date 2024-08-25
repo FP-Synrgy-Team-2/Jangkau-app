@@ -86,6 +86,7 @@ class AuthRepositoryImpl(
 
 //        Log.d(TAG, "Storing login data")
         dataStorePref.storeLoginData(
+            username = auth.username,
             accessToken = loginResponse.accessToken,
             userId = loginResponse.userId,
             tokenType = loginResponse.tokenType,

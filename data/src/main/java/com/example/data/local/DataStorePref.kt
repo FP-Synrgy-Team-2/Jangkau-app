@@ -20,6 +20,7 @@ class DataStorePref(private val context: Context) {
 
     companion object {
         private const val TAG = "DataStorePref"
+        val USER_NAME_KEY = stringPreferencesKey("USER_NAME")
         val ACCESS_TOKEN_KEY = stringPreferencesKey("ACCESS_TOKEN")
         val USER_ID_KEY = stringPreferencesKey("USER_ID")
         val TOKEN_TYPE_KEY = stringPreferencesKey("TOKEN_TYPE")
@@ -30,6 +31,14 @@ class DataStorePref(private val context: Context) {
 
         val ISLOGIN = booleanPreferencesKey("ISLOGIN")
     }
+
+    val userName: Flow<String?> = context.dataStore.data
+        .map { preferences ->
+            preferences[USER_NAME_KEY]
+        }.catch { e ->
+            Log.e(TAG, "Error fetching user name", e)
+            emit(null)
+        }
 
     val accessToken: Flow<String?> = context.dataStore.data
         .map { preferences ->
@@ -68,10 +77,11 @@ class DataStorePref(private val context: Context) {
             emit(null)
         }
 
-    suspend fun storeLoginData(accessToken: String, userId: String, tokenType: String, refreshToken : String): Flow<Boolean> = flow {
+    suspend fun storeLoginData(username: String, accessToken: String, userId: String, tokenType: String, refreshToken : String): Flow<Boolean> = flow {
         try {
             Log.d(TAG, "Storing login data: userId = $userId, accessToken = $accessToken, tokenType = $tokenType, refreshToken = $refreshToken")
             context.dataStore.edit { preferences ->
+                preferences[USER_NAME_KEY] = username
                 preferences[ACCESS_TOKEN_KEY] = accessToken
                 preferences[USER_ID_KEY] = userId
                 preferences[TOKEN_TYPE_KEY] = tokenType

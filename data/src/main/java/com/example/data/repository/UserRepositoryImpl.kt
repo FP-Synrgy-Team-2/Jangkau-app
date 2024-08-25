@@ -31,7 +31,8 @@ class UserRepositoryImpl(
             userId = userResponse.userId,
             phoneNumber = userResponse.phoneNumber,
             email = userResponse.emailAddress,
-            fullname = userResponse.fullname
+            fullname = userResponse.fullname,
+            username = userResponse.username
         )
     }
 }

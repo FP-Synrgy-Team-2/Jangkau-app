@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.jangkau.LoadingActivity
 import com.example.jangkau.R
@@ -15,7 +16,10 @@ import com.example.jangkau.databinding.ActivityPinInputBinding
 import com.example.jangkau.failedPopUp
 import com.example.jangkau.gone
 import com.example.jangkau.shorten
+import com.example.jangkau.viewmodel.AuthViewModel
+import com.example.jangkau.visible
 import com.ygoular.numpadview.NumPadView
+import org.koin.android.ext.android.inject
 import org.koin.ext.clearQuotes
 
 class PinValidationActivity : BaseActivity() {
@@ -33,6 +37,12 @@ class PinValidationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPinInputBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val isFromSplash = intent.getBooleanExtra("EXTRA_IS_FROM_SPLASH", false)
+
+        if (isFromSplash) {
+            binding.btnLoginUsername.visible()
+            binding.btnLoginUsername.setOnClickListener { openLoginActivity() }
+        }
 
         targetAction = intent.getStringExtra(EXTRA_TARGET_ACTION)
 

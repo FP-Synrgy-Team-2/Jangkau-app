@@ -27,6 +27,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/navbar" />
 
+    <Button
+        android:id="@+id/btnLoginUsername"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="6dp"
+        android:layout_marginVertical="10dp"
+        android:contentDescription=""
+        android:text="Gunakan Username &amp; Password"
+        android:visibility="invisible"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/firstPinView"
+        app:layout_constraintStart_toStartOf="@+id/firstPinView"
+        app:layout_constraintTop_toBottomOf="@id/firstPinView" />
+
     <com.chaos.view.PinView
         android:id="@+id/firstPinView"
         style="@style/PinWidget.PinView"
@@ -59,13 +74,13 @@
         android:id="@+id/num_pad_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="60dp"
-        app:text_ripple_effect="false"
-        app:right_icon_ripple_effect="false"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/firstPinView"
-        app:text_color="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/btnLoginUsername"
         app:right_icon="@drawable/backspace_pin"
+        app:right_icon_ripple_effect="false"
+        app:text_color="@color/black"
+        app:text_ripple_effect="false"
         app:text_size="14sp"
         app:text_style="bold" />
 

@@ -21,7 +21,8 @@ data class UserResponse(
             email = emailAddress,
             fullname = fullname,
             phoneNumber = phoneNumber,
-            userId = userId
+            userId = userId,
+            username = username
         )
     }
 }

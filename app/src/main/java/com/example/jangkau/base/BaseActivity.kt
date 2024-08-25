@@ -161,8 +161,10 @@ abstract class BaseActivity : AppCompatActivity() {
 //        startActivity(intent)
 //    }
 
-    fun openPinInputActivity() {
-        val intent = Intent(this, PinValidationActivity::class.java)
+    fun openPinInputActivity(isFromSplash : Boolean = false) {
+        val intent = Intent(this, PinValidationActivity::class.java).apply {
+            putExtra("EXTRA_IS_FROM_SPLASH", isFromSplash)
+        }
          startActivityForResult(intent, PIN_INPUT_REQUEST_CODE)
 //        intent.putExtra(PinInputActivity.EXTRA_TARGET_ACTION, action)
 //        startActivity(intent)
