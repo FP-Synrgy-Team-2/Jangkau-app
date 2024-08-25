@@ -158,15 +158,13 @@ fun formatDate(dateString: String): String {
         dateString
     }
 }
-fun formatCurrency(text: String): String {
-    val numberString = text.replace("[^\\d]".toRegex(), "")
-    return if (numberString.isNotEmpty()) {
-        val number = numberString.toLong()
-        "Rp${NumberFormat.getNumberInstance().format(number)}"
-    } else {
-        ""
-    }
+fun formatCurrency(numberString: String): String {
+    val cleanString = numberString.replace("[^\\d]".toRegex(), "")
+
+    val number = cleanString.toLongOrNull() ?: 0L
+    return "Rp ${number.toString().reversed().chunked(3).joinToString(".").reversed()}"
 }
+
 
 fun parseCurrency(text: String): Long {
     val numberString = text.replace("[^\\d]".toRegex(), "")
@@ -176,6 +174,7 @@ fun parseCurrency(text: String): Long {
         0L
     }
 }
+
 
 class CurrencyTextWatcher(private val editText: EditText) : TextWatcher {
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -187,9 +186,7 @@ class CurrencyTextWatcher(private val editText: EditText) : TextWatcher {
         val originalText = s.toString()
         editText.removeTextChangedListener(this)
 
-        val parsedNumber = parseCurrency(originalText)
         val formattedText = formatCurrency(originalText)
-
         editText.setText(formattedText)
         editText.setSelection(formattedText.length)
         editText.addTextChangedListener(this)

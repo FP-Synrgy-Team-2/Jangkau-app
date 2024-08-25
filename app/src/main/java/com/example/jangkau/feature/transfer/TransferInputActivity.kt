@@ -210,7 +210,8 @@ class TransferInputActivity : BaseActivity() {
                     bottomSheetBinding.btnNext.visible()
                     transactionId = state.data.transactionId
                     openTransferReceiptActivity(transactionId)
-                    Log.d("TransferInputActivity", "Success state: ${state.data}")
+                    finish()
+//                    Log.d("TransferInputActivity", "Success state: ${state.data}")
                 }
             }
         }

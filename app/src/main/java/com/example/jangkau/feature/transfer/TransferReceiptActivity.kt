@@ -58,13 +58,16 @@ class TransferReceiptActivity : BaseActivity() {
             transactionViewModel.transactions.observe(this) { state ->
                 when (state) {
                     is State.Error -> {
+                        hideLoadingDialog()
                         Log.d("GetTransactionById", "Error : ${state.error}")
                         showToast(state.error)
                     }
                     State.Loading -> {
+                        showLoadingDialog()
                         Log.d("GetTransactionById", "Loading")
                     }
                     is State.Success -> {
+                        hideLoadingDialog()
                         binding.apply {
                             tvTransactionId.text = state.data.transactionId
                             tvName.text = state.data.beneficiaryName
