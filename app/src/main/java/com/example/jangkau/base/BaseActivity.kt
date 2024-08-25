@@ -1,14 +1,21 @@
 package com.example.jangkau.base
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.model.BankAccount
-import com.example.domain.model.SavedAccount
 
 import com.example.jangkau.LoadingActivity
+import com.example.jangkau.R
 import com.example.jangkau.databinding.DialogLoadingBinding
 import com.example.jangkau.databinding.NavbarBinding
 import com.example.jangkau.feature.PinValidationActivity
@@ -38,6 +45,7 @@ abstract class BaseActivity : AppCompatActivity() {
     private val authViewModel : AuthViewModel by inject()
     private lateinit var navbarBinding: NavbarBinding
     private lateinit var loadingDialog: AlertDialog
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +60,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
 
-//    fun checkLoginStatus() {
-//
-//    }
+    fun playSuccessSound() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.success)
+        mediaPlayer?.start()
+    }
 
     fun showLoadingDialog() {
         val binding = DialogLoadingBinding.inflate(layoutInflater)
@@ -71,6 +80,23 @@ abstract class BaseActivity : AppCompatActivity() {
         if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
             loadingDialog.dismiss()
         }
+    }
+
+    private fun triggerFailedVibration() {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val vibrationPattern = longArrayOf(0, 200, 100, 200, 100, 300)
+            vibrator.vibrate(VibrationEffect.createWaveform(vibrationPattern, -1))
+        } else {
+            val vibrationPattern = longArrayOf(0, 200, 100, 200, 100, 300)
+            vibrator.vibrate(vibrationPattern, -1)
+        }
+    }
+
+    fun triggerVibrationWithDelay(delayMillis: Long = 2000) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            triggerFailedVibration()  // Trigger the vibration after the delay
+        }, delayMillis)
     }
     fun setupNavbar() {
         navbarBinding = NavbarBinding.inflate(layoutInflater)

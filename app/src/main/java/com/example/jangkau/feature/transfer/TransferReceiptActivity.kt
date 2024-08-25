@@ -53,6 +53,7 @@ class TransferReceiptActivity : BaseActivity() {
         val transactionId = intent.getStringExtra("EXTRA_TRANSACTION_ID")
 
         if (transactionId != null) {
+            playSuccessSound()
             transactionViewModel.getTransactionById(transactionId)
             transactionViewModel.transactions.observe(this) { state ->
                 when (state) {

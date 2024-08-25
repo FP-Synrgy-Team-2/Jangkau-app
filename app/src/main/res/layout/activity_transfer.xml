@@ -20,7 +20,7 @@
         android:id="@+id/tvSubTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="5dp"
+        android:layout_marginVertical="20dp"
         android:text="Rekening Tujuan"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/navbar" />
@@ -28,12 +28,17 @@
     <Button
         android:id="@+id/btnInputBaru"
         app:icon="@drawable/plus_circle"
+        app:iconSize="24dp"
+        app:iconPadding='15dp'
         style="@style/Widget.Material3.Button.Icon"
         android:layout_width="match_parent"
-        android:textSize="14sp"
-        android:layout_height="55dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
         app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
         android:text="Input Baru"
+        android:contentDescription="Tombol Transfer Antar BCA dengan tujuan baru"
+        android:paddingVertical="15dp"
         android:gravity="start|center"
         android:layout_marginVertical="13dp"
         app:layout_constraintTop_toBottomOf="@id/tvSubTitle" />
@@ -43,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Atau pilih dari rekening yang tersimpan"
-        android:layout_marginVertical="20dp"
+        android:layout_marginVertical="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnInputBaru"/>
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.example.jangkau.R
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityFilterMutationBinding
+import com.example.jangkau.gone
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
@@ -27,6 +28,12 @@ class FilterMutationActivity : BaseActivity() {
                 fromDate = selectedDate
                 binding.cardFromDate.editTextFromDate.text = selectedDate.formatToDisplay()
             }
+        }
+
+        binding.navbar.apply {
+            imgBackArrow.setOnClickListener { finish() }
+            tvTitlePage.text = "Filter Mutasi Rekening"
+            imgCancel.gone()
         }
 
         binding.cardToDate.root.setOnClickListener {

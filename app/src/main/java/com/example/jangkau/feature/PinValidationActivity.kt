@@ -38,6 +38,7 @@ class PinValidationActivity : BaseActivity() {
 
         binding.navbar.imgCancel.gone()
         binding.navbar.tvTitlePage.gone()
+        binding.navbar.imgBackArrow.setOnClickListener { finish() }
 
         binding.firstPinView.isPasswordHidden = true
 
@@ -47,6 +48,11 @@ class PinValidationActivity : BaseActivity() {
             onNewValue = {
                 val newValue = handleNewValue(it)
                 binding.firstPinView.setText(newValue)
+
+//                binding.numPadView.announceForAccessibility("Number $it entered")
+
+                binding.numPadView.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP)
+
                 if (newValue.length == 6) {
                     showLoadingActivity(newValue)
                 }
@@ -71,6 +77,7 @@ class PinValidationActivity : BaseActivity() {
                 }
                 "ERROR" -> {
                     resetPinInput()
+                    triggerVibrationWithDelay()
                     failedPopUp(error ?: "PIN validation failed", this@PinValidationActivity)
                 }
             }

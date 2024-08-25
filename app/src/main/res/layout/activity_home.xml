@@ -64,7 +64,6 @@
             android:id="@+id/tvSaldo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
             android:text="Rp 532.199,00"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -85,6 +84,17 @@
             app:layout_constraintTop_toTopOf="@id/tvSaldo" />
 
         <TextView
+            android:id="@+id/tvLabelRekening"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="Nomor Rekening"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintStart_toStartOf="@id/tvBackground"
+            app:layout_constraintTop_toTopOf="@id/tvSaldo"/>
+
+        <TextView
             android:id="@+id/tvRekening"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,10 +102,9 @@
             android:textSize="20sp"
             android:text="8923445590"
             android:textStyle="bold"
-            android:layout_marginTop="70dp"
             android:layout_marginEnd="5dp"
             app:layout_constraintStart_toStartOf="@id/tvBackground"
-            app:layout_constraintTop_toTopOf="@id/tvSaldo"/>
+            app:layout_constraintTop_toBottomOf="@id/tvLabelRekening"/>
 
         <ImageView
             android:id="@+id/btnCopy"
@@ -130,7 +139,7 @@
         app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
         app:iconPadding="15dp"
         app:iconSize="30dp"
-        android:paddingVertical="15dp"
+        android:paddingVertical="20dp"
         app:iconTint="@null"
         android:text="Transfer Antar BCA"
         android:contentDescription="Tombol Transfer antar BCA"
@@ -145,7 +154,7 @@
         android:layout_width="match_parent"
         android:textSize="18sp"
         android:layout_height="wrap_content"
-        android:paddingVertical="15dp"
+        android:paddingVertical="20dp"
         android:contentDescription="Tombol Cek Mutasi Rekening"
         app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
         app:iconPadding="15dp"

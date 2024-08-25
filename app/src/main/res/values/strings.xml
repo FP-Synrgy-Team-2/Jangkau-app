@@ -86,5 +86,7 @@
     <string name="ya">Ya</string>
     <string name="maaf_tidak_ada_transaksi_yang_ditemukan_silakan_atur_kembali_filter_untuk_mendapatkan_daftar_transaksi_yang_sesuai">Maaf, tidak ada transaksi yang ditemukan. Silakan atur kembali filter atau lakukan transaksi untuk mendapatkan daftar transaksi yang sesuai</string>
     <string name="gambar_tidak_ada_transaksi">Gambar tidak ada transaksi</string>
+    <string name="flash_enabled">Lampu senter diaktifkan</string>
+    <string name="flash_disabled">Lampu senter dinonaktifkan</string>
 
 </resources>

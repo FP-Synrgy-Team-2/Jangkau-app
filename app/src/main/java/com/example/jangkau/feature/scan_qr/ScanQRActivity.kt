@@ -118,6 +118,13 @@ class ScanQRActivity : BaseActivity() {
             R.drawable.ic_flash_disabled
         }
         binding.btnFlash.setImageResource(flashIcon)
+
+        val flashStatus = if (isFlashEnabled) {
+            getString(R.string.flash_enabled)
+        } else {
+            getString(R.string.flash_disabled)
+        }
+        binding.btnFlash.announceForAccessibility(flashStatus)
     }
 
     private fun checkPermissions() {
