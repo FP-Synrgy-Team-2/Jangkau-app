@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
+import com.budiyev.android.codescanner.ErrorCallback
 import com.example.domain.model.BankAccount
 import com.example.domain.model.SavedAccount
 import com.example.jangkau.ErrorActivity
@@ -18,6 +19,7 @@ import com.example.jangkau.R
 import com.example.jangkau.State
 import com.example.jangkau.base.BaseActivity
 import com.example.jangkau.databinding.ActivityScanQractivityBinding
+import com.example.jangkau.databinding.DialogScanFailedBinding
 import com.example.jangkau.viewmodel.BankAccountViewModel
 import org.koin.android.ext.android.inject
 
@@ -28,7 +30,6 @@ class ScanQRActivity : BaseActivity() {
     private val bankViewModel: BankAccountViewModel by inject()
     private var isFlashEnabled = false
     private val cameraRequestCode = 101
-    private var accountId: String? = null
 
 
 
@@ -56,14 +57,14 @@ class ScanQRActivity : BaseActivity() {
             when (state) {
                 is State.Error -> {
                     hideLoadingDialog()
-                    showToast("Error: ${state.error}")
+                    showScanFailedDialog() // Replace showToast with showScanFailedDialog
                 }
                 State.Loading -> {
                     showLoadingDialog()
                 }
                 is State.Success -> {
                     hideLoadingDialog()
-                    if(state.data.type  == "User"){
+                    if (state.data.type == "User") {
                         bankViewModel.showDataBankAcc()
                         bankViewModel.state.observe(this) { stateOwner ->
                             when (stateOwner) {
@@ -90,7 +91,7 @@ class ScanQRActivity : BaseActivity() {
                                 }
                             }
                         }
-                    }else{
+                    } else {
                         openQrisConfirmationActivity(
                             accountNumber = state.data.accountNumber,
                             accountId = state.data.accountId,
@@ -101,11 +102,34 @@ class ScanQRActivity : BaseActivity() {
             }
         }
     }
+    private fun showScanFailedDialog() {
+        val binding = DialogScanFailedBinding.inflate(layoutInflater)
+        val dialog = android.app.AlertDialog.Builder(this)
+            .setView(binding.root)
+            .setCancelable(false)
+            .create()
+
+        binding.btnRetry.setOnClickListener {
+            dialog.dismiss()
+            startCamera() // Restart the camera to scan QR again
+        }
+
+        dialog.show()
+    }
 
     private fun setupScanner() {
         codeScanner.decodeCallback = DecodeCallback {
             runOnUiThread {
-                bankViewModel.showDataBankAccByScanQr(it.text)
+                if (it.text.isNullOrEmpty()) {
+                    showScanFailedDialog()  // Show the dialog and restart scanning
+                } else {
+                    bankViewModel.showDataBankAccByScanQr(it.text)
+                }
+            }
+        }
+        codeScanner.errorCallback = ErrorCallback { // The ErrorCallback expects a Throwable
+            runOnUiThread {
+                showScanFailedDialog()  // Show the dialog and restart scanning on error
             }
         }
     }
