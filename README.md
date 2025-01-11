@@ -3,22 +3,29 @@ Jangkau is a digital banking platform designed to enhance financial accessibilit
 
 ## Screenshots
 
-### Auth Screen
-![Auth Screen](assets/AuthScreen.jpg | width=300)
+<div style="display: flex; justify-content: space-around;">
+  <img src="assets/AuthScreen.jpg" width="300"/>
+  <img src="assets/GenQr.jpg" width="300"/>
+</div>
 
-### QR Code Generation
-![QR Code](assets/GenQr.jpg | width=300)
+<div style="display: flex; justify-content: space-around;">
+  <img src="assets/HomeScreen.jpg" width="300"/>
+  <img src="assets/InitialScreen.jpg" width="300"/>
+</div>
 
-### Home Screen
-![Home Screen](assets/HomeScreen.jpg | width=300)
+<div style="display: flex; justify-content: space-around;">
+  <img src="assets/SavedAccount.jpg" width="300"/>
+  <img src="assets/TransactionHistory.jpg" width="300"/>
+</div>
 
-### Initial Screen
-![Initial Screen](assets/InitialScreen.jpg | width=300)
+## Demo
 
-### Saved Account
-![Saved Account](assets/SavedAccount.jpg | width=300)
+You can watch the demo of the app here:
 
-### Transaction History
-![Transaction History](assets/TransactionHistory.jpg | width=300)
+[![Watch the demo](https://img.youtube.com/vi/KkPU43KHidM/0.jpg)](https://www.youtube.com/watch?v=KkPU43KHidM)
+
+
+
+
 
 
